@@ -8,10 +8,12 @@ cat <<TEXT
   PERSONALISED E-LEARNING - DEMO SCRIPT
   =====================================
 
-  Site:   ${MOODLE_WWWROOT}
-  Admin:  ${MOODLE_ADMIN_USER} / ${MOODLE_ADMIN_PASS}
+  Site: ${MOODLE_WWWROOT}
 
-  Students (all share the password ${DEMO_STUDENT_PASS}):
+  Every account below uses the same password:  ${DEMO_PASSWORD}
+
+    admin             site administrator (created by the installer)
+    demo.admin        site administrator (created by the seed)
 
     student.visual    pre-set style: visual
     student.aural     pre-set style: auditory
@@ -38,6 +40,7 @@ cat <<TEXT
 
   That contrast in steps 3 and 5 is the point of the project.
 
-  If a change does not show up:  make purge
+  Run it again:   make rehearse
+  Nothing shows:  make purge
 
 TEXT

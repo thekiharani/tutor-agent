@@ -1,6 +1,7 @@
 <?php
-// One course, four activities, five students. `make seed` runs it, `make
-// rehearse` passes --reset-blank to clear student.blank for another run.
+// One course, four activities, one extra site admin and five students, all
+// sharing DEMO_PASSWORD. `make rehearse` passes --reset-blank to clear
+// student.blank for another run.
 
 define('CLI_SCRIPT', true);
 
@@ -44,6 +45,8 @@ const SEED_ACTIVITIES = [
     ],
 ];
 
+const SEED_ADMIN = ['username' => 'demo.admin', 'firstname' => 'Dana', 'lastname' => 'Admin'];
+
 const SEED_USERS = [
     ['username' => 'student.visual', 'firstname' => 'Vera', 'lastname' => 'Visual', 'style' => 'visual'],
     ['username' => 'student.aural', 'firstname' => 'Alan', 'lastname' => 'Aural', 'style' => 'auditory'],
@@ -55,7 +58,7 @@ const SEED_USERS = [
 list($options) = cli_get_params(['reset-blank' => false, 'help' => false], ['h' => 'help']);
 
 if ($options['help']) {
-    cli_writeln("Seed the demo course, activities and students.\n"
+    cli_writeln("Seed the demo course, activities, admin and students.\n"
         . "  --reset-blank   Only clear student.blank's learning style, for another rehearsal.\n");
     exit(0);
 }
@@ -72,9 +75,26 @@ if ($DB->record_exists('course', ['shortname' => SEED_SHORTNAME])) {
         . "Run 'make reset' for a clean site, then 'make seed' again.");
 }
 
-$password = getenv('DEMO_STUDENT_PASS');
+$password = getenv('DEMO_PASSWORD');
 if (empty($password)) {
-    cli_error('DEMO_STUDENT_PASS is not set. It comes from .env via docker-compose.yml.');
+    cli_error('DEMO_PASSWORD is not set. It comes from .env via docker-compose.yml.');
+}
+
+/** Every seeded account is identical apart from its name. */
+function seed_create_user(array $person, string $password): int {
+    global $CFG;
+
+    return user_create_user((object) [
+        'username' => $person['username'],
+        'password' => $password,
+        'firstname' => $person['firstname'],
+        'lastname' => $person['lastname'],
+        'email' => $person['username'] . '@example.com',
+        'auth' => 'manual',
+        'confirmed' => 1,
+        'mnethostid' => $CFG->mnet_localhost_id,
+        'policyagreed' => 1,
+    ], true, false);
 }
 
 $studentrole = $DB->get_record('role', ['shortname' => 'student'], '*', MUST_EXIST);
@@ -124,19 +144,17 @@ foreach (SEED_ACTIVITIES as $index => $activity) {
     cli_writeln("  activity '{$activity['name']}' (cmid {$created->coursemodule})");
 }
 
+cli_writeln('Creating the second site administrator...');
+$adminid = seed_create_user(SEED_ADMIN, $password);
+// Site admins are a config list, not a role assignment.
+$siteadmins = array_filter(explode(',', (string) $CFG->siteadmins));
+$siteadmins[] = $adminid;
+set_config('siteadmins', implode(',', array_unique($siteadmins)));
+cli_writeln('  ' . SEED_ADMIN['username'] . ' (site administrator)');
+
 cli_writeln('Creating the students...');
 foreach (SEED_USERS as $seeduser) {
-    $userid = user_create_user((object) [
-        'username' => $seeduser['username'],
-        'password' => $password,
-        'firstname' => $seeduser['firstname'],
-        'lastname' => $seeduser['lastname'],
-        'email' => $seeduser['username'] . '@example.com',
-        'auth' => 'manual',
-        'confirmed' => 1,
-        'mnethostid' => $CFG->mnet_localhost_id,
-        'policyagreed' => 1,
-    ], true, false);
+    $userid = seed_create_user($seeduser, $password);
 
     enrol_try_internal_enrol($course->id, $userid, $studentrole->id);
 

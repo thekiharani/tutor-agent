@@ -56,17 +56,18 @@ Then open <http://localhost:8080>.
 
 ## Logins
 
-Admin: `admin` / `Admin#2026demo` (from `.env`).
+Every account uses the same password, `DEMO_PASSWORD` in `.env`, which defaults
+to `Demo@2026!`.
 
-After `make seed`, five students, all with the password `Student#2026demo`:
-
-| Username | Learning style |
+| Username | Role |
 |---|---|
-| `student.visual` | visual |
-| `student.aural` | auditory |
-| `student.rw` | read/write |
-| `student.kines` | kinesthetic |
-| `student.blank` | none yet - use this one to demo the questionnaire |
+| `admin` | site administrator, created by the installer |
+| `demo.admin` | site administrator, created by `make seed` |
+| `student.visual` | student, pre-set style: visual |
+| `student.aural` | student, pre-set style: auditory |
+| `student.rw` | student, pre-set style: read/write |
+| `student.kines` | student, pre-set style: kinesthetic |
+| `student.blank` | student, no style yet - use this one to demo the questionnaire |
 
 ## The demo
 

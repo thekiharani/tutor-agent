@@ -32,7 +32,7 @@ if [ ! -f "${CONFIG}" ]; then
         --dbname='${POSTGRES_DB}' --dbuser='${POSTGRES_USER}' \
         --dbpass='${POSTGRES_PASSWORD}' \
         --fullname='Personalised E-Learning' --shortname='PEL' \
-        --adminuser='${MOODLE_ADMIN_USER}' --adminpass='${MOODLE_ADMIN_PASS}' \
+        --adminuser='${MOODLE_ADMIN_USER}' --adminpass='${DEMO_PASSWORD}' \
         --adminemail='${MOODLE_ADMIN_EMAIL}'" www-data
     echo "[entrypoint] install finished"
 fi

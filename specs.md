@@ -280,7 +280,7 @@ php admin/cli/install.php --non-interactive --agree-license \
   --dbtype=pgsql --dbhost=db --dbname="${POSTGRES_DB}" \
   --dbuser="${POSTGRES_USER}" --dbpass="${POSTGRES_PASSWORD}" \
   --fullname="Personalised E-Learning" --shortname="PEL" \
-  --adminuser=admin --adminpass="${MOODLE_ADMIN_PASS}" \
+  --adminuser=admin --adminpass="${DEMO_PASSWORD}" \
   --adminemail="${MOODLE_ADMIN_EMAIL}"
 ```
 
@@ -808,10 +808,13 @@ topically clean**. Alias matching is substring-based on `name + intro`, so an Ar
 intro that mentions "loops" would match the `control` key first and misclassify the
 activity. One topic per intro.
 
-Then five users, all enrolled as students, all with a known password from `.env`:
+Then a second site administrator and five students, every account sharing the
+single `DEMO_PASSWORD` from `.env` - one password for the whole demo, including
+the admin the installer creates:
 
 | Username | Pre-seeded style |
 |---|---|
+| `demo.admin` | site administrator, no style |
 | `student.visual` | visual |
 | `student.aural` | auditory |
 | `student.rw` | read_write |

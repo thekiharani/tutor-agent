@@ -6,7 +6,7 @@ MOODLE_ROOT := /var/www/moodle
 .PHONY: up down reset seed rehearse purge logs demo
 
 .env:
-	@sed -e '/^#/d' -e '/^[[:space:]]*$$/d' .env.example > .env
+	@sed '/^[[:space:]]*#/d' .env.example | cat -s | sed '/./,$$!d' > .env
 	@echo "Created .env from .env.example"
 
 up: .env                ## Build and start all three containers
