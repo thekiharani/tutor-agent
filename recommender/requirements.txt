@@ -1,2 +1,9 @@
-fastapi==0.121.2
-uvicorn[standard]==0.41.0
+# Pinned to what resolved on 2026-09-17 against Python 3.14, so a rebuild in
+# six months produces the same model and the same links.
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+pydantic==2.13.5
+scikit-learn==1.9.1
+numpy==2.5.3
+joblib==1.6.0
+nltk==3.10.3

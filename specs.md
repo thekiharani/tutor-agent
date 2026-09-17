@@ -404,10 +404,11 @@ one function.** If they ever diverge the system degrades silently.
 7. Print the vocabulary size, the training accuracy, and assert accuracy is 1.0. It
    will be. All 84 input vectors are unique with zero class collisions, so the model
    memorises the table exactly. This is expected, not a bug, but see section 6.
-   **Record the vocabulary size the run actually prints.** Revision 1 asserted 41
-   stems, but that was measured with `word_tokenize`; the regex tokeniser may give a
-   slightly different number. Whatever it prints is the truth - put it in the README
-   and in the `/health` response.
+   **Verified**: the regex tokeniser yields exactly the 41 stems revision 1 listed,
+   the same set `word_tokenize` gave, and training accuracy is 1.0. The vocabulary
+   is: `access an and argu array assign audit bas c cal class dat decl defin der do
+   el enum for funct if/else in index is kinesthet loop of or read_write recurs
+   select stat stor swic the typ valu vis void what whil`.
 
 Run `train.py` in the Dockerfile. `model.joblib` is a build artifact, gitignored.
 
@@ -477,17 +478,55 @@ classifier input. First-match-only keeps the result deterministic and stops an i
 that mentions two topics from blurring into both. This is a legitimate, explainable
 layer, not a hack, and it is defensible in a viva.
 
+**Fix 3: restrict the classifier to the student's known style.**
+
+Fixes 1 and 2 are both necessary and neither is sufficient. Expansion is what makes
+an unknown topic resolvable, but it also swamps the single modality stem: the
+expanded input lights up 11 vocabulary entries where a training vector lights up 7,
+and the topic stems outvote the one modality stem.
+
+Measured over 12 activity variants x 4 styles:
+
+| | wrong |
+|---|---|
+| expansion, unrestricted argmax | 5 / 48 (wrong modality) |
+| restriction, no expansion | 10 / 48 (wrong topic) |
+| both | **0 / 48** |
+
+So mask the softmax to the four classes ending in the requested style and take the
+best of those. The student's style is stored data, not something to infer; what the
+classifier is actually being asked is which topic the activity is about. Keep
+sending the style token in the input string - Fix 1 stands, and without it the
+unrestricted model cannot discriminate at all - but do not leave the modality to
+chance when it is already known.
+
+This is a disclosed layer, like the alias expansion, and it belongs in the README
+under "Known limitations" rather than being quietly folded into "the model".
+
 ### Confidence gate and fallback
 
-If `max(predict_proba) < RECOMMENDER_THRESHOLD` (env var, default `0.45`), fall back
-to the deterministic lookup: take the topic from the same first-match scan, build the
-tag as `f"{topic} {style}"`, and return a response from that tag with
-`"source": "fallback"` so it is visible in testing.
+Report confidence **renormalised over the four masked candidates**:
+`p[best] / sum(p[candidates])`. That is "how sure are we of the topic, given this
+style", which is the only question the classifier is being asked. The raw 16-way
+probability is not a usable number here - correct answers routinely score 0.06 on
+it because the model is confident about a different modality.
 
-**If no topic matches at all and confidence is below the threshold**, return
-**HTTP 204 No Content**. The observer then shows no notification. This is the
-"student opens an activity we have no content for" path and it must not produce a
-wrong recommendation or an error.
+If that confidence is below `RECOMMENDER_THRESHOLD` (env var, default `0.45`), fall
+back to the deterministic lookup: take the topic from the first-match scan, build
+the tag as `f"{topic} {style}"`, and return `"source": "fallback"` so it is visible
+in testing.
+
+**Return HTTP 204 No Content when the activity is not recognised at all**, checked
+*before* classifying: no alias key matches and no stem of the activity text is in
+the vocabulary, ignoring the four modality stems and the function words
+`an and in is of or the what`. Confidence alone is not a usable out-of-domain test
+- renormalised over four candidates, "Pointers" scores 0.56 and would be served
+data-type content. The observer shows no notification on a 204.
+
+Activities whose topic appears only in the intro still work: "Week 4" with the
+intro "if else and while loops in C" classifies as `controls` at 0.99 even though
+no alias key matches its title. The classifier is doing real work, not just
+echoing the alias table.
 
 **Response selection must be deterministic**, not `random.choice`:
 
@@ -524,6 +563,14 @@ link for the same module, WP1 has failed. Do not proceed.
 Also confirm: a nonsense module name (`"module_name":"Pointers"`) returns 204 rather
 than an error or a confident wrong answer, and that repeating the whole loop after
 `docker compose restart recommender` returns byte-identical links.
+
+**Verified 2026-09-17**: `/health` returns `{"status":"ok","classes":16,"vocab":41}`;
+all sixteen module/style combinations return the correct tag with confidence >=
+0.999 and 16 distinct links, 4 distinct per module; `Pointers`,
+`Weekly announcements`, `Structs and unions` and `Course introduction` all return
+204; an invalid style returns 422; the fallback branch returns `"source":
+"fallback"` when forced; and the responses are byte-identical across a container
+restart.
 
 ---
 
@@ -765,9 +812,11 @@ a panel member finds it.
   model that generalises". Reporting 100% accuracy as a result without this context
   invites a hard question.
 - Recommendations are limited to the content in `intents.json`.
-- The topic alias expansion is a deliberate, disclosed layer in front of the
-  classifier, added because the vocabulary has no stem for "control". It is part of
-  the system, not a hidden fix.
+- Two layers sit around the classifier and both are deliberate and disclosed: the
+  topic alias expansion, because the vocabulary has no stem for "control", and the
+  style mask, because the student's modality is stored data rather than something
+  to infer. Quote the 5/48, 10/48, 0/48 measurements: they show both layers are
+  load-bearing rather than decoration.
 - The VARK learning-styles matching hypothesis is contested in the education
   literature. The correct position is that this implements VARK as specified by the
   source thesis, not that matching has been shown to improve outcomes.
@@ -845,6 +894,9 @@ Validate against `lib/xmldb/xmldb.xsd` in the 5.2 source before use.
     declares its volume at `/var/lib/postgresql`. Mount the parent or the data
     does not persist.
 11. **Do not rebuild PHP extensions the base image already has.** See WP0.
+12. **FastAPI cannot build a response model from a union.** A handler returning
+    either a dict or a bare `Response` needs `response_model=None` on the
+    decorator, or the app refuses to start.
 
 ## Appendix D: final self-check before handing back
 

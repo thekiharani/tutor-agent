@@ -1,83 +1,316 @@
-{"intents": [
-        {"tag": "arrays read_write",
-         "patterns": ["What is an array read_write?","Array index read_write", "array Declaration read_write", "Assigning or storage read_write of values in array", "Accessing array elements read_write"],
-         "responses": ["Array elements are accessed using an index value: see <a href='https://www.geeksforgeeks.org/arrays-in-c-cpp/'>this link</a>", "An array is a data structure that consists elements.See <a href='https://techterms.com/definition/array'>this link</a>", "The declaration and stotage of elements in an array is as shown. See <a href>https://www.tutorialspoint.com/cprogramming/c_arrays.htm'>this link</a>", "An array is a group (or collection) of same data types. See <a href='https://beginnersbook.com/2014/01/c-arrays-example/'>this link</a>", "there are diferent ways of declaring arrays. See this article in <a href>http://ee.hawaii.edu/~tep/EE160/Book/PDF/Chapter7.pdf'>this article</a>", "to read more on array index see the following slide . <a href>https://www.slideshare.net/kaushal_kush/array-ppt'>this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "controls read_write",
-         "patterns": [" if/else selection statement read_write", " for loop read_write", "swicth statement read_write", "do while read_write", "while loop read_write"],
-         "responses": ["The most common selection statement is the if/else statement. See <a href='https://www.cs.fsu.edu/~myers/c++/notes/control1.html'>this link</a>", "The if statement evaluates the test expression inside the parenthesis (). See <a href='https://www.programiz.com/c-programming/c-if-else-statement'>this link</a>", " loops are used to repeat a block of code until a specified condition is met. See <a href='https://www.programiz.com/c-programming/c-for-loop'>this link</a>", "The switch statement allows us to execute one code block among many alternatives.See <a href='https://www.programiz.com/c-programming/c-switch-case-statement'>this link</a>", "The switch case statement is used when we have multiple options and we need to perform a different task for each option. See <a href='https://beginnersbook.com/2014/01/switch-case-statements-in-c/'>this link</a>",  " Loops are used to repeat a block of code until a specified condition is met. If the test expression is true, statements inside the body of while loop are executed. See <a href='https://www.programiz.com/c-programming/c-do-while-loops'>this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "functions read_write",
-         "patterns": ["What is functions in C read_write", "Calling and defining Functions read_write", "Function arguments read_write", "Types of functions read_write","Recursion in functions read_write ", "Storage class in functions read_write"],
-         "responses": [" A function is a group of statements that together perform a task. See <a href='https://www.tutorialspoint.com/cprogramming/c_functions.htm'>this link</a>", "A function is a block of statements that performs a specific task. See <a href = 'https://beginnersbook.com/2014/01/c-functions-examples/'>this link</a>",  "The call by reference method of passing arguments to a function copies the address of an argument into the formal parameters. See <a ahref = 'https://www.tutorialspoint.com/cprogramming/c_function_call_by_reference.htm'>this link</a>", "function arguments also known as parameters are the variables that will receive the data sent by the calling program.See<a href  = 'http://www.trytoprogram.com/c-programming/c-programming-function-arguments/'<this link</a>", "Types of function. See <a href = 'https://www.tutorialgateway.org/types-of-functions-in-c/'>this link</a>", "There are two types of function in C programming. See<a href = 'https://www.programiz.com/c-programming/c-functions'>this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "data types read_write",
-         "patterns": ["What is data type read_write ","basic types read_write", "Derived Types read_write", "Enumerated Types read_write", "The void type read_write"],
-         "responses": ["Data types are declarations for variables. See <a href = 'https://www.programiz.com/c-programming/c-data-types'>this link</a>", "Data types in c refer to an extensive system used for declaring variables or functions of different types. See <a href='https://www.tutorialspoint.com/cprogramming/c_data_types.htm'>this link</a>", "Data types refer to an extensive system used for declaring variables or functions of different types. See<a href= 'https://www.tutorialspoint.com/cprogramming/pdf/c_data_types.pdf'>this link</a>", "Data types. See the following slides <a href = 'https://www.slideshare.net/ZahidHussain7/data-types-8302235'> in this link</a>", "Enumeration data type consists of named integer constants as a list.See <a href= 'https://fresh2refresh.com/c-programming/c-data-types/'>this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "arrays visual",
-         "patterns": ["What is an array visual?","Array index visual", "array Declaration visual", "Assigning or storage visual of values in array ", "Accessing array elements visual"],
-         "responses": ["Array elements are accessed using an index value: see the following video <a href = 'https://www.youtube.com/watch?v=GhNtdjdSJVQ'> in this link</a>", "An array is a data structure that consists elements. listen the following video <a href = 'https://www.youtube.com/watch?v=6tjYC86iV5E'> in this link</a>", "Declaring arrays  check the following video for more understanding <a href = 'https://www.youtube.com/watch?v=i6m_NqnbN50'> in this link</a>", "Assigning and storing arrays Listen the following video <a href ='https://www.youtube.com/watch?v=47JBVxCWXJA'> in this link</a>", "To refer to a particular location or element in the array, we specify the name of the arrayand the position number  of the element to which we refer.See the following video <a href = 'https://www.youtube.com/watch?v=HyDE7T6YPsU'> in this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "controls visual",
-         "patterns": [" if/else selection statement visual", " for loop visual", "swicth statement visual", "do while visual", "while loop visual"],
-         "responses": ["The most common selection statement is the if/else statement. Watch the following video <a href = 'https://www.youtube.com/watch?v=H9dECCBeLQk'>this link</a>", "if statement tutorial. Watch the following video<a href = 'https://www.youtube.com/watch?v=vT-GyM1LTic'> in this link</a>", "Control Statements in C - for loop . See the following video <a href = 'https://www.youtube.com/watch?v=_NZZ9Y-j_mw&t=252s'>in this link</a>", "loops are used to repeat a block of code until a specified condition is met. for lop in c programming. See the following video <a href ='https://www.youtube.com/watch?v=dOhhha_2eLU'> in this link</a>", " The switch case statement is used when we have multiple options and we need to perform a different task for each option. switch case in c programming.See the following video <a href = 'https://www.youtube.com/watch?v=luluZkPbRfw'>in this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "functions visual ",
-         "patterns": ["What is functions in C visual", "Calling and defining  Functions visual",  "Function arguments visual", "Types of functions visual","Recursion visual", "Storage class visual"],
-         "responses": ["Functions are the subprograms of any complex problem which are developed independently and finally... watch the following video <a href= 'https://www.youtube.com/watch?v=TEHA_IwNk34'> in this link</a>", "functions introduction, declaration, function call, function definition, Watch the following video <a href = 'https://www.youtube.com/watch?v=y1Q8VfgDX4c'>in this link</a>", "Function Arguments, Parameters, Return Statement. Watch the following video <a href = https://www.youtube.com/watch?v=ylPG6x1rDxY'> in this link</a>", "categories/types of function. Watch the following video <a href = 'https://www.youtube.com/watch?v=puIK6kHcuqA'>in this link</a>", "Storage Classes in C. Watch the following video <a href = 'https://www.youtube.com/watch?v=Ahgl3x_EP7o'>in this link</a>","Categories/types of function. Watch the following video <a href= 'https://www.youtube.com/watch?v=puIK6kHcuqA'>this link</a>", "Storage Classes in C. Watch the following video <a href = 'https://www.youtube.com/watch?v=Ahgl3x_EP7o'>in this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "data types visual ",
-         "patterns": ["What is data type visual","basic types visual", "Derived Types visual", "Enumerated Types visual", "The void type visual"],
-         "responses": ["Data types are declarations for variables. listen the following video  <a href = 'https://www.youtube.com/watch?v=j1u3V6pzwEI'>in this link</a>", "Basic types in C .Watch the following video <a href= 'https://www.youtube.com/watch?v=_g4AYZQY7sU'>in this link</a>", "Data types in C,enumerated datatype. Watch  <a href = 'https://www.youtube.com/watch?v=YfbcJz4TfjQ'>this link</a>", "Void Data Types .Listen the following video <a href= 'https://www.youtube.com/watch?v=1nAJiybMZNw'>in this link</a>", "Derived data types in C. Watch the following video<a href = 'https://www.youtube.com/watch?v=JSdFDlURNoQ'>in this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "arrays kinesthetic",
-         "patterns": ["What is an array kinesthetic?","Array index kinesthetic", "Array Declaration kinesthetic", "Assigning or storage  kinesthetic of values in array", "Accessing array elements kinesthetic"],
-         "responses": ["Array elements are accessed using an index value: see practical use of array <a href = 'https://www.youtube.com/watch?v=tRuIAdYViWw '> in this link</a>", " Declaration of multidimensional array : see the following practical<a href = 'https://www.youtube.com/watch?v=RiVFAVqpo34'>in this link</a>", "creating and acesing elements in arrays is done as  demonstrated in the following video: <a href = 'https://www.youtube.com/watch?v=jYXpJQy8sUU'>click link</a>", "Practical for Storing Values into Double Dimensional Array Using Loops. see the following , a href = 'https://www.youtube.com/watch?v=F2oF4G9ouYg'>link</a>", "Insert an element at a particular index in an array, see the following <a href= 'https://www.youtube.com/watch?v=KELqVT7hjeE'>link</a>"],
-         "context_set": ""
-        },
-        {"tag": "controls kinesthetic",
-         "patterns": [" if/else selection statement kinesthetic", " for loop kinesthetic", "swicth statement kinesthetic", "do while kinesthetic", "while loop kinesthetic"],
-         "responses": ["if statement is a programming conditional statement that, if proved true, performs a function or displays information. watch the folowing video on practical use of if statement <a href = 'https://www.youtube.com/watch?v=I7p6Hzap4qo'>in this link</a>", "practical use of for loops. Watch the following  <a href = 'https://www.youtube.com/watch?v=ic2gN6BXcCw'> in this link</a>",  "Practical of While Loop | Basic Syntax of Using While Loop. watch the following practical<a href = 'https://www.youtube.com/watch?v=0qQL6Jvjvbw'> in this link</a>", "How to use Nested DO While Loop in C Programming. See <a href = 'https://www.youtube.com/watch?v=QJlo8cAsJc4'>this link</a>", "Practical on difference between While Loop and Do While Loop. See <a href = 'https://www.youtube.com/watch?v=CFWwAudXY-o'> this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "functions kinesthetic  ",
-         "patterns": ["What is functions kinesthetic in C", "Calling and defining  Functions kinesthetic",  "Function arguments kinesthetic", "Types of functions kinesthetic","Recursion kinesthetic", "Storage class kinesthetic"],
-         "responses": ["A program using fuction in C. Watch the folllowing practical <a href = 'https://www.youtube.com/watch?v=x8APkeKR6r0'> in this link</a>", " A progarm on Declaration, Definition & Invocation. Watch the following practical <a href ='https://www.youtube.com/watch?v=x8APkeKR6r0&t=6s'>in this link</a>",  "A progarm in c demostrating Recursion in using factorial . Watch the following<a href ='https://www.youtube.com/watch?v=aF6YURGnJWw'>in this link</a>", "Automatic Storage Class in C Programming Video Tutorial. Watch the folowing practical <a href =https://www.youtube.com/watch?v=J1vfDWDP3qY'>in this link</a>", "Passing Arguments to Functions. Watch the following pactical<a href = 'https://www.youtube.com/watch?v=_oyuKw3vBf8'>in this link</a>", "C Program to Demonstrate Types of user defined functions. Watch the following practical < a href=  'https://www.youtube.com/watch?v=dJMjfsjnOpA'>in this link</a>"],
-         "context_set": ""
-        },
-        {"tag": " data types kinesthetic",
-         "patterns": ["What is data type kinesthetic","basic types kinesthetic", "Derived Types kinesthetic", "Enumerated Types kinesthetic", "The void type kinesthetic"],
-         "responses": ["How to declare data types int,char,float,string,double and assign some values to variable. See the following practical<a href= 'https://www.youtube.com/watch?v=6TIb3p-uqgM'>in this link>/a>","Enumerated Types. Watch the following practical on enumerated data types in C <a href='https://www.youtube.com/watch?v=YlT2w28byWM'> in this link</a>", "Practical demonstration of use of enumerated data types <a href = 'https://www.youtube.com/watch?v=hK4-vOBFob0'>in this link</a>", "Demonstration of  derived dat types in C programing . Watch the following video <A HREF = 'https://www.youtube.com/watch?v=oOMqMZWFYbw'>in this link</a>", "A practical demonstration of the void type. Watch the following video. <a href = 'https://www.youtube.com/watch?v=eIL3oMmn1OM'> in this link</a>","practical demonstartion of use of poinetrs in C.Watch the following video<a href=   'https://www.youtube.com/watch?v=TFTpRjPcoUs'>in this link</a>"],
-         "context_set": ""
-        },
-        {"tag": " arrays auditory",
-         "patterns": ["What is an array auditory?","Array index auditory", "array Declaration auditory", "Assigning or storage auditory of values in array", "Accessing array elements auditory"],
-         "responses": [" Definition of an array . Listen to the following. <a href ='https://www.youtube.com/watch?v=55l-aZ7_F24'>from this link</a>", "understanding arrays in C programming. Listen the following. <a href= 'https://www.youtube.com/watch?v=0EgpeYB115s'> in this link</a>","Indexing arrays in C. Listen the following <a href ='https://www.youtube.com/watch?v=prZ30PZ2LXg'>this link</a>","Declaringand initializing an array in c. Listen the following <a href= 'https://www.youtube.com/watch?v=GtcRReso9Xk'>in this link,/a>","Accessing array elements in C. Listen the following <a href = 'https://www.youtube.com/watch?v=g0ClJ28-8LE'>in this link</a>", "Accessing arrays elements in C using pointers . Listen the following <a href = 'https://www.youtube.com/watch?v=dWMXHjsJiXY'> in this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "controls auditory",
-         "patterns": [" if/else selection statement auditory", " for loop auditory", "swicth statement auditory", "do while auditory", "while loop auditory"],
-         "responses": [" If, Else If, Else Statements. Listen the following <a href = 'https://www.youtube.com/watch?v=SOnpOBvyhDM'>from this link</a>"," If Statement Decision. Listen the following <a href ='https://www.youtube.com/watch?v=K2RfUgCzZR8'>in this link</a>"," If Statement in C. Listen the following. <a href ='https://www.youtube.com/watch?v=oYuRtXcwXqw'> in this link</a>","if else statement in c programming | if-else statement syntax, flowchart and example program in C. Listen the folllowing <a href ='https://www.youtube.com/watch?v=DDAK3vnR898'>from this link</a>","for loop in c programming. Listen  the following <a href = 'https://www.youtube.com/watch?v=dOhhha_2eLU&t=314s'>in this link</a>","Introduction to Loop in C Language || Why we use loops in C. Listen the following <a href = 'https://www.youtube.com/watch?v=BpeIfof3VBk'>in this link</a>","switch statement in C. Listen the following <a href = 'https://www.youtube.com/watch?v=BHS4iA7bsDk'>in this link</a>","do while loop in C progamming . Listen the following <a href = 'https://www.youtube.com/watch?v=TjkJQly2YCw'>this link</a>","while loop in C progamming. Listen the following <a href = 'https://www.youtube.com/watch?v=e2JLZHmhyv4'>in this link</a>","for loop in c programming/what is for loop? Discuss it's syntax, flowchart and example. Listen the folllowing <a href = 'https://www.youtube.com/watch?v=MCXUMxg4qIQ'>in this link</a>","Switch statement in C programming | What is switch case? With syntax and flow chart in C language. Listen the following <a href = 'https://www.youtube.com/watch?v=d-Y4CmyrAuA'>in this link</a>"],
-         "context_set": ""
-        },
-        {"tag": "functions auditory",
-         "patterns": ["What is functions in C auditory", "Calling and defining Functions auditory", "Function arguments auditory", "Types of functions auditory","Recursion in functions auditory ", "Storage class in functions auditory"],
-         "responses": [" Functions in C. Listen the following <a href = 'https://www.youtube.com/watch?v=TEHA_IwNk34'> from this link</a>","Categories of functions and definition. Listen the following <a href = 'https://www.youtube.com/watch?v=qPxcGDQrJlg'> link</a>","functions in c programming,declaration, call and definition.Listen the following <a href = 'https://www.youtube.com/watch?v=y1Q8VfgDX4c&t=317s'> link</a>","categories of function sin C . Listen the following <a href = 'https://www.youtube.com/watch?v=puIK6kHcuqA'> link</a>","Function Call, Control Transfer in C Programming. Listen the following <a href = 'https://www.youtube.com/watch?v=RV2ZwfQScAA&t=249s'>in this link</a>","Declaration, Definition, Call of Function and Functions in C Programming. Listen the following <a href = 'https://www.youtube.com/watch?v=QnXhaOCcuX8'> link</a>","Different Types of Functions in C Programming Language. Listen the following <a href = 'https://www.youtube.com/watch?v=bbQcxOg2jcU'>this link</a>","Recursion in C Functions. Listen the following <a href = 'https://www.youtube.com/watch?v=SUfe1UX1m4M'>link</a>","Types of the Storage Classes in C . Listen the following <a href = 'https://www.youtube.com/watch?v=eNH5KqzOM7c'>link</a>","Storage Classes in C. Listen the following <a href ='https://www.youtube.com/watch?v=Ahgl3x_EP7o'> link</a>"],
-         "context_set": ""
-        },
-        {"tag": " data types auditory",
-         "patterns": ["What is data type auditory","basic types auditory", "Derived Types auditory", "Enumerated Types auditory", "The void type auditory"],
-         "responses": [" Data Type and Qualifiers in C Language. Listen the following <a href = 'https://www.youtube.com/watch?v=89vYwVsfK8E'>link</a>","Data types refer to extensive system used for declaring variable or functions of different types . Listen the following <a href = 'https://www.youtube.com/watch?v=SKqVQO0ab8s'> link</a>","Basic Data Types In C. Listen the following<a href = 'https://www.youtube.com/watch?v=BsdyKqF5udc'> link</a>","Derived data types in C.Listen the following <a href = 'https://www.youtube.com/watch?v=JSdFDlURNoQ'> link</a>","Enumerated Data Type in C Programming Language. Listen the following <a href = 'https://www.youtube.com/watch?v=jrRnWQSjdiE'>link</a>","Void data type in C. Listen the following <a href = 'https://www.youtube.com/watch?v=1nAJiybMZNw'> link</a>"],
-         "context_set": ""
-        }
-   ]
+{
+  "intents": [
+    {
+      "tag": "arrays read_write",
+      "patterns": [
+        "What is an array read_write?",
+        "Array index read_write",
+        "array Declaration read_write",
+        "Assigning or storage read_write of values in array",
+        "Accessing array elements read_write"
+      ],
+      "responses": [
+        "Array elements are accessed using an index value: see <a href='https://www.geeksforgeeks.org/arrays-in-c-cpp/'>this link</a>",
+        "An array is a data structure that consists elements.See <a href='https://techterms.com/definition/array'>this link</a>",
+        "The declaration and stotage of elements in an array is as shown. See <a href='https://www.tutorialspoint.com/cprogramming/c_arrays.htm'>this link</a>",
+        "An array is a group (or collection) of same data types. See <a href='https://beginnersbook.com/2014/01/c-arrays-example/'>this link</a>",
+        "there are diferent ways of declaring arrays. See this article in <a href='http://ee.hawaii.edu/~tep/EE160/Book/PDF/Chapter7.pdf'>this article</a>",
+        "to read more on array index see the following slide . <a href='https://www.slideshare.net/kaushal_kush/array-ppt'>this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "controls read_write",
+      "patterns": [
+        " if/else selection statement read_write",
+        " for loop read_write",
+        "swicth statement read_write",
+        "do while read_write",
+        "while loop read_write"
+      ],
+      "responses": [
+        "The most common selection statement is the if/else statement. See <a href='https://www.cs.fsu.edu/~myers/c++/notes/control1.html'>this link</a>",
+        "The if statement evaluates the test expression inside the parenthesis (). See <a href='https://www.programiz.com/c-programming/c-if-else-statement'>this link</a>",
+        " loops are used to repeat a block of code until a specified condition is met. See <a href='https://www.programiz.com/c-programming/c-for-loop'>this link</a>",
+        "The switch statement allows us to execute one code block among many alternatives.See <a href='https://www.programiz.com/c-programming/c-switch-case-statement'>this link</a>",
+        "The switch case statement is used when we have multiple options and we need to perform a different task for each option. See <a href='https://beginnersbook.com/2014/01/switch-case-statements-in-c/'>this link</a>",
+        " Loops are used to repeat a block of code until a specified condition is met. If the test expression is true, statements inside the body of while loop are executed. See <a href='https://www.programiz.com/c-programming/c-do-while-loops'>this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "functions read_write",
+      "patterns": [
+        "What is functions in C read_write",
+        "Calling and defining Functions read_write",
+        "Function arguments read_write",
+        "Types of functions read_write",
+        "Recursion in functions read_write ",
+        "Storage class in functions read_write"
+      ],
+      "responses": [
+        " A function is a group of statements that together perform a task. See <a href='https://www.tutorialspoint.com/cprogramming/c_functions.htm'>this link</a>",
+        "A function is a block of statements that performs a specific task. See <a href = 'https://beginnersbook.com/2014/01/c-functions-examples/'>this link</a>",
+        "The call by reference method of passing arguments to a function copies the address of an argument into the formal parameters. See <a ahref = 'https://www.tutorialspoint.com/cprogramming/c_function_call_by_reference.htm'>this link</a>",
+        "function arguments also known as parameters are the variables that will receive the data sent by the calling program.See<a href  = 'http://www.trytoprogram.com/c-programming/c-programming-function-arguments/'<this link</a>",
+        "Types of function. See <a href = 'https://www.tutorialgateway.org/types-of-functions-in-c/'>this link</a>",
+        "There are two types of function in C programming. See<a href = 'https://www.programiz.com/c-programming/c-functions'>this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "data types read_write",
+      "patterns": [
+        "What is data type read_write ",
+        "basic types read_write",
+        "Derived Types read_write",
+        "Enumerated Types read_write",
+        "The void type read_write"
+      ],
+      "responses": [
+        "Data types are declarations for variables. See <a href = 'https://www.programiz.com/c-programming/c-data-types'>this link</a>",
+        "Data types in c refer to an extensive system used for declaring variables or functions of different types. See <a href='https://www.tutorialspoint.com/cprogramming/c_data_types.htm'>this link</a>",
+        "Data types refer to an extensive system used for declaring variables or functions of different types. See<a href= 'https://www.tutorialspoint.com/cprogramming/pdf/c_data_types.pdf'>this link</a>",
+        "Data types. See the following slides <a href = 'https://www.slideshare.net/ZahidHussain7/data-types-8302235'> in this link</a>",
+        "Enumeration data type consists of named integer constants as a list.See <a href= 'https://fresh2refresh.com/c-programming/c-data-types/'>this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "arrays visual",
+      "patterns": [
+        "What is an array visual?",
+        "Array index visual",
+        "array Declaration visual",
+        "Assigning or storage visual of values in array ",
+        "Accessing array elements visual"
+      ],
+      "responses": [
+        "Array elements are accessed using an index value: see the following video <a href = 'https://www.youtube.com/watch?v=GhNtdjdSJVQ'> in this link</a>",
+        "An array is a data structure that consists elements. listen the following video <a href = 'https://www.youtube.com/watch?v=6tjYC86iV5E'> in this link</a>",
+        "Declaring arrays  check the following video for more understanding <a href = 'https://www.youtube.com/watch?v=i6m_NqnbN50'> in this link</a>",
+        "Assigning and storing arrays Listen the following video <a href ='https://www.youtube.com/watch?v=47JBVxCWXJA'> in this link</a>",
+        "To refer to a particular location or element in the array, we specify the name of the arrayand the position number  of the element to which we refer.See the following video <a href = 'https://www.youtube.com/watch?v=HyDE7T6YPsU'> in this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "controls visual",
+      "patterns": [
+        " if/else selection statement visual",
+        " for loop visual",
+        "swicth statement visual",
+        "do while visual",
+        "while loop visual"
+      ],
+      "responses": [
+        "The most common selection statement is the if/else statement. Watch the following video <a href = 'https://www.youtube.com/watch?v=H9dECCBeLQk'>this link</a>",
+        "if statement tutorial. Watch the following video<a href = 'https://www.youtube.com/watch?v=vT-GyM1LTic'> in this link</a>",
+        "Control Statements in C - for loop . See the following video <a href = 'https://www.youtube.com/watch?v=_NZZ9Y-j_mw&t=252s'>in this link</a>",
+        "loops are used to repeat a block of code until a specified condition is met. for lop in c programming. See the following video <a href ='https://www.youtube.com/watch?v=dOhhha_2eLU'> in this link</a>",
+        " The switch case statement is used when we have multiple options and we need to perform a different task for each option. switch case in c programming.See the following video <a href = 'https://www.youtube.com/watch?v=luluZkPbRfw'>in this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "functions visual",
+      "patterns": [
+        "What is functions in C visual",
+        "Calling and defining  Functions visual",
+        "Function arguments visual",
+        "Types of functions visual",
+        "Recursion visual",
+        "Storage class visual"
+      ],
+      "responses": [
+        "Functions are the subprograms of any complex problem which are developed independently and finally... watch the following video <a href= 'https://www.youtube.com/watch?v=TEHA_IwNk34'> in this link</a>",
+        "functions introduction, declaration, function call, function definition, Watch the following video <a href = 'https://www.youtube.com/watch?v=y1Q8VfgDX4c'>in this link</a>",
+        "Function Arguments, Parameters, Return Statement. Watch the following video <a href = https://www.youtube.com/watch?v=ylPG6x1rDxY'> in this link</a>",
+        "categories/types of function. Watch the following video <a href = 'https://www.youtube.com/watch?v=puIK6kHcuqA'>in this link</a>",
+        "Storage Classes in C. Watch the following video <a href = 'https://www.youtube.com/watch?v=Ahgl3x_EP7o'>in this link</a>",
+        "Categories/types of function. Watch the following video <a href= 'https://www.youtube.com/watch?v=puIK6kHcuqA'>this link</a>",
+        "Storage Classes in C. Watch the following video <a href = 'https://www.youtube.com/watch?v=Ahgl3x_EP7o'>in this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "data types visual",
+      "patterns": [
+        "What is data type visual",
+        "basic types visual",
+        "Derived Types visual",
+        "Enumerated Types visual",
+        "The void type visual"
+      ],
+      "responses": [
+        "Data types are declarations for variables. listen the following video  <a href = 'https://www.youtube.com/watch?v=j1u3V6pzwEI'>in this link</a>",
+        "Basic types in C .Watch the following video <a href= 'https://www.youtube.com/watch?v=_g4AYZQY7sU'>in this link</a>",
+        "Data types in C,enumerated datatype. Watch  <a href = 'https://www.youtube.com/watch?v=YfbcJz4TfjQ'>this link</a>",
+        "Void Data Types .Listen the following video <a href= 'https://www.youtube.com/watch?v=1nAJiybMZNw'>in this link</a>",
+        "Derived data types in C. Watch the following video<a href = 'https://www.youtube.com/watch?v=JSdFDlURNoQ'>in this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "arrays kinesthetic",
+      "patterns": [
+        "What is an array kinesthetic?",
+        "Array index kinesthetic",
+        "Array Declaration kinesthetic",
+        "Assigning or storage  kinesthetic of values in array",
+        "Accessing array elements kinesthetic"
+      ],
+      "responses": [
+        "Array elements are accessed using an index value: see practical use of array <a href = 'https://www.youtube.com/watch?v=tRuIAdYViWw '> in this link</a>",
+        " Declaration of multidimensional array : see the following practical<a href = 'https://www.youtube.com/watch?v=RiVFAVqpo34'>in this link</a>",
+        "creating and acesing elements in arrays is done as  demonstrated in the following video: <a href = 'https://www.youtube.com/watch?v=jYXpJQy8sUU'>click link</a>",
+        "Practical for Storing Values into Double Dimensional Array Using Loops. see the following  <a href='https://www.youtube.com/watch?v=F2oF4G9ouYg'>link</a>",
+        "Insert an element at a particular index in an array, see the following <a href= 'https://www.youtube.com/watch?v=KELqVT7hjeE'>link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "controls kinesthetic",
+      "patterns": [
+        " if/else selection statement kinesthetic",
+        " for loop kinesthetic",
+        "swicth statement kinesthetic",
+        "do while kinesthetic",
+        "while loop kinesthetic"
+      ],
+      "responses": [
+        "if statement is a programming conditional statement that, if proved true, performs a function or displays information. watch the folowing video on practical use of if statement <a href = 'https://www.youtube.com/watch?v=I7p6Hzap4qo'>in this link</a>",
+        "practical use of for loops. Watch the following  <a href = 'https://www.youtube.com/watch?v=ic2gN6BXcCw'> in this link</a>",
+        "Practical of While Loop | Basic Syntax of Using While Loop. watch the following practical<a href = 'https://www.youtube.com/watch?v=0qQL6Jvjvbw'> in this link</a>",
+        "How to use Nested DO While Loop in C Programming. See <a href = 'https://www.youtube.com/watch?v=QJlo8cAsJc4'>this link</a>",
+        "Practical on difference between While Loop and Do While Loop. See <a href = 'https://www.youtube.com/watch?v=CFWwAudXY-o'> this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "functions kinesthetic",
+      "patterns": [
+        "What is functions kinesthetic in C",
+        "Calling and defining  Functions kinesthetic",
+        "Function arguments kinesthetic",
+        "Types of functions kinesthetic",
+        "Recursion kinesthetic",
+        "Storage class kinesthetic"
+      ],
+      "responses": [
+        "A program using fuction in C. Watch the folllowing practical <a href = 'https://www.youtube.com/watch?v=x8APkeKR6r0'> in this link</a>",
+        " A progarm on Declaration, Definition & Invocation. Watch the following practical <a href ='https://www.youtube.com/watch?v=x8APkeKR6r0&t=6s'>in this link</a>",
+        "A progarm in c demostrating Recursion in using factorial . Watch the following<a href ='https://www.youtube.com/watch?v=aF6YURGnJWw'>in this link</a>",
+        "Automatic Storage Class in C Programming Video Tutorial. Watch the folowing practical <a href =https://www.youtube.com/watch?v=J1vfDWDP3qY'>in this link</a>",
+        "Passing Arguments to Functions. Watch the following pactical<a href = 'https://www.youtube.com/watch?v=_oyuKw3vBf8'>in this link</a>",
+        "C Program to Demonstrate Types of user defined functions. Watch the following practical <a href='https://www.youtube.com/watch?v=dJMjfsjnOpA'>in this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "data types kinesthetic",
+      "patterns": [
+        "What is data type kinesthetic",
+        "basic types kinesthetic",
+        "Derived Types kinesthetic",
+        "Enumerated Types kinesthetic",
+        "The void type kinesthetic"
+      ],
+      "responses": [
+        "How to declare data types int,char,float,string,double and assign some values to variable. See the following practical<a href= 'https://www.youtube.com/watch?v=6TIb3p-uqgM'>in this link</a>",
+        "Enumerated Types. Watch the following practical on enumerated data types in C <a href='https://www.youtube.com/watch?v=YlT2w28byWM'> in this link</a>",
+        "Practical demonstration of use of enumerated data types <a href = 'https://www.youtube.com/watch?v=hK4-vOBFob0'>in this link</a>",
+        "Demonstration of  derived dat types in C programing . Watch the following video <A HREF = 'https://www.youtube.com/watch?v=oOMqMZWFYbw'>in this link</a>",
+        "A practical demonstration of the void type. Watch the following video. <a href = 'https://www.youtube.com/watch?v=eIL3oMmn1OM'> in this link</a>",
+        "practical demonstartion of use of poinetrs in C.Watch the following video<a href=   'https://www.youtube.com/watch?v=TFTpRjPcoUs'>in this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "arrays auditory",
+      "patterns": [
+        "What is an array auditory?",
+        "Array index auditory",
+        "array Declaration auditory",
+        "Assigning or storage auditory of values in array",
+        "Accessing array elements auditory"
+      ],
+      "responses": [
+        " Definition of an array . Listen to the following. <a href ='https://www.youtube.com/watch?v=55l-aZ7_F24'>from this link</a>",
+        "understanding arrays in C programming. Listen the following. <a href= 'https://www.youtube.com/watch?v=0EgpeYB115s'> in this link</a>",
+        "Indexing arrays in C. Listen the following <a href ='https://www.youtube.com/watch?v=prZ30PZ2LXg'>this link</a>",
+        "Declaringand initializing an array in c. Listen the following <a href= 'https://www.youtube.com/watch?v=GtcRReso9Xk'>in this link</a>",
+        "Accessing array elements in C. Listen the following <a href = 'https://www.youtube.com/watch?v=g0ClJ28-8LE'>in this link</a>",
+        "Accessing arrays elements in C using pointers . Listen the following <a href = 'https://www.youtube.com/watch?v=dWMXHjsJiXY'> in this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "controls auditory",
+      "patterns": [
+        " if/else selection statement auditory",
+        " for loop auditory",
+        "swicth statement auditory",
+        "do while auditory",
+        "while loop auditory"
+      ],
+      "responses": [
+        " If, Else If, Else Statements. Listen the following <a href = 'https://www.youtube.com/watch?v=SOnpOBvyhDM'>from this link</a>",
+        " If Statement Decision. Listen the following <a href ='https://www.youtube.com/watch?v=K2RfUgCzZR8'>in this link</a>",
+        " If Statement in C. Listen the following. <a href ='https://www.youtube.com/watch?v=oYuRtXcwXqw'> in this link</a>",
+        "if else statement in c programming | if-else statement syntax, flowchart and example program in C. Listen the folllowing <a href ='https://www.youtube.com/watch?v=DDAK3vnR898'>from this link</a>",
+        "for loop in c programming. Listen  the following <a href = 'https://www.youtube.com/watch?v=dOhhha_2eLU&t=314s'>in this link</a>",
+        "Introduction to Loop in C Language || Why we use loops in C. Listen the following <a href = 'https://www.youtube.com/watch?v=BpeIfof3VBk'>in this link</a>",
+        "switch statement in C. Listen the following <a href = 'https://www.youtube.com/watch?v=BHS4iA7bsDk'>in this link</a>",
+        "do while loop in C progamming . Listen the following <a href = 'https://www.youtube.com/watch?v=TjkJQly2YCw'>this link</a>",
+        "while loop in C progamming. Listen the following <a href = 'https://www.youtube.com/watch?v=e2JLZHmhyv4'>in this link</a>",
+        "for loop in c programming/what is for loop? Discuss it's syntax, flowchart and example. Listen the folllowing <a href = 'https://www.youtube.com/watch?v=MCXUMxg4qIQ'>in this link</a>",
+        "Switch statement in C programming | What is switch case? With syntax and flow chart in C language. Listen the following <a href = 'https://www.youtube.com/watch?v=d-Y4CmyrAuA'>in this link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "functions auditory",
+      "patterns": [
+        "What is functions in C auditory",
+        "Calling and defining Functions auditory",
+        "Function arguments auditory",
+        "Types of functions auditory",
+        "Recursion in functions auditory ",
+        "Storage class in functions auditory"
+      ],
+      "responses": [
+        " Functions in C. Listen the following <a href = 'https://www.youtube.com/watch?v=TEHA_IwNk34'> from this link</a>",
+        "Categories of functions and definition. Listen the following <a href = 'https://www.youtube.com/watch?v=qPxcGDQrJlg'> link</a>",
+        "functions in c programming,declaration, call and definition.Listen the following <a href = 'https://www.youtube.com/watch?v=y1Q8VfgDX4c&t=317s'> link</a>",
+        "categories of function sin C . Listen the following <a href = 'https://www.youtube.com/watch?v=puIK6kHcuqA'> link</a>",
+        "Function Call, Control Transfer in C Programming. Listen the following <a href = 'https://www.youtube.com/watch?v=RV2ZwfQScAA&t=249s'>in this link</a>",
+        "Declaration, Definition, Call of Function and Functions in C Programming. Listen the following <a href = 'https://www.youtube.com/watch?v=QnXhaOCcuX8'> link</a>",
+        "Different Types of Functions in C Programming Language. Listen the following <a href = 'https://www.youtube.com/watch?v=bbQcxOg2jcU'>this link</a>",
+        "Recursion in C Functions. Listen the following <a href = 'https://www.youtube.com/watch?v=SUfe1UX1m4M'>link</a>",
+        "Types of the Storage Classes in C . Listen the following <a href = 'https://www.youtube.com/watch?v=eNH5KqzOM7c'>link</a>",
+        "Storage Classes in C. Listen the following <a href ='https://www.youtube.com/watch?v=Ahgl3x_EP7o'> link</a>"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "data types auditory",
+      "patterns": [
+        "What is data type auditory",
+        "basic types auditory",
+        "Derived Types auditory",
+        "Enumerated Types auditory",
+        "The void type auditory"
+      ],
+      "responses": [
+        " Data Type and Qualifiers in C Language. Listen the following <a href = 'https://www.youtube.com/watch?v=89vYwVsfK8E'>link</a>",
+        "Data types refer to extensive system used for declaring variable or functions of different types . Listen the following <a href = 'https://www.youtube.com/watch?v=SKqVQO0ab8s'> link</a>",
+        "Basic Data Types In C. Listen the following<a href = 'https://www.youtube.com/watch?v=BsdyKqF5udc'> link</a>",
+        "Derived data types in C.Listen the following <a href = 'https://www.youtube.com/watch?v=JSdFDlURNoQ'> link</a>",
+        "Enumerated Data Type in C Programming Language. Listen the following <a href = 'https://www.youtube.com/watch?v=jrRnWQSjdiE'>link</a>",
+        "Void data type in C. Listen the following <a href = 'https://www.youtube.com/watch?v=1nAJiybMZNw'> link</a>"
+      ],
+      "context_set": ""
+    }
+  ]
 }
