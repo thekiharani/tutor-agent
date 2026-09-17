@@ -60,10 +60,27 @@ RUN sed -ri "s!/var/www/html!${MOODLE_DOCROOT}!g" \
     && a2enmod rewrite headers
 
 ARG MOODLE_TARBALL=https://download.moodle.org/download.php/direct/stable502/moodle-latest-502.tgz
-RUN mkdir -p "${MOODLE_ROOT}" \
-    && curl -fsSL "${MOODLE_TARBALL}" | tar xz --strip-components=1 -C "${MOODLE_ROOT}" \
-    && mkdir -p /var/moodledata \
-    && chown -R www-data:www-data "${MOODLE_ROOT}" /var/moodledata
+RUN set -eux; \
+    mkdir -p "${MOODLE_ROOT}"; \
+    curl -fsSL "${MOODLE_TARBALL}" | tar xz --strip-components=1 -C "${MOODLE_ROOT}"; \
+    \
+    # Moodle vendors 632 generated Google API service definitions and
+    # references exactly one of them: YouTube, from repository/youtube. The
+    # other 631 - Cloud Composer, Remote Build Execution, Batch and so on -
+    # are 173MB that no Moodle code path can reach. The client itself
+    # (lib/google2, 216KB) is untouched.
+    find "${MOODLE_DOCROOT}/lib/google2-service/src" -mindepth 1 -maxdepth 1 \
+        ! -name 'YouTube*' -exec rm -rf {} +; \
+    \
+    # Deleting Moodle's tests/ directories looks like free space (60MB) and is
+    # not: lib/mlbackend/python/classes/processor.php require_once's
+    # analytics/tests/classes/mlbackend_helper_trait.php, so production code
+    # depends on a test file. Removing them fails the install during
+    # admin_apply_default_settings(), and the container then restarts into a
+    # half-installed site. Left alone deliberately.
+    \
+    mkdir -p /var/moodledata; \
+    chown -R www-data:www-data "${MOODLE_ROOT}" /var/moodledata
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

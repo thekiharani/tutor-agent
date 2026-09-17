@@ -20,8 +20,8 @@ is down, Moodle pages render normally and simply show no recommendation.
 
 ## Prerequisites
 
-Docker Desktop (or Docker Engine) with Compose v2, and about 2.5GB of disk for the
-images (Moodle 1.04GB, Postgres 479MB, recommender 475MB) plus room for the
+Docker Desktop (or Docker Engine) with Compose v2, and about 1.7GB of disk for the
+images (Moodle 928MB, Postgres 479MB, recommender 264MB) plus room for the
 database. Nothing else: no PHP, no Python, no Moodle on your machine.
 
 ## Running it
@@ -117,8 +117,19 @@ therefore lives at `/var/www/moodle/public/local/tutoragent`, bind-mounted from
 The content library is `recommender/data/intents.json`: 16 tags (4 topics x 4
 modalities), 84 example phrasings, 100 responses. At image build time `train.py`
 stems every phrasing with the Lancaster stemmer, builds a 41-word vocabulary,
-and trains a small neural network (41 -> 8 -> 8 -> 16, softmax) on the
-bag-of-words vectors.
+and trains the feed-forward network the project report describes - two hidden
+layers of 8 units, 41 -> 8 -> 8 -> 16 with a softmax output, `batch_size=8` and
+up to 1000 iterations, matching the report's appendix.
+
+Training needs scikit-learn; serving does not. `train.py` saves the fitted
+weights to `model.npz` and then asserts that the numpy forward pass in the same
+file reproduces scikit-learn's `predict_proba` exactly - on all 84 training
+vectors and on the demo's own inputs - before the build is allowed to succeed.
+The runtime image therefore carries numpy and nltk but neither scikit-learn nor
+scipy, which is 211MB it would otherwise never use. Measured over 20,002
+vectors including all-zero, all-ones and random out-of-domain inputs, the two
+paths agree to 0.000e+00, and the numpy path is about six times faster per
+request.
 
 At request time the service receives the activity's name, its intro text and the
 student's stored style, and:
@@ -164,6 +175,13 @@ otherwise untouched. Two classes of defect were repaired:
 
 State these before a panel member finds them.
 
+- The network has **552 parameters and 84 training examples**: 6.6 parameters
+  per example. Perfect training accuracy is arithmetic, not evidence. The report
+  calls this a deep neural network, using the established sense of more than one
+  hidden layer; it is two hidden layers of 8 units, and it would not be called
+  deep learning today. The architecture is reproduced exactly as the report
+  specifies rather than improved, because the system demonstrated has to be the
+  system described.
 - The model is trained on 84 patterns across 16 classes and fits them at 100%.
   In the source thesis the training data was also the test data. All 84 input
   vectors are unique and no two classes collide, so the network memorises the

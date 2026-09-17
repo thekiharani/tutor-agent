@@ -1,12 +1,16 @@
-# Pinned to what resolved on 2026-09-17 against Python 3.14, so a rebuild in
-# six months produces the same model and the same links.
-fastapi==0.141.1
+# Runtime only. scikit-learn and scipy are build-time dependencies; see
+# requirements-train.txt and the trainer stage in the Dockerfile. Leaving them
+# out of the runtime image saves about 211MB and changes no output: train.py
+# proves the numpy forward pass reproduces predict_proba before shipping.
+#
 # Plain uvicorn, not uvicorn[standard]: the extras (uvloop, httptools,
 # watchfiles, websockets, PyYAML) add about 24MB for a throughput gain that is
 # meaningless at four concurrent students.
+#
+# Pinned to what resolved on 2026-09-17 against Python 3.14, so a rebuild in
+# six months produces the same model and the same links.
+fastapi==0.141.1
 uvicorn==0.53.0
 pydantic==2.13.5
-scikit-learn==1.9.1
 numpy==2.5.3
-joblib==1.6.0
 nltk==3.10.3

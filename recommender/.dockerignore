@@ -3,7 +3,7 @@
 
 # train.py writes this during the build. A local one would be shipped and then
 # silently overwritten, which is the kind of thing that wastes an afternoon.
-data/model.joblib
+data/model.npz
 
 __pycache__/
 *.py[cod]

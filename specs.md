@@ -404,8 +404,12 @@ one function.** If they ever diverge the system degrades silently.
    `sorted(list(words))` with no dedupe, producing 328 slots for 41 distinct stems.
 4. Bag-of-words encode. 84 samples, 16 classes.
 5. Train `MLPClassifier(hidden_layer_sizes=(8, 8), activation='relu',
-   solver='adam', max_iter=1000, random_state=42)`. This matches the thesis
-   architecture (input -> 8 -> 8 -> 16, softmax).
+   solver='adam', max_iter=1000, batch_size=8, random_state=42)`. This matches
+   the report: paragraph 895 describes "a standard feed-forward neural network
+   (Deep Neural Network) with two hidden layers", and its appendix specifies
+   `n_epoch=1000, batch_size=8`. sklearn would otherwise default to full-batch
+   on 84 samples. Same 100% fit either way; this matches the document being
+   defended. 552 parameters in total.
 6. `joblib.dump({"clf": clf, "vocab": vocab, "labels": labels}, "data/model.joblib")`.
    Revision 1 exported raw weights to `model.npz` and reimplemented the forward pass
    in numpy. Serialising the fitted estimator removes that whole class of bugs.
@@ -979,11 +983,20 @@ Validate against `lib/xmldb/xmldb.xsd` in the 5.2 source before use.
     declares its volume at `/var/lib/postgresql`. Mount the parent or the data
     does not persist.
 11. **Do not rebuild PHP extensions the base image already has.** See WP0.
-12. **Event observers are cached.** After editing `db/events.php`, a version bump
+12. **Do not delete Moodle's `tests/` directories to save space.** It looks like
+    60MB of free win. `lib/mlbackend/python/classes/processor.php` does
+    `require_once($CFG->dirroot . '/analytics/tests/classes/mlbackend_helper_trait.php')`,
+    so production code depends on a test file. The site installs fine until
+    `admin_apply_default_settings()` loads the analytics settings, then throws,
+    and the container restarts into a half-installed site whose roles do not
+    exist - so `make seed` fails with "Can't find data record in database". This
+    only shows up on a **fresh install**; an already-installed site keeps working,
+    which is exactly how it gets missed.
+13. **Event observers are cached.** After editing `db/events.php`, a version bump
     and `admin/cli/upgrade.php` do not refresh the observer list. `make purge`.
-13. **`local_*_extend_navigation` in lib.php runs but surfaces nothing** in 5.2.
+14. **`local_*_extend_navigation` in lib.php runs but surfaces nothing** in 5.2.
     Use the `\core\hook\navigation\primary_extend` hook.
-14. **FastAPI cannot build a response model from a union.** A handler returning
+15. **FastAPI cannot build a response model from a union.** A handler returning
     either a dict or a bare `Response` needs `response_model=None` on the
     decorator, or the app refuses to start.
 

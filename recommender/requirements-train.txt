@@ -1,0 +1,5 @@
+# Build-time only: the trainer stage fits the model with these and then only
+# data/model.npz is copied forward. None of this reaches the runtime image.
+numpy==2.5.3
+nltk==3.10.3
+scikit-learn==1.9.1

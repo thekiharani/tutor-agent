@@ -5,7 +5,7 @@
 
 # Build artefact. train.py produces this during the image build; committing it
 # would let a stale model ship while train.py claims otherwise.
-recommender/data/model.joblib
+recommender/data/model.npz
 
 # The project report is a working document, not a repo artefact.
 *.docx

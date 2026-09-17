@@ -3,6 +3,12 @@
 POST /recommend with a module name, its intro text and a learning style, and
 this returns one HTML link chosen for that style.
 
+Inference is a numpy forward pass over weights trained at image build time.
+train.py asserts that this same function reproduces scikit-learn's
+predict_proba before the weights ship, so the runtime image needs neither
+scikit-learn nor scipy - about 211MB that nothing uses once the model is
+fitted.
+
 Two things make this work that did not work in the 2022 original:
 
 1. The style token reaches the classifier.  Every training pattern embeds its
@@ -32,9 +38,7 @@ from typing import Literal
 from fastapi import FastAPI, Response
 from pydantic import BaseModel
 
-import joblib
-
-from train import MODEL_PATH, bag_of_words, load_intents, tokenize
+from train import bag_of_words, forward, load_intents, load_model, tokenize
 
 THRESHOLD = float(os.environ.get("RECOMMENDER_THRESHOLD", "0.45"))
 
@@ -54,10 +58,11 @@ TOPICS: dict[str, tuple[str, str]] = {
 _MODALITY_STEMS = {"vis", "audit", "read_write", "kinesthet"}
 _FUNCTION_STEMS = {"an", "and", "in", "is", "of", "or", "the", "what"}
 
-_bundle = joblib.load(MODEL_PATH)
-CLASSIFIER = _bundle["clf"]
-VOCAB = _bundle["vocab"]
-LABELS = _bundle["labels"]
+_MODEL = load_model()
+VOCAB = _MODEL["vocab"]
+LABELS = _MODEL["classes"]
+WEIGHTS = _MODEL["weights"]
+BIASES = _MODEL["biases"]
 RESPONSES = {intent["tag"]: intent["responses"] for intent in load_intents()}
 TOPIC_STEMS = set(VOCAB) - _MODALITY_STEMS - _FUNCTION_STEMS
 
@@ -128,17 +133,15 @@ def recommend(request: RecommendRequest) -> Response | dict:
     if topic:
         text = f"{text} {topic[1]}"
 
-    probabilities = CLASSIFIER.predict_proba([bag_of_words(text, VOCAB)])[0]
+    probabilities = forward(bag_of_words(text, VOCAB), WEIGHTS, BIASES)[0]
 
     # Restrict the choice to the four classes for the requested style; the
     # classifier is left to decide the topic.  See the module docstring.
     candidates = [
-        index
-        for index, label in enumerate(CLASSIFIER.classes_)
-        if str(label).endswith(request.style)
+        index for index, label in enumerate(LABELS) if label.endswith(request.style)
     ]
     best = max(candidates, key=lambda index: probabilities[index])
-    tag = str(CLASSIFIER.classes_[best])
+    tag = LABELS[best]
 
     # Renormalise over the four candidates.  The reported confidence is then
     # "how sure are we of the topic, given this style", which is the only
