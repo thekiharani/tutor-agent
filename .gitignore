@@ -1,2 +1,5 @@
 .env
 recommender/data/model.joblib
+
+# The project report is a working document, not a repo artefact.
+*.docx

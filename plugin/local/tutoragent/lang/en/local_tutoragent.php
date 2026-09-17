@@ -36,5 +36,7 @@ $string['varktiebreak'] = 'Tied on {$a}; resolved in the order Visual, Aural, Re
 $string['varkbacktocourses'] = 'Back to my courses';
 $string['varkanswernone'] = 'Please answer at least one question.';
 $string['varkguest'] = 'Please log in to take the questionnaire.';
+$string['varkattribution'] =
+    'Questionnaire: VARK, copyright VARK Learn Limited, reproduced from Appendix A of the project report.';
 $string['varksamplequestions'] =
     'These are sample questions, not the questionnaire from the source thesis. Replace the QUESTIONS array in classes/form/vark_form.php, then set SAMPLE_QUESTIONS to false.';

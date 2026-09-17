@@ -82,12 +82,15 @@ To run it again, `make rehearse` puts `student.blank` back to having no learning
 style. Do this between rehearsals, or step 1 shows a recommendation instead of the
 invitation.
 
-**The sixteen questions are samples, not the instrument from the source thesis.**
-The page says so while they are. Replace the `QUESTIONS` array in
-`plugin/local/tutoragent/classes/form/vark_form.php` with the thesis questions and
-set `SAMPLE_QUESTIONS` to `false`; nothing else needs to change. Note that the
-published VARK questionnaire is copyrighted by VARK Learn Ltd, so check what your
-write-up is allowed to reproduce before committing it.
+The sixteen questions are the VARK questionnaire as reproduced in Appendix A of the
+project report. More than one option may be selected per question, which the
+instrument allows; the dominant style is the highest count, and a tie is broken in
+the order V, A, R, K and recorded so the page can say it happened. The questions
+live in one array in `plugin/local/tutoragent/classes/form/vark_form.php`.
+
+The VARK questionnaire is copyright VARK Learn Limited. It is credited on the
+questionnaire page, and it is used here for the educational purpose the report
+describes. Check the terms before reusing it anywhere else.
 
 ## Versions, and why these ones
 

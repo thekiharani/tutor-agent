@@ -46,11 +46,19 @@ reintroduce them.
 
 `intents.json` is real content and you keep it, with the two cleanups in WP1.
 
-### Still outstanding from the human
+### The questionnaire
 
-- **The 16 VARK questionnaire questions and their four V/A/R/K options each.**
-  These are not in the zip and are not in this brief. WP2 cannot be completed
-  without them. WP0, WP1 and everything else in WP2 are unblocked.
+Supplied 2026-09-17: the sixteen questions come from **Appendix A of the project
+report** (`Project Report .docx`), which reproduces the VARK questionnaire. Each
+question has four options, one per dimension, and the option order varies question
+to question - that is how the instrument is written, so do not sort them or every
+answer becomes the first checkbox.
+
+Credit VARK Learn Limited on the page. The mapping of each option to V, A, R or K
+follows the instrument's own scoring: diagrams, maps, charts and plans are V;
+talking, listening and asking are A; written words, lists and reports are R; and
+examples, demonstrations, trial and error and video of actions are K. Note that a
+video of someone *doing* something is K, not V - that catches people out.
 
 ## 2. Goal
 
@@ -576,9 +584,6 @@ restart.
 
 ## WP2: Plugin scaffolding and the VARK questionnaire
 
-> Blocked on the human supplying the 16 questions. Everything except `vark.php` and
-> `vark_form.php` can be built first.
-
 ### Files and the things that go wrong in them
 
 **`version.php`** - `$plugin->component = 'local_tutoragent';`,
@@ -670,6 +675,14 @@ page renders with the default URL; the questionnaire renders 16 questions and 64
 checkboxes; submitting all-Read/Write stores `read_write` with
 `{"V":0,"A":0,"R":16,"K":0}`; resubmitting all-Visual leaves **one** row, updated to
 `visual`; zero debug blocks on the page and zero warnings in the log.
+
+With the real questionnaire in place, re-verified: answering consistently in one
+dimension yields that style in all four cases (`{"V":16}` -> visual, `{"A":16}` ->
+auditory, `{"R":16}` -> read_write, `{"K":16}` -> kinesthetic), multi-select within a
+question is counted, a deliberate 1-1 tie stores `"tiebreak":"V,A"` and the page
+says "Tied on V,A; resolved in the order Visual, Aural, Read/Write, Kinesthetic",
+and an all-zero submission is rejected with "Please answer at least one question"
+and stores nothing.
 
 ---
 

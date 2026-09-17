@@ -11,124 +11,119 @@ use html_writer;
 use moodleform;
 
 /**
- * Sixteen questions, four options each, one per VARK dimension. More than one
- * option may be selected per question: the VARK instrument allows it and the
+ * The sixteen VARK questions, four options each, one per dimension. More than
+ * one option may be selected per question: the instrument allows it and the
  * scoring simply counts selections.
  *
- * ---------------------------------------------------------------------------
- * THE QUESTIONS BELOW ARE SAMPLES, NOT THE INSTRUMENT FROM THE SOURCE THESIS.
+ * The questions are reproduced from Appendix A of the source thesis, which
+ * uses the VARK questionnaire. The option order varies from question to
+ * question, which is how the instrument is written - do not sort them, or
+ * every answer becomes the first checkbox.
  *
- * Replace the QUESTIONS array with the thesis questions when you have them.
- * Nothing else needs to change: the form, the scoring and the results page all
- * read this one array. Keep the shape - 'dim' must stay one of V, A, R, K -
- * and set SAMPLE_QUESTIONS to false once they are the real ones, which removes
- * the notice shown at the top of the page.
- *
- * Note also that the published VARK questionnaire is copyrighted by VARK Learn
- * Ltd. Check what your thesis is permitted to reproduce before committing it.
- * ---------------------------------------------------------------------------
+ * The VARK questionnaire is copyright VARK Learn Limited; it is used here for
+ * the educational purpose the thesis describes and credited on the page.
  */
 class vark_form extends moodleform {
 
-    /** @var bool Set false once QUESTIONS holds the thesis questions. */
-    const SAMPLE_QUESTIONS = true;
+    /** @var bool True while QUESTIONS holds placeholder text rather than the instrument. */
+    const SAMPLE_QUESTIONS = false;
 
     const QUESTIONS = [
-        ['text' => 'A new topic in C has just been introduced. What helps you most first?', 'options' => [
-            ['dim' => 'V', 'text' => 'A diagram showing how the pieces fit together'],
-            ['dim' => 'R', 'text' => 'A written summary you can read at your own pace'],
-            ['dim' => 'K', 'text' => 'A worked example you can run and change'],
-            ['dim' => 'A', 'text' => 'Hearing the lecturer talk it through'],
+        ['text' => 'When learning from the Internet I like:', 'options' => [
+            ['dim' => 'V', 'text' => 'Interesting design and visual features.'],
+            ['dim' => 'K', 'text' => 'Videos showing how to do or make things.'],
+            ['dim' => 'R', 'text' => 'Interesting written descriptions, lists and explanations.'],
+            ['dim' => 'A', 'text' => 'Audio channels where I can listen to podcasts or interviews.'],
         ]],
-        ['text' => 'You are stuck on an error in your code. What do you do?', 'options' => [
-            ['dim' => 'K', 'text' => 'Change something and run it again to see what happens'],
-            ['dim' => 'R', 'text' => 'Read the error message and the documentation carefully'],
-            ['dim' => 'A', 'text' => 'Ask a classmate to explain it out loud'],
-            ['dim' => 'V', 'text' => 'Look for a diagram or flowchart of what should happen'],
+        ['text' => 'A website has a video showing how to make a special graph or chart. There is a person speaking, some lists and words describing what to do and some diagrams. I would learn most from:', 'options' => [
+            ['dim' => 'R', 'text' => 'Reading the words.'],
+            ['dim' => 'V', 'text' => 'Seeing the diagrams.'],
+            ['dim' => 'K', 'text' => 'Watching the actions.'],
+            ['dim' => 'A', 'text' => 'Listening.'],
         ]],
-        ['text' => 'You need to remember how a loop works. What makes it stick?', 'options' => [
-            ['dim' => 'V', 'text' => 'A picture of the flow'],
-            ['dim' => 'K', 'text' => 'Typing it out and watching it run'],
-            ['dim' => 'A', 'text' => 'Saying the steps to yourself'],
-            ['dim' => 'R', 'text' => 'Writing the steps down in order'],
+        ['text' => 'I need to find the way to a shop that a friend has recommended. I would:', 'options' => [
+            ['dim' => 'K', 'text' => 'Find out where the shop is in relation to somewhere I know.'],
+            ['dim' => 'V', 'text' => 'Use a map.'],
+            ['dim' => 'A', 'text' => 'Ask my friend to tell me the directions.'],
+            ['dim' => 'R', 'text' => 'Write down the street directions I need to remember.'],
         ]],
-        ['text' => 'Your lecturer offers extra material on a topic. Which do you pick?', 'options' => [
-            ['dim' => 'A', 'text' => 'A recorded audio explanation'],
-            ['dim' => 'V', 'text' => 'A short video with animations'],
-            ['dim' => 'R', 'text' => 'A PDF handout'],
-            ['dim' => 'K', 'text' => 'An exercise sheet with tasks to attempt'],
+        ['text' => 'I want to assemble a wooden table that came in parts (kitset). I would learn best from:', 'options' => [
+            ['dim' => 'A', 'text' => 'Advice from someone who has done it before.'],
+            ['dim' => 'K', 'text' => 'Watching a video of a person assembling a similar table.'],
+            ['dim' => 'V', 'text' => 'Diagrams showing each stage of the assembly.'],
+            ['dim' => 'R', 'text' => 'Written instructions that came with the parts for the table.'],
         ]],
-        ['text' => 'When revising for an exam, you mostly:', 'options' => [
-            ['dim' => 'R', 'text' => 'Re-read your notes'],
-            ['dim' => 'K', 'text' => 'Redo past practical questions'],
-            ['dim' => 'V', 'text' => 'Draw summary diagrams'],
-            ['dim' => 'A', 'text' => 'Talk through the material with someone'],
+        ['text' => 'I want to find out more about a tour that I am going on. I would:', 'options' => [
+            ['dim' => 'A', 'text' => 'Talk with the person who planned the tour or others who are going on the tour.'],
+            ['dim' => 'K', 'text' => 'Look at details about the highlights and activities on the tour.'],
+            ['dim' => 'R', 'text' => 'Read about the tour on the itinerary.'],
+            ['dim' => 'V', 'text' => 'Use a map and see where the places are.'],
         ]],
-        ['text' => 'Someone asks you to explain what an array is. You:', 'options' => [
-            ['dim' => 'V', 'text' => 'Draw the boxes and the indices'],
-            ['dim' => 'R', 'text' => 'Write out a definition and an example'],
-            ['dim' => 'A', 'text' => 'Explain it in conversation'],
-            ['dim' => 'K', 'text' => 'Open an editor and build one with them'],
+        ['text' => 'I prefer a presenter or a teacher who uses:', 'options' => [
+            ['dim' => 'R', 'text' => 'Handouts, books, or readings.'],
+            ['dim' => 'A', 'text' => 'Question and answer, talk, group discussion, or guest speakers.'],
+            ['dim' => 'K', 'text' => 'Demonstrations, models or practical sessions.'],
+            ['dim' => 'V', 'text' => 'Diagrams, charts, maps or graphs.'],
         ]],
-        ['text' => 'You have new software to learn. You:', 'options' => [
-            ['dim' => 'K', 'text' => 'Click around and try things'],
-            ['dim' => 'R', 'text' => 'Read the manual first'],
-            ['dim' => 'V', 'text' => 'Watch a screen-recorded walkthrough'],
-            ['dim' => 'A', 'text' => 'Ask someone to talk you through it'],
+        ['text' => 'I want to learn to do something new on a computer. I would:', 'options' => [
+            ['dim' => 'V', 'text' => 'Follow the diagrams in a book.'],
+            ['dim' => 'K', 'text' => 'Start using it and learn by trial and error.'],
+            ['dim' => 'A', 'text' => 'Talk with people who know about the program.'],
+            ['dim' => 'R', 'text' => 'Read the written instructions that came with the program.'],
         ]],
-        ['text' => 'What makes a lecture useful to you?', 'options' => [
-            ['dim' => 'A', 'text' => 'The explanations and the discussion'],
-            ['dim' => 'V', 'text' => 'The slides and diagrams'],
-            ['dim' => 'R', 'text' => 'The handouts and notes'],
-            ['dim' => 'K', 'text' => 'The in-class exercises'],
+        ['text' => 'I have a problem with my heart. I would prefer that the doctor:', 'options' => [
+            ['dim' => 'K', 'text' => 'Used a plastic model to show me what was wrong.'],
+            ['dim' => 'V', 'text' => 'Showed me a diagram of what was wrong.'],
+            ['dim' => 'A', 'text' => 'Described what was wrong.'],
+            ['dim' => 'R', 'text' => 'Gave me something to read to explain what was wrong.'],
         ]],
-        ['text' => 'Someone gives you directions to a building you do not know. You prefer:', 'options' => [
-            ['dim' => 'V', 'text' => 'A map'],
-            ['dim' => 'R', 'text' => 'Written directions'],
-            ['dim' => 'A', 'text' => 'Someone telling you the way'],
-            ['dim' => 'K', 'text' => 'Walking it once with someone'],
+        ['text' => 'I want to learn how to take better photos. I would:', 'options' => [
+            ['dim' => 'R', 'text' => 'Use the written instructions about what to do.'],
+            ['dim' => 'V', 'text' => 'Use diagrams showing the camera and what each part does.'],
+            ['dim' => 'K', 'text' => 'Use examples of good and poor photos showing how to improve them.'],
+            ['dim' => 'A', 'text' => 'Ask questions and talk about the camera and its features.'],
         ]],
-        ['text' => 'Choosing a textbook, you look for:', 'options' => [
-            ['dim' => 'V', 'text' => 'Plenty of figures and charts'],
-            ['dim' => 'R', 'text' => 'Clear, well-written prose'],
-            ['dim' => 'K', 'text' => 'Exercises and worked problems'],
-            ['dim' => 'A', 'text' => 'An accompanying lecture or audio series'],
+        ['text' => 'I want to learn about a new project. I would ask for:', 'options' => [
+            ['dim' => 'V', 'text' => 'Diagrams to show the project stages with charts of benefits and costs.'],
+            ['dim' => 'A', 'text' => 'An opportunity to discuss the project.'],
+            ['dim' => 'K', 'text' => 'Examples where the project has been used successfully.'],
+            ['dim' => 'R', 'text' => 'A written report describing the main features of the project.'],
         ]],
-        ['text' => 'After class, what do you do with new material?', 'options' => [
-            ['dim' => 'R', 'text' => 'Rewrite your notes neatly'],
-            ['dim' => 'A', 'text' => 'Discuss it with a friend'],
-            ['dim' => 'K', 'text' => 'Try the examples yourself'],
-            ['dim' => 'V', 'text' => 'Turn it into a diagram or mind map'],
+        ['text' => 'I want to save more money and to decide between a range of options. I would:', 'options' => [
+            ['dim' => 'A', 'text' => 'Talk with an expert about the options.'],
+            ['dim' => 'R', 'text' => 'Read a print brochure that describes the options in detail.'],
+            ['dim' => 'V', 'text' => 'Use graphs showing different options for different times.'],
+            ['dim' => 'K', 'text' => 'Consider examples of each option using my financial information.'],
         ]],
-        ['text' => 'You learn a new C function best by:', 'options' => [
-            ['dim' => 'R', 'text' => 'Reading its description and parameters'],
-            ['dim' => 'K', 'text' => 'Calling it in a small test program'],
-            ['dim' => 'V', 'text' => 'Seeing a diagram of what it does'],
-            ['dim' => 'A', 'text' => 'Listening to an explanation of when to use it'],
+        ['text' => 'When I am learning I:', 'options' => [
+            ['dim' => 'K', 'text' => 'Use examples and applications.'],
+            ['dim' => 'V', 'text' => 'See patterns in things.'],
+            ['dim' => 'A', 'text' => 'Like to talk things through.'],
+            ['dim' => 'R', 'text' => 'Read books, articles and handouts.'],
         ]],
-        ['text' => 'Which feedback on your work helps most?', 'options' => [
-            ['dim' => 'R', 'text' => 'Written comments'],
-            ['dim' => 'A', 'text' => 'A spoken conversation about it'],
-            ['dim' => 'V', 'text' => 'Annotated screenshots or marked-up diagrams'],
-            ['dim' => 'K', 'text' => 'A corrected version to work through yourself'],
+        ['text' => 'I have finished a competition or test and I would like some feedback. I would like to have feedback:', 'options' => [
+            ['dim' => 'A', 'text' => 'From somebody who talks it through with me.'],
+            ['dim' => 'R', 'text' => 'Using a written description of my results.'],
+            ['dim' => 'V', 'text' => 'Using graphs showing what I achieved.'],
+            ['dim' => 'K', 'text' => 'Using examples from what I have done.'],
         ]],
-        ['text' => 'A concept has not clicked yet. You:', 'options' => [
-            ['dim' => 'A', 'text' => 'Listen to another explanation'],
-            ['dim' => 'V', 'text' => 'Look for a visualisation'],
-            ['dim' => 'R', 'text' => 'Find a different written account'],
-            ['dim' => 'K', 'text' => 'Work through more examples'],
+        ['text' => 'I want to learn how to play a new board game or card game. I would:', 'options' => [
+            ['dim' => 'K', 'text' => 'Watch others play the game before joining in.'],
+            ['dim' => 'V', 'text' => 'Use the diagrams that explain the various stages, moves and strategies in the game.'],
+            ['dim' => 'R', 'text' => 'Read the instructions.'],
+            ['dim' => 'A', 'text' => 'Listen to somebody explaining it and ask questions.'],
         ]],
-        ['text' => 'Which describes your notes?', 'options' => [
-            ['dim' => 'V', 'text' => 'Lots of arrows, boxes and colour'],
-            ['dim' => 'R', 'text' => 'Full sentences and headings'],
-            ['dim' => 'K', 'text' => 'Snippets of code to try later'],
-            ['dim' => 'A', 'text' => 'Sparse: you rely on remembering what was said'],
+        ['text' => 'When choosing a career or area of study, these are important for me:', 'options' => [
+            ['dim' => 'R', 'text' => 'Using words well in written communications.'],
+            ['dim' => 'V', 'text' => 'Working with designs, maps or charts.'],
+            ['dim' => 'K', 'text' => 'Applying my knowledge in real situations.'],
+            ['dim' => 'A', 'text' => 'Communicating with others through discussion.'],
         ]],
-        ['text' => 'Given one hour to prepare for a practical test, you:', 'options' => [
-            ['dim' => 'K', 'text' => 'Practise the tasks'],
-            ['dim' => 'R', 'text' => 'Read through the instructions'],
-            ['dim' => 'V', 'text' => 'Study the diagrams in the manual'],
-            ['dim' => 'A', 'text' => 'Have someone quiz you aloud'],
+        ['text' => 'I want to find out about a house or an apartment. Before visiting it, I would want:', 'options' => [
+            ['dim' => 'R', 'text' => 'A printed description of the rooms and features.'],
+            ['dim' => 'K', 'text' => 'To view a video of the property.'],
+            ['dim' => 'A', 'text' => 'A discussion with the owner.'],
+            ['dim' => 'V', 'text' => 'A plan showing the rooms and a map of the area.'],
         ]],
     ];
 

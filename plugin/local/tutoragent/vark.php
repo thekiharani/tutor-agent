@@ -75,6 +75,8 @@ if ($existing && !$retake) {
 
     echo html_writer::tag('p', get_string('varkintro', 'local_tutoragent'));
     $form->display();
+    echo html_writer::tag('p', get_string('varkattribution', 'local_tutoragent'),
+        ['class' => 'text-muted small mt-4']);
 }
 
 echo $OUTPUT->footer();
