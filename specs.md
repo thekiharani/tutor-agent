@@ -637,6 +637,21 @@ out of the site the night before a defense. Revision 1 deferred it to WP4 as
 optional; this revision cuts it. Discovery happens through the navigation link plus
 the notification added in WP3, which is enough for the demo.
 
+### What the navigation actually needs in 5.2
+
+The `local_<plugin>_extend_navigation` callback in `lib.php` still exists and still
+runs - `global_navigation::load_local_plugin_navigation()` calls it - but nothing
+it adds reaches the rendered navigation drawer. Use the hook instead: register
+`\core\hook\navigation\primary_extend` in `db/hooks.php` and add the node to
+`$hook->get_primaryview()`. That puts the questionnaire in the top bar, where a
+presenter can point at it.
+
+Two smaller things: `db/access.php` is not needed, because the questionnaire wants
+`require_login()` and no capability of its own, and an unused capability file is
+worse than no file. And `recommenderurl` must be `PARAM_RAW_TRIMMED`, not
+`PARAM_URL`: the default is a Docker service name with no dot in it, which
+`PARAM_URL` rejects outright.
+
 ### Gate WP2
 
 - Plugin appears under Site administration > Plugins > Local plugins and installs
@@ -648,6 +663,13 @@ the notification added in WP3, which is enough for the demo.
   a populated `scores` JSON.
 - Re-submitting updates the existing row rather than inserting a duplicate.
 - Admin can still navigate the site normally.
+
+**Verified 2026-09-17**: installs via `admin/cli/upgrade.php` with zero warnings and
+creates `mdl_local_tutoragent_vark` with a unique index on `userid`; the settings
+page renders with the default URL; the questionnaire renders 16 questions and 64
+checkboxes; submitting all-Read/Write stores `read_write` with
+`{"V":0,"A":0,"R":16,"K":0}`; resubmitting all-Visual leaves **one** row, updated to
+`visual`; zero debug blocks on the page and zero warnings in the log.
 
 ---
 
@@ -661,8 +683,22 @@ $observers = [
         'eventname' => '\core\event\course_module_viewed',
         'callback'  => '\local_tutoragent\observer::course_module_viewed',
     ],
+    [
+        'eventname' => '\core\event\course_viewed',
+        'callback'  => '\local_tutoragent\observer::course_viewed',
+    ],
 ];
 ```
+
+`course_viewed` was not in revision 1 and the demo needs it: the script starts with
+"open the course", and without this observer the invitation only appears once the
+student opens an activity, which is a chicken and egg they should not have to solve
+on stage. On a course page there is no module to recommend for, so that observer
+only ever emits the invitation.
+
+**After editing `db/events.php`, purge.** The observer list is cached, and a version
+bump plus `admin/cli/upgrade.php` is not enough to refresh it. This cost real time:
+the callback was correct and simply never ran.
 
 Moodle dispatches to observers registered on parent event classes, so this should
 catch `\mod_page\event\course_module_viewed` and friends. **Verify empirically in
@@ -720,6 +756,27 @@ README rather than implying it works identically everywhere.
 - `docker compose stop recommender` then reload: page renders normally and on time.
 - A student with no style sees the questionnaire prompt.
 
+**Verified 2026-09-17**, five students opening the same Arrays activity (cmid 2):
+
+| Student | Link |
+|---|---|
+| `student.rw` | tutorialspoint.com/cprogramming/c_arrays.htm |
+| `student.visual` | youtube.com/watch?v=6tjYC86iV5E |
+| `student.aural` | youtube.com/watch?v=0EgpeYB115s |
+| `student.kines` | youtube.com/watch?v=RiVFAVqpo34 |
+| `student.blank` | questionnaire invitation |
+
+All four links distinct; the same holds for the other three activities, with
+read/write getting articles and visual getting video throughout. Page source clean,
+zero warnings in the log.
+
+Timeouts, measured: with the recommender container stopped the page renders in
+0.09-0.13s (the host does not resolve, so curl fails in about 2ms - faster than
+with the service up). The timeout that matters is a host that accepts nothing and
+never answers, so point `recommenderurl` at `http://10.255.255.1:8000` and reload:
+1.12-1.17s, page complete, no debug output, no link. That is the 1s connect timeout
+plus a normal page, exactly as specified.
+
 ---
 
 ## WP4: Seed data and demo run-through
@@ -767,6 +824,12 @@ Flag the switch to the human rather than grinding.
 The script must be idempotent, or detect an existing seed and refuse with a clear
 message.
 
+It also takes `--reset-blank`, exposed as `make rehearse`, which clears
+`student.blank`'s style so the demo can be run from the top again. Without it the
+second rehearsal starts with a student who already has a style, and step 1 shows a
+recommendation instead of the invitation. Deleting that row by hand before every
+run is exactly the "manual fix" the WP4 gate forbids.
+
 ### Gate WP4
 
 Cold, from nothing:
@@ -785,6 +848,15 @@ Then execute the demo script end to end, twice:
 
 Total elapsed under two minutes. If it needs a manual fix at any point, WP4 is not
 done.
+
+**Verified 2026-09-17.** `make reset` brings the site up healthy in about 90
+seconds with zero warnings and the plugin installed by the site installer itself;
+`make seed` takes 1.2 seconds and `add_moduleinfo()` worked first time, so the
+backup/restore fallback was not needed. Both demo runs produced, identically:
+invitation on the course page, "Kinesthetic" after the questionnaire, a
+youtube.com/watch?v=RiVFAVqpo34 link on Arrays for the kinesthetic student, and
+tutorialspoint.com/cprogramming/c_arrays.htm on the same activity for
+`student.rw`. Zero warnings across both runs.
 
 ---
 
@@ -894,7 +966,11 @@ Validate against `lib/xmldb/xmldb.xsd` in the 5.2 source before use.
     declares its volume at `/var/lib/postgresql`. Mount the parent or the data
     does not persist.
 11. **Do not rebuild PHP extensions the base image already has.** See WP0.
-12. **FastAPI cannot build a response model from a union.** A handler returning
+12. **Event observers are cached.** After editing `db/events.php`, a version bump
+    and `admin/cli/upgrade.php` do not refresh the observer list. `make purge`.
+13. **`local_*_extend_navigation` in lib.php runs but surfaces nothing** in 5.2.
+    Use the `\core\hook\navigation\primary_extend` hook.
+14. **FastAPI cannot build a response model from a union.** A handler returning
     either a dict or a bare `Response` needs `response_model=None` on the
     decorator, or the app refuses to start.
 

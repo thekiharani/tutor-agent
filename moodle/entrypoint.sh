@@ -40,20 +40,20 @@ if [ ! -f "${CONFIG}" ]; then
     echo "[entrypoint] install finished"
 fi
 
-# Developer debug, added once.  These are how the observer output bug in WP3
-# becomes visible.  Turn debugdisplay off before the final demo run.
-if ! grep -q 'tutoragent-debug' "${CONFIG}"; then
-    echo "[entrypoint] enabling developer debugging"
-    # Insert before the final require of setup.php, which must stay last.
-    su -s /bin/sh -c "php -r '
-        \$f = \"${CONFIG}\";
-        \$c = file_get_contents(\$f);
-        \$add = \"// tutoragent-debug\n\\\$CFG->debug = E_ALL;\n\\\$CFG->debugdisplay = 1;\n\n\";
-        \$needle = \"require_once\";
-        \$pos = strrpos(\$c, \$needle);
-        file_put_contents(\$f, substr(\$c, 0, \$pos) . \$add . substr(\$c, \$pos));
-    '" www-data
-fi
+# Debug settings, rewritten on every boot so a change to MOODLE_DEBUG in .env
+# takes effect on restart. Off by default: during a presentation a stray PHP
+# notice on screen is worse than a silent one in the log. Set MOODLE_DEBUG=1
+# while working on the plugin - it is how "unexpected output" from an event
+# observer becomes visible.
+DEBUG_DISPLAY="${MOODLE_DEBUG:-0}"
+sed -i '/tutoragent-debug-start/,/tutoragent-debug-end/d' "${CONFIG}"
+LASTREQUIRE=$(grep -n "require_once" "${CONFIG}" | tail -1 | cut -d: -f1)
+sed -i "${LASTREQUIRE}i\
+// tutoragent-debug-start\
+\$CFG->debug = E_ALL;\
+\$CFG->debugdisplay = ${DEBUG_DISPLAY};\
+// tutoragent-debug-end" "${CONFIG}"
+echo "[entrypoint] debugdisplay=${DEBUG_DISPLAY}"
 
 su -s /bin/sh -c "php ${MOODLE_ROOT}/admin/cli/purge_caches.php" www-data
 

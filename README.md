@@ -48,6 +48,7 @@ Then open <http://localhost:8080>.
 | `make down` | Stop, keep the data |
 | `make reset` | Delete everything and reinstall from scratch |
 | `make seed` | Create the demo course and students |
+| `make rehearse` | Clear `student.blank`'s style so you can run the demo again |
 | `make purge` | Clear Moodle's caches |
 | `make logs` | Follow the logs |
 | `make demo` | Print the logins and the demo script |
@@ -76,6 +77,17 @@ After `make seed`, five students, all with the password `Student#2026demo`:
 5. A different link appears: an article or PDF instead of a video.
 
 Steps 3 and 5 are the point of the project. `make demo` prints this at any time.
+
+To run it again, `make rehearse` puts `student.blank` back to having no learning
+style. Do this between rehearsals, or step 1 shows a recommendation instead of the
+invitation.
+
+**The sixteen questions are samples, not the instrument from the source thesis.**
+The page says so while they are. Replace the `QUESTIONS` array in
+`plugin/local/tutoragent/classes/form/vark_form.php` with the thesis questions and
+set `SAMPLE_QUESTIONS` to `false`; nothing else needs to change. Note that the
+published VARK questionnaire is copyrighted by VARK Learn Ltd, so check what your
+write-up is allowed to reproduce before committing it.
 
 ## Versions, and why these ones
 
@@ -169,7 +181,13 @@ State these before a panel member finds them.
 ## Troubleshooting
 
 **A change to the plugin has no effect.** Moodle caches aggressively. `make purge`.
-This is the first thing to try, not the last.
+This is the first thing to try, not the last. It applies to event observers and
+language strings too, not just code: after editing `db/events.php` the old
+observer list stays cached until you purge.
+
+**You want to see PHP errors while editing.** Set `MOODLE_DEBUG=1` in `.env` and
+`make down && make up`. It is off by default because during a presentation a stray
+notice on screen is worse than a silent one in the log.
 
 **Port 8080 is in use.** Change `MOODLE_PORT` and `MOODLE_WWWROOT` in `.env`, then
 `make down && make up`. The port in `MOODLE_WWWROOT` must match or Moodle

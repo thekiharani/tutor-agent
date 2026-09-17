@@ -95,10 +95,13 @@ def recognises(text: str) -> bool:
 
 
 def pick_response(tag: str, module_name: str, style: str) -> str:
-    """Deterministic choice, not random.choice.
+    """Deterministic choice.
 
-    crc32 rather than hash(): Python randomises string hashes per process, so
-    hash() would hand out a different link after every container restart.
+    The original picked a response at random, so the same request gave a
+    different link every time. crc32 is used rather than Python's built-in
+    string hash, which is salted per process: that would hand out a different
+    link after every container restart, which is the opposite of what a
+    rehearsed demo needs.
     """
     responses = RESPONSES[tag]
     return responses[zlib.crc32(f"{module_name}{style}".encode()) % len(responses)]
