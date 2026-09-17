@@ -17,7 +17,9 @@ $retake = optional_param('retake', 0, PARAM_BOOL);
 $url = new moodle_url('/local/tutoragent/vark.php');
 
 $PAGE->set_url($url);
-$PAGE->set_context(context_user::instance($USER->id));
+// System context, not the user's: a user context makes Moodle dress this as a
+// profile page, avatar and "Message" button included.
+$PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string('mylearningstyle', 'local_tutoragent'));
 $PAGE->set_heading(get_string('mylearningstyle', 'local_tutoragent'));

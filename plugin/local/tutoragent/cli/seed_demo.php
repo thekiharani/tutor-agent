@@ -141,6 +141,13 @@ foreach (SEED_ACTIVITIES as $index => $activity) {
     ];
 
     $created = add_moduleinfo($moduleinfo, $course);
+
+    // create_course() makes the sections but leaves them all called "New
+    // section", which is what the course index then shows.
+    $section = $DB->get_record('course_sections',
+        ['course' => $course->id, 'section' => $index + 1], '*', MUST_EXIST);
+    course_update_section($course, $section, ['name' => $activity['name']]);
+
     cli_writeln("  activity '{$activity['name']}' (cmid {$created->coursemodule})");
 }
 

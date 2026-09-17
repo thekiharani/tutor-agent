@@ -185,8 +185,9 @@ anything else is rejected with 422.
 
 ## Changes made to the supplied content
 
-`intents.json` is the original author's content and the patterns and responses are
-otherwise untouched. Two classes of defect were repaired:
+`intents.json` is the original author's content. The patterns and the tags that
+drive the model are untouched, and no URL was changed or invented. Four classes of
+defect were repaired, all of which showed on screen:
 
 - **Six of sixteen tags** carried stray leading or trailing spaces
   (`'functions visual '`, `' arrays auditory'`, and four more), which made the
@@ -194,7 +195,13 @@ otherwise untouched. Two classes of defect were repaired:
 - **Seven anchors were malformed** and rendered as plain text rather than links:
   three written `<a href>https://...'>` with the `='` missing, one with the
   opening `<` typed as a comma, one written `< a href=` with a space, and two
-  closing tags written `>/a>` and `,/a>`. Every URL was intact; none was invented.
+  closing tags written `>/a>` and `,/a>`.
+- **Twelve responses ran text straight into the link**, rendering as
+  "see the following practical**in this link**". A space was added before the
+  anchor.
+- **Twenty-one spelling errors** in the prose: "stotage", "folllowing",
+  "progarm", "poinetrs", "pactical", "Declaringand" and others. Only spelling
+  changed; no sentence was reworded.
 
 ## Known limitations
 
