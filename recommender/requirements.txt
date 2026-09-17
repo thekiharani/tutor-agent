@@ -1,7 +1,10 @@
 # Pinned to what resolved on 2026-09-17 against Python 3.14, so a rebuild in
 # six months produces the same model and the same links.
 fastapi==0.141.1
-uvicorn[standard]==0.53.0
+# Plain uvicorn, not uvicorn[standard]: the extras (uvloop, httptools,
+# watchfiles, websockets, PyYAML) add about 24MB for a throughput gain that is
+# meaningless at four concurrent students.
+uvicorn==0.53.0
 pydantic==2.13.5
 scikit-learn==1.9.1
 numpy==2.5.3

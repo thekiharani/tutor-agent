@@ -20,8 +20,9 @@ is down, Moodle pages render normally and simply show no recommendation.
 
 ## Prerequisites
 
-Docker Desktop (or Docker Engine) with Compose v2, and about 3GB of disk. Nothing
-else: no PHP, no Python, no Moodle on your machine.
+Docker Desktop (or Docker Engine) with Compose v2, and about 2.5GB of disk for the
+images (Moodle 1.04GB, Postgres 479MB, recommender 475MB) plus room for the
+database. Nothing else: no PHP, no Python, no Moodle on your machine.
 
 ## Running it
 

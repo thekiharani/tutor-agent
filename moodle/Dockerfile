@@ -13,11 +13,10 @@ FROM php:8.4-apache
 ENV MOODLE_ROOT=/var/www/moodle
 ENV MOODLE_DOCROOT=/var/www/moodle/public
 
-# System libraries for the PHP extensions below.
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libxml2-dev \
-        libzip-dev libpq-dev libsodium-dev libonig-dev \
-        ca-certificates curl \
+# Packages that must survive the build-dependency purge below: curl is used by
+# the entrypoint and by the container healthcheck.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Extensions Moodle 5.2 lists in environment.xml that are NOT already compiled
@@ -25,9 +24,31 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # curl, openssl, ctype, dom, xml, xmlreader, simplexml, iconv, json, hash,
 # fileinfo and filter - asking docker-php-ext-install to build those again
 # fails with "cp: cannot stat 'modules/*'".
-RUN docker-php-ext-configure gd --with-jpeg --with-freetype \
-    && docker-php-ext-install -j"$(nproc)" \
-        gd intl zip pgsql pdo_pgsql soap exif
+#
+# The -dev packages are headers and static libraries needed only to compile.
+# This is the pattern the official PHP images use to drop them again
+# afterwards: remember what was installed by hand, mark everything automatic,
+# then ask ldd which shared libraries the new extensions actually link against
+# and mark only those as manual. Everything else is purged. Worth about 100MB.
+RUN set -eux; \
+    savedAptMark="$(apt-mark showmanual)"; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libxml2-dev \
+        libzip-dev libpq-dev libsodium-dev libonig-dev; \
+    docker-php-ext-configure gd --with-jpeg --with-freetype; \
+    docker-php-ext-install -j"$(nproc)" gd intl zip pgsql pdo_pgsql soap exif; \
+    apt-mark auto '.*' > /dev/null; \
+    [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark > /dev/null; \
+    ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
+        | awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) next; gsub("^/(usr/)?", "", so); printf "*/%s\n", so }' \
+        | sort -u \
+        | xargs -r dpkg-query --search 2>/dev/null \
+        | cut -d: -f1 \
+        | sort -u \
+        | xargs -r apt-mark manual > /dev/null; \
+    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+    rm -rf /var/lib/apt/lists/*
 
 COPY php.ini /usr/local/etc/php/conf.d/zz-moodle.ini
 
