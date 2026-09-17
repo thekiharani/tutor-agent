@@ -68,6 +68,7 @@ to `Demo@2026!`.
 | `student.rw` | student, pre-set style: read/write |
 | `student.kines` | student, pre-set style: kinesthetic |
 | `student.blank` | student, no style yet - use this one to demo the questionnaire |
+| `student.blank2` … `student.blank6` | five more with no style, for repeat runs or for someone else to try |
 
 ## The demo
 
@@ -252,6 +253,12 @@ That is by design. `docker compose logs recommender` to see why.
 
 **The install half-finished, or the plugin failed to install.** Do not patch
 forward; `make reset` and start clean.
+
+**Restarting containers.** `make down && make up`, `docker compose restart`, a
+Docker Desktop restart or a reboot all keep the site and keep you logged in. Only
+`make reset` wipes anything, and it wipes everything. Moodle's sessions live in
+the `moodledata` volume and `config.php` is kept there too, so a recreated
+container picks both up again.
 
 **Everything looks broken after an edit.** `docker compose ps` shows which
 container is unhealthy, `make logs` shows why.

@@ -1,7 +1,7 @@
 <?php
-// One course, four activities, one extra site admin and five students, all
-// sharing DEMO_PASSWORD. `make rehearse` passes --reset-blank to clear
-// student.blank for another run.
+// One course, four activities, one extra site admin and ten students, all
+// sharing DEMO_PASSWORD. `make rehearse` passes --reset-blank to clear every
+// student.blank* account for another run.
 
 define('CLI_SCRIPT', true);
 
@@ -52,21 +52,33 @@ const SEED_USERS = [
     ['username' => 'student.aural', 'firstname' => 'Alan', 'lastname' => 'Aural', 'style' => 'auditory'],
     ['username' => 'student.rw', 'firstname' => 'Rita', 'lastname' => 'Reader', 'style' => 'read_write'],
     ['username' => 'student.kines', 'firstname' => 'Ken', 'lastname' => 'Kinetic', 'style' => 'kinesthetic'],
+    // Several with no style, so the questionnaire can be demonstrated more than
+    // once, or handed to someone in the room to try.
     ['username' => 'student.blank', 'firstname' => 'Blair', 'lastname' => 'Blank', 'style' => null],
+    ['username' => 'student.blank2', 'firstname' => 'Bruno', 'lastname' => 'Blank', 'style' => null],
+    ['username' => 'student.blank3', 'firstname' => 'Bella', 'lastname' => 'Blank', 'style' => null],
+    ['username' => 'student.blank4', 'firstname' => 'Bilal', 'lastname' => 'Blank', 'style' => null],
+    ['username' => 'student.blank5', 'firstname' => 'Bina', 'lastname' => 'Blank', 'style' => null],
+    ['username' => 'student.blank6', 'firstname' => 'Bram', 'lastname' => 'Blank', 'style' => null],
 ];
 
 list($options) = cli_get_params(['reset-blank' => false, 'help' => false], ['h' => 'help']);
 
 if ($options['help']) {
     cli_writeln("Seed the demo course, activities, admin and students.\n"
-        . "  --reset-blank   Only clear student.blank's learning style, for another rehearsal.\n");
+        . "  --reset-blank   Only clear the student.blank* learning styles, for another rehearsal.\n");
     exit(0);
 }
 
 if ($options['reset-blank']) {
-    $blank = $DB->get_record('user', ['username' => 'student.blank'], 'id', MUST_EXIST);
-    $DB->delete_records('local_tutoragent_vark', ['userid' => $blank->id]);
-    cli_writeln('student.blank has no learning style again. Ready for another run.');
+    $blanks = $DB->get_fieldset_select('user', 'id', $DB->sql_like('username', ':name'),
+        ['name' => 'student.blank%']);
+    if (!$blanks) {
+        cli_error('No student.blank* users found. Run `make seed` first.');
+    }
+    list($insql, $params) = $DB->get_in_or_equal($blanks, SQL_PARAMS_NAMED);
+    $DB->delete_records_select('local_tutoragent_vark', "userid $insql", $params);
+    cli_writeln(count($blanks) . ' blank students have no learning style again. Ready for another run.');
     exit(0);
 }
 

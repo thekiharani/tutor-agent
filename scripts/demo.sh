@@ -20,6 +20,11 @@ cat <<TEXT
     student.rw        pre-set style: read/write
     student.kines     pre-set style: kinesthetic
     student.blank     no style yet - use this one to demo the questionnaire
+    student.blank2    no style yet  )
+    student.blank3    no style yet  )  spares: run the questionnaire again,
+    student.blank4    no style yet  )  or hand one to someone in the room
+    student.blank5    no style yet  )
+    student.blank6    no style yet  )
 
   RUN THE DEMO
   ------------

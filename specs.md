@@ -854,6 +854,7 @@ the admin the installer creates:
 | Username | Pre-seeded style |
 |---|---|
 | `demo.admin` | site administrator, no style |
+| `student.blank2` .. `student.blank6` | five spare unanswered students |
 | `student.visual` | visual |
 | `student.aural` | auditory |
 | `student.rw` | read_write |
@@ -1025,6 +1026,18 @@ Validate against `lib/xmldb/xmldb.xsd` in the 5.2 source before use.
     declares its volume at `/var/lib/postgresql`. Mount the parent or the data
     does not persist.
 11. **Do not rebuild PHP extensions the base image already has.** See WP0.
+12. **Never edit `config.php` from the entrypoint.** An earlier revision inserted
+    the debug settings with `sed`. The insert collapsed onto one line beginning
+    `//`, so the settings never applied; and because the start and end markers
+    then shared a line, the next boot's `/start/,/end/d` range ran to end of file
+    and deleted `require_once(setup.php)`. `config.php` ended up empty, `$CFG`
+    undefined, Apache dead, and `restart: unless-stopped` looping forever. Set
+    debug through `admin/cli/cfg.php` instead, and let neither that nor the cache
+    purge be fatal: a site that starts without debug settings is a nuisance, a
+    site that will not start is a lost demo.
+13. **`config.php` is not in a volume.** A recreated container has none even
+    though the database is full, and the installer then fails on "already
+    installed". Keep a copy in `moodledata` and restore it.
 12. **Do not delete Moodle's `tests/` directories to save space.** It looks like
     60MB of free win. `lib/mlbackend/python/classes/processor.php` does
     `require_once($CFG->dirroot . '/analytics/tests/classes/mlbackend_helper_trait.php')`,
