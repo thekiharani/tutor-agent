@@ -1,0 +1,11 @@
+<?php
+// Hook callbacks for local_tutoragent.
+
+defined('MOODLE_INTERNAL') || die();
+
+$callbacks = [
+    [
+        'hook' => \core\hook\navigation\primary_extend::class,
+        'callback' => '\local_tutoragent\hook_callbacks::extend_primary_navigation',
+    ],
+];
