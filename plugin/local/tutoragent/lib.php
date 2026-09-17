@@ -1,13 +1,9 @@
 <?php
-// Shared functions for local_tutoragent: navigation, VARK scoring, and the
-// call out to the recommender service.
+// VARK scoring and the call out to the recommender service.
 
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * The four VARK dimensions, in the order used to break a tie, mapped to the
- * style strings the recommender expects.
- */
+/** VARK dimensions in tie-break order, mapped to the recommender's style strings. */
 const LOCAL_TUTORAGENT_STYLES = [
     'V' => 'visual',
     'A' => 'auditory',
@@ -15,12 +11,7 @@ const LOCAL_TUTORAGENT_STYLES = [
     'K' => 'kinesthetic',
 ];
 
-/**
- * The stored learning style for a user, or null if they have not answered yet.
- *
- * @param int $userid
- * @return stdClass|null
- */
+/** The stored learning style for a user, or null if they have not answered yet. */
 function local_tutoragent_get_style(int $userid): ?stdClass {
     global $DB;
 
@@ -29,14 +20,9 @@ function local_tutoragent_get_style(int $userid): ?stdClass {
 }
 
 /**
- * Score a completed questionnaire.
+ * Score a questionnaire. Highest count wins; ties break V, A, R, K.
  *
- * Each answer is the list of dimensions the student selected for one question;
- * VARK allows more than one. The dominant style is simply the highest count,
- * and a tie is broken in the order V, A, R, K. The full breakdown is kept so
- * the result can be explained rather than asserted.
- *
- * @param array $answers list of arrays of 'V'|'A'|'R'|'K'
+ * @param array $answers one array of 'V'|'A'|'R'|'K' per question
  * @return array ['style' => string, 'scores' => array]
  */
 function local_tutoragent_score(array $answers): array {
@@ -69,13 +55,7 @@ function local_tutoragent_score(array $answers): array {
     ];
 }
 
-/**
- * Store a scored questionnaire, replacing any previous answer.
- *
- * @param int $userid
- * @param string $style
- * @param array $scores
- */
+/** Store a scored questionnaire, replacing any previous answer. */
 function local_tutoragent_save_style(int $userid, string $style, array $scores) {
     global $DB;
 
@@ -99,22 +79,14 @@ function local_tutoragent_save_style(int $userid, string $style, array $scores) 
 }
 
 /**
- * Ask the recommender for a resource, and never let it break the page.
+ * Ask the recommender for a resource. Every failure path returns null so a dead
+ * or slow service costs the page nothing.
  *
- * Every failure path returns null: a wrong URL, a dead container, a timeout, a
- * 204 (the service has nothing for this activity), a non-JSON body. A page must
- * render normally and on time whatever the recommender is doing.
+ * Native curl_*, not Moodle's \curl wrapper: the wrapper enforces
+ * $CFG->curlsecurityblockedhosts, which blocks the private IP the recommender
+ * runs on.
  *
- * Native curl_* rather than Moodle's \curl wrapper on purpose. The wrapper
- * enforces $CFG->curlsecurityblockedhosts, which blocks private IP ranges by
- * default, and the recommender lives on a Docker private address. Using the
- * wrapper would mean weakening a site-wide security setting to make one
- * internal call work.
- *
- * @param string $modulename
- * @param string $moduleintro
- * @param string $style
- * @return string|null HTML for the recommendation, or null for "say nothing"
+ * @return string|null HTML for the recommendation, or null to say nothing
  */
 function local_tutoragent_request_recommendation(string $modulename, string $moduleintro, string $style): ?string {
     $base = get_config('local_tutoragent', 'recommenderurl');

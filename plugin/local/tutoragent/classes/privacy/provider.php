@@ -1,6 +1,4 @@
 <?php
-// Privacy API implementation for local_tutoragent.
-
 namespace local_tutoragent\privacy;
 
 use context;
@@ -13,11 +11,7 @@ use core_privacy\local\request\transform;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 
-/**
- * The plugin stores one row of personal data per user, so a null_provider is
- * not good enough: without this the plugin shows as non-compliant on the admin
- * privacy page.
- */
+/** One row of personal data per user, so null_provider is not good enough. */
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\plugin\provider,

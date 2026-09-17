@@ -1,6 +1,4 @@
 <?php
-// The VARK questionnaire form for local_tutoragent.
-
 namespace local_tutoragent\form;
 
 defined('MOODLE_INTERNAL') || die();
@@ -11,17 +9,12 @@ use html_writer;
 use moodleform;
 
 /**
- * The sixteen VARK questions, four options each, one per dimension. More than
- * one option may be selected per question: the instrument allows it and the
- * scoring simply counts selections.
+ * Sixteen questions, four options each, one per dimension. More than one may be
+ * selected: the instrument allows it and scoring counts selections.
  *
- * The questions are reproduced from Appendix A of the source thesis, which
- * uses the VARK questionnaire. The option order varies from question to
- * question, which is how the instrument is written - do not sort them, or
- * every answer becomes the first checkbox.
- *
- * The VARK questionnaire is copyright VARK Learn Limited; it is used here for
- * the educational purpose the thesis describes and credited on the page.
+ * Reproduced from Appendix A of the project report. Option order varies by
+ * question, as the instrument is written - do not sort, or every answer becomes
+ * the first checkbox. Copyright VARK Learn Limited; credited on the page.
  */
 class vark_form extends moodleform {
 
@@ -153,9 +146,8 @@ class vark_form extends moodleform {
     }
 
     /**
-     * Answers are optional per question, but an entirely empty form would score
-     * every dimension zero and hand back "Visual" by tie-break, which would be
-     * a lie rather than a result.
+     * An entirely empty form would score every dimension zero and hand back
+     * "Visual" by tie-break, which would be a lie rather than a result.
      */
     public function validation($data, $files) {
         foreach ($data as $key => $value) {
@@ -167,10 +159,7 @@ class vark_form extends moodleform {
         return ['question0' => get_string('varkanswernone', 'local_tutoragent')];
     }
 
-    /**
-     * Turn submitted form data into the per-question dimension lists that
-     * local_tutoragent_score() expects.
-     */
+    /** Submitted form data -> the per-question dimension lists score() expects. */
     public static function answers_from(\stdClass $data): array {
         $answers = [];
 

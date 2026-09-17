@@ -1,23 +1,17 @@
-# Local configuration. .env.example is committed and `make up` copies it to
-# .env, which is per-machine and holds the demo passwords.
+# .env.example is committed; `make up` copies it to .env, which is per-machine.
 .env
 .env.local
 
-# Build artefact. train.py produces this during the image build; committing it
-# would let a stale model ship while train.py claims otherwise.
+# Written by train.py during the image build.
 recommender/data/model.npz
 
 # The project report is a working document, not a repo artefact.
 *.docx
 
-# Editor and OS cruft.
 .DS_Store
 .idea/
 .vscode/
 *.swp
-
-# No Python runs on the host - it all runs in the container - but caches
-# appear if anyone runs train.py locally to try something.
 __pycache__/
 *.py[cod]
 .venv/

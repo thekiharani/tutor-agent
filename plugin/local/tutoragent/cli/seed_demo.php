@@ -1,11 +1,7 @@
 <?php
-// Creates everything the demo needs: one course, four activities, five students.
-//
-// Run it with `make seed`, which executes it as www-data inside the container.
-// It refuses to run twice rather than making a second copy of everything.
-//
-// `make rehearse` calls it with --reset-blank, which puts student.blank back to
-// having no learning style so the demo can be run again from the top.
+// One course, four activities, five students. Run via `make seed`; refuses to
+// run twice. `make rehearse` passes --reset-blank to clear student.blank's
+// style so the demo can be run again from the top.
 
 define('CLI_SCRIPT', true);
 
@@ -20,10 +16,9 @@ require_once($CFG->dirroot . '/local/tutoragent/lib.php');
 
 const SEED_SHORTNAME = 'PROG-C';
 
-// Each intro is deliberately about one topic only. Topic matching in the
-// recommender is substring-based over the name and intro together, so an
-// Arrays intro that mentioned "loops" would pull the activity towards
-// control structures.
+// One topic per intro, deliberately: topic matching is substring-based over
+// name and intro together, so an Arrays intro mentioning "loops" would pull the
+// activity towards control structures.
 const SEED_ACTIVITIES = [
     [
         'name' => 'Arrays',
@@ -101,10 +96,9 @@ $course = create_course((object) [
 cli_writeln("  course id {$course->id}");
 
 foreach (SEED_ACTIVITIES as $index => $activity) {
-    // add_moduleinfo() wants a fuller object than its signature suggests: the
-    // generic course_modules fields, plus whatever the module's own
-    // add_instance() reads. For mod_page that is content, display and the
-    // print options.
+    // add_moduleinfo() wants more than its signature suggests: the generic
+    // course_modules fields plus whatever the module's add_instance() reads -
+    // for mod_page, content, display and the print options.
     $moduleinfo = (object) [
         'modulename' => 'page',
         'module' => $DB->get_field('modules', 'id', ['name' => 'page'], MUST_EXIST),
@@ -150,9 +144,8 @@ foreach (SEED_USERS as $seeduser) {
     enrol_try_internal_enrol($course->id, $userid, $studentrole->id);
 
     if ($seeduser['style'] !== null) {
-        // A plausible breakdown rather than a flat 16/0/0/0, so the result page
-        // looks like something a person actually answered. Marked as seeded so
-        // nobody mistakes it for a real submission.
+        // A plausible breakdown rather than a flat 16/0/0/0, flagged as seeded
+        // so nobody mistakes it for a real submission.
         $dominant = array_search($seeduser['style'], LOCAL_TUTORAGENT_STYLES, true);
         $counts = ['V' => 3, 'A' => 3, 'R' => 3, 'K' => 3];
         $counts[$dominant] = 9;

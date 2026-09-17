@@ -1,6 +1,4 @@
 <?php
-// English strings for local_tutoragent.
-
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Tutor agent';

@@ -1,4 +1,4 @@
-# The four commands anyone needs:  make up, make seed, make demo, make purge.
+# The four that matter: make up, make seed, make demo, make purge.
 SHELL := /bin/sh
 COMPOSE := docker compose
 MOODLE_ROOT := /var/www/moodle

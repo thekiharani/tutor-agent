@@ -1,5 +1,5 @@
 <?php
-// The VARK questionnaire page: take it, or see the style you already have.
+// Take the questionnaire, or see the style you already have.
 
 require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/lib.php');
@@ -36,7 +36,6 @@ if ($data = $form->get_data()) {
 echo $OUTPUT->header();
 
 if ($existing && !$retake) {
-    // The result page: name the style, explain it, and offer the way back.
     $style = $existing->style;
     echo $OUTPUT->heading(get_string('style_' . $style, 'local_tutoragent'), 3);
     echo html_writer::tag('p', get_string('style_' . $style . '_desc', 'local_tutoragent'));

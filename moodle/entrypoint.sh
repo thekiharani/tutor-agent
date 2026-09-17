@@ -1,12 +1,12 @@
 #!/bin/sh
-# Installs Moodle on first boot, then hands over to Apache.  Safe to re-run:
-# everything here is guarded, so a container restart does not reinstall.
+# Installs Moodle on first boot, then hands over to Apache. Guarded throughout,
+# so a restart does not reinstall.
 set -e
 
 MOODLE_ROOT="${MOODLE_ROOT:-/var/www/moodle}"
 CONFIG="${MOODLE_ROOT}/config.php"
 
-# The named volume starts empty and root-owned; Moodle writes here as www-data.
+# The named volume starts root-owned; Moodle writes here as www-data.
 mkdir -p /var/moodledata
 chown www-data:www-data /var/moodledata
 
@@ -25,8 +25,8 @@ echo "[entrypoint] postgres is up"
 
 if [ ! -f "${CONFIG}" ]; then
     echo "[entrypoint] no config.php - running the unattended install"
-    # Run as www-data, not root: installing as root leaves moodledata owned by
-    # the wrong user and every later CLI script fails in confusing ways.
+    # As www-data, not root, or moodledata ends up owned by the wrong user and
+    # every later CLI script fails confusingly.
     su -s /bin/sh -c "php ${MOODLE_ROOT}/admin/cli/install.php \
         --non-interactive --agree-license \
         --wwwroot='${MOODLE_WWWROOT}' \
@@ -40,11 +40,9 @@ if [ ! -f "${CONFIG}" ]; then
     echo "[entrypoint] install finished"
 fi
 
-# Debug settings, rewritten on every boot so a change to MOODLE_DEBUG in .env
-# takes effect on restart. Off by default: during a presentation a stray PHP
-# notice on screen is worse than a silent one in the log. Set MOODLE_DEBUG=1
-# while working on the plugin - it is how "unexpected output" from an event
-# observer becomes visible.
+# Rewritten every boot so MOODLE_DEBUG in .env takes effect on restart. Off by
+# default: a stray notice on screen mid-presentation is worse than a silent one
+# in the log. Set it to 1 while editing the plugin.
 DEBUG_DISPLAY="${MOODLE_DEBUG:-0}"
 sed -i '/tutoragent-debug-start/,/tutoragent-debug-end/d' "${CONFIG}"
 LASTREQUIRE=$(grep -n "require_once" "${CONFIG}" | tail -1 | cut -d: -f1)

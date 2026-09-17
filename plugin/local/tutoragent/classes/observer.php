@@ -1,6 +1,4 @@
 <?php
-// Event observer for local_tutoragent.
-
 namespace local_tutoragent;
 
 use core\event\course_module_viewed;
@@ -11,22 +9,13 @@ use moodle_url;
 /**
  * Turns "a student opened an activity" into a recommendation.
  *
- * Observers run in the middle of a request, before the page has finished
- * rendering. Two rules follow from that and neither is negotiable:
- *
- *   - Nothing here may write to the output buffer. Writing from an observer
- *     corrupts the headers and trips "Coding error: unexpected output". The
- *     2022 original sent its response straight to the page, which is one
- *     reason it could not work. Use \core\notification instead.
- *   - Nothing here may be slow or throw. Every failure path returns quietly,
- *     and the HTTP call has a 1s connect / 2s total timeout, so a dead
- *     recommender costs the page nothing.
+ * Observers run mid-request. Nothing here may write to the output buffer -
+ * that trips "Coding error: unexpected output" - and nothing here may be slow
+ * or throw, hence \core\notification and the quiet failure paths.
  */
 class observer {
 
-    /**
-     * On the course page, invite a student who has no learning style yet.
-     */
+    /** On the course page, invite a student who has no learning style yet. */
     public static function course_viewed(course_viewed $event): void {
         global $CFG;
 
@@ -80,10 +69,7 @@ class observer {
         \core\notification::add($html, notification::NOTIFY_INFO);
     }
 
-    /**
-     * True only when there is a page to put a notification on and the event is
-     * about the person looking at it.
-     */
+    /** True only when there is a page to write to and it is the viewer's own event. */
     private static function should_act(?int $userid): bool {
         global $USER;
 

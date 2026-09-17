@@ -1,6 +1,4 @@
 <?php
-// Hook callbacks for local_tutoragent.
-
 defined('MOODLE_INTERNAL') || die();
 
 $callbacks = [

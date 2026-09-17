@@ -1,6 +1,4 @@
 <?php
-// Admin settings for local_tutoragent.
-
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
@@ -10,8 +8,8 @@ if ($hassiteconfig) {
     );
     $ADMIN->add('localplugins', $settings);
 
-    // PARAM_RAW_TRIMMED rather than PARAM_URL: the default host is a Docker
-    // service name with no dot in it, which PARAM_URL rejects.
+    // PARAM_RAW_TRIMMED, not PARAM_URL: the default is a Docker service name
+    // with no dot in it, which PARAM_URL rejects.
     $settings->add(new admin_setting_configtext(
         'local_tutoragent/recommenderurl',
         get_string('recommenderurl', 'local_tutoragent'),

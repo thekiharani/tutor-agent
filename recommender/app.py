@@ -1,33 +1,22 @@
 """VARK-aware recommender.
 
-POST /recommend with a module name, its intro text and a learning style, and
-this returns one HTML link chosen for that style.
+POST /recommend with an activity name, its intro and a learning style; returns
+one HTML link chosen for that style.
 
-Inference is a numpy forward pass over weights trained at image build time.
-train.py asserts that this same function reproduces scikit-learn's
-predict_proba before the weights ship, so the runtime image needs neither
-scikit-learn nor scipy - about 211MB that nothing uses once the model is
-fitted.
+Three things make this work that did not work in the 2022 original:
 
-Two things make this work that did not work in the 2022 original:
+1. The style token reaches the classifier. Every training pattern embeds its
+   modality, so that stem is what separates "arrays visual" from "arrays
+   auditory". The original hardcoded the style to 0, so it never arrived.
+2. Topic alias expansion, because the vocabulary has if/else, loop, swic and
+   whil but no stem for "control".
+3. The softmax is restricted to the student's stored style, because expansion
+   alone swamps the single modality stem. Measured over 12 activity variants
+   x 4 styles: expansion alone is wrong 5/48, the restriction alone 10/48,
+   together 0/48.
 
-1. The style token reaches the classifier.  Every training pattern embeds its
-   modality ("Array index visual"), so the modality stem is what separates
-   "arrays visual" from "arrays auditory".  The original hardcoded the style to
-   0 on the PHP side, so the token never arrived and the model could not
-   discriminate at all.
-
-2. Topic alias expansion.  The vocabulary has if/else, loop, swic and whil but
-   no stem for "control", so a Moodle activity called "Control Structures"
-   matches nothing on its own.
-
-The expansion is what makes an unknown topic resolvable, but it also swamps the
-single modality stem: measured over 12 module variants x 4 styles, expanding
-alone gets the modality wrong 5 times.  So the softmax is restricted to the
-four classes matching the student's stored style, and the classifier chooses
-the topic among them.  The style is data we hold, not something to guess.
-Expansion without the restriction fails 5/48; the restriction without expansion
-fails 10/48; together they are 0/48.
+Inference is a numpy forward pass over weights trained at build time; train.py
+asserts it reproduces scikit-learn's predict_proba before they ship.
 """
 
 import json
@@ -42,9 +31,9 @@ from train import bag_of_words, forward, load_intents, load_model, tokenize
 
 THRESHOLD = float(os.environ.get("RECOMMENDER_THRESHOLD", "0.45"))
 
-# Alias key -> (tag topic, expansion text).  The tags in intents.json use plural
-# topics while the natural keys are singular, so one table carries both and the
-# fallback can never build a tag that does not exist.
+# Alias key -> (tag topic, expansion text). intents.json uses plural topics and
+# the natural keys are singular, so one table carries both and the fallback can
+# never build a tag that does not exist.
 TOPICS: dict[str, tuple[str, str]] = {
     "array": ("arrays", "array index declaration accessing elements"),
     "control": ("controls", "if/else selection statement for loop while do switch"),
@@ -52,9 +41,8 @@ TOPICS: dict[str, tuple[str, str]] = {
     "data type": ("data types", "data type basic derived enumerated void"),
 }
 
-# Stems that say nothing about the topic: the four modalities, plus the
-# function words that survived stemming.  What is left is the set of stems that
-# indicate this activity is something the library actually covers.
+# Stems that say nothing about the topic. What is left marks an activity the
+# library actually covers.
 _MODALITY_STEMS = {"vis", "audit", "read_write", "kinesthet"}
 _FUNCTION_STEMS = {"an", "and", "in", "is", "of", "or", "the", "what"}
 
@@ -76,11 +64,8 @@ class RecommendRequest(BaseModel):
 
 
 def find_topic(text: str) -> tuple[str, str] | None:
-    """First match wins, in the order TOPICS is declared.
-
-    Taking only the first keeps the result deterministic and stops an intro
-    that mentions two topics from blurring into both.
-    """
+    """First match wins, in declaration order: deterministic, and an intro that
+    mentions two topics does not blur into both."""
     lowered = text.lower()
     for key, topic in TOPICS.items():
         if key in lowered:
@@ -89,25 +74,17 @@ def find_topic(text: str) -> tuple[str, str] | None:
 
 
 def recognises(text: str) -> bool:
-    """True if anything in the activity text is in the model's vocabulary.
+    """True if anything in the activity text is in the vocabulary.
 
-    "Pointers" or "Weekly announcements" light up nothing, and the library has
-    no content for them.  Without this test the classifier still returns its
-    best of sixteen and the student gets data-type material for a lecture on
-    pointers.
+    Without this, "Pointers" still returns the best of sixteen and a student
+    gets data-type material for a lecture on pointers.
     """
     return bool(TOPIC_STEMS.intersection(tokenize(text)))
 
 
 def pick_response(tag: str, module_name: str, style: str) -> str:
-    """Deterministic choice.
-
-    The original picked a response at random, so the same request gave a
-    different link every time. crc32 is used rather than Python's built-in
-    string hash, which is salted per process: that would hand out a different
-    link after every container restart, which is the opposite of what a
-    rehearsed demo needs.
-    """
+    """Deterministic choice. crc32, not Python's built-in string hash, which is
+    salted per process and would change the link after every restart."""
     responses = RESPONSES[tag]
     return responses[zlib.crc32(f"{module_name}{style}".encode()) % len(responses)]
 
@@ -117,16 +94,15 @@ def health() -> dict:
     return {"status": "ok", "classes": len(LABELS), "vocab": len(VOCAB)}
 
 
-# response_model=None because this returns either a dict or a bare 204
-# Response, and FastAPI cannot build one response model from that union.
+# response_model=None: FastAPI cannot build one response model from the
+# dict-or-204-Response union.
 @app.post("/recommend", response_model=None)
 def recommend(request: RecommendRequest) -> Response | dict:
     activity = f"{request.module_name} {request.module_intro}"
     topic = find_topic(activity)
 
     if topic is None and not recognises(activity):
-        # Nothing in the library covers this activity.  Say nothing rather than
-        # recommend something wrong: the observer shows no notification.
+        # Nothing covers this activity: say nothing rather than guess.
         return Response(status_code=204)
 
     text = f"{activity} {request.style}"
@@ -135,17 +111,16 @@ def recommend(request: RecommendRequest) -> Response | dict:
 
     probabilities = forward(bag_of_words(text, VOCAB), WEIGHTS, BIASES)[0]
 
-    # Restrict the choice to the four classes for the requested style; the
-    # classifier is left to decide the topic.  See the module docstring.
+    # Restrict to the four classes for the requested style; the classifier
+    # decides only the topic. See the module docstring.
     candidates = [
         index for index, label in enumerate(LABELS) if label.endswith(request.style)
     ]
     best = max(candidates, key=lambda index: probabilities[index])
     tag = LABELS[best]
 
-    # Renormalise over the four candidates.  The reported confidence is then
-    # "how sure are we of the topic, given this style", which is the only
-    # question the classifier is being asked, and it is what THRESHOLD gates.
+    # Renormalise over the four candidates: confidence then means "how sure of
+    # the topic, given this style", which is what THRESHOLD gates.
     total = float(sum(probabilities[index] for index in candidates))
     confidence = float(probabilities[best]) / total if total else 0.0
     source = "model"
@@ -153,8 +128,7 @@ def recommend(request: RecommendRequest) -> Response | dict:
     if confidence < THRESHOLD:
         if topic is None:
             return Response(status_code=204)
-        # The classifier cannot separate the topics, but the activity name
-        # named one outright.  Use it.
+        # The classifier cannot separate the topics, but the name gave one.
         tag = f"{topic[0]} {request.style}"
         source = "fallback"
 
