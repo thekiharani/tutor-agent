@@ -23,12 +23,12 @@ cat <<TEXT
 
   RUN THE DEMO
   ------------
-   1. Log in as student.blank and open the course
-      "Introduction to Programming in C".
-      -> a notification invites you to take the VARK questionnaire.
+   1. Log in as student.blank and click anything - the course, the dashboard.
+      -> you land on the VARK questionnaire, and cannot leave it.
 
-   2. Take the questionnaire (16 questions).
-      -> the page names your learning style.
+   2. Answer the 16 questions.
+      -> the page names your learning style, with a Continue button back to
+         wherever you were trying to go.
 
    3. Open the activity "Arrays".
       -> a notification appears with a resource matched to that style.

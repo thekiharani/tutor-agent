@@ -17,4 +17,11 @@ if ($hassiteconfig) {
         'http://recommender:8000',
         PARAM_RAW_TRIMMED
     ));
+
+    $settings->add(new admin_setting_configcheckbox(
+        'local_tutoragent/forceredirect',
+        get_string('forceredirect', 'local_tutoragent'),
+        get_string('forceredirect_desc', 'local_tutoragent'),
+        1
+    ));
 }

@@ -12,6 +12,13 @@ $string['recommenderurl'] = 'Recommender service URL';
 $string['recommenderurl_desc'] =
     'Base URL of the recommender service, reached over the private container network. Leave this alone unless you have moved the service.';
 
+$string['forceredirect'] = 'Require the questionnaire before anything else';
+$string['forceredirect_desc'] =
+    'Send students who have not answered the questionnaire straight to it, whatever page they ask for. Site administrators are never redirected. To turn this off without loading a page: php admin/cli/cfg.php --component=local_tutoragent --name=forceredirect --set=0';
+$string['varkrequired'] =
+    'Please answer these questions first. Your course opens as soon as you are done.';
+$string['varkcontinue'] = 'Continue';
+
 $string['mylearningstyle'] = 'My learning style';
 $string['takequestionnaire'] = 'Find out your learning style: <a href="{$a}">take the short VARK questionnaire</a>.';
 

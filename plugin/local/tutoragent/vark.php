@@ -26,6 +26,9 @@ $existing = local_tutoragent_get_style($USER->id);
 $form = new vark_form($url);
 $justsubmitted = false;
 
+// Where the student was headed when the gate sent them here.
+$wantsurl = !empty($SESSION->wantsurl) ? new moodle_url($SESSION->wantsurl) : null;
+
 if ($data = $form->get_data()) {
     $result = local_tutoragent_score(vark_form::answers_from($data));
     local_tutoragent_save_style($USER->id, $result['style'], $result['scores']);
@@ -62,6 +65,11 @@ if ($existing && !$retake) {
         }
     }
 
+    if ($justsubmitted && $wantsurl) {
+        unset($SESSION->wantsurl);
+        echo $OUTPUT->single_button($wantsurl, get_string('varkcontinue', 'local_tutoragent'), 'get');
+    }
+
     echo $OUTPUT->single_button(new moodle_url($url, ['retake' => 1]),
         get_string('varkretake', 'local_tutoragent'), 'get');
     echo html_writer::tag('p', html_writer::link(new moodle_url('/my/courses.php'),
@@ -70,6 +78,11 @@ if ($existing && !$retake) {
     if (vark_form::SAMPLE_QUESTIONS) {
         echo $OUTPUT->notification(get_string('varksamplequestions', 'local_tutoragent'),
             \core\output\notification::NOTIFY_WARNING);
+    }
+
+    if (!$existing && get_config('local_tutoragent', 'forceredirect')) {
+        echo $OUTPUT->notification(get_string('varkrequired', 'local_tutoragent'),
+            \core\output\notification::NOTIFY_INFO);
     }
 
     echo html_writer::tag('p', get_string('varkintro', 'local_tutoragent'));

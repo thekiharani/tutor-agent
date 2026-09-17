@@ -638,13 +638,45 @@ Kinesthetic -> kinesthetic
 After submission, show the detected style with a short description and a link back
 to the course.
 
-### Do NOT build a global redirect
+### Requiring the questionnaire (built; revisions 1 and 2 had cut this)
 
-The thesis describes force-redirecting first-time users to the questionnaire. A
-global redirect from `lib.php` is one bad conditional away from locking the admin
-out of the site the night before a defense. Revision 1 deferred it to WP4 as
-optional; this revision cuts it. Discovery happens through the navigation link plus
-the notification added in WP3, which is enough for the demo.
+The thesis force-redirects first-time users to the questionnaire. Revision 1
+deferred it, revision 2 cut it, on the grounds that a global redirect is one bad
+conditional away from locking the admin out. It is now built, because the demo
+wants a student who *cannot* reach the dashboard until they have answered, and
+because Moodle itself does this: `tool_mfa` registers a `\core\hook\after_config`
+callback and blocks every page until a factor passes, and `require_login()`
+enforces site policy at `moodlelib.php:2452` with
+`!$USER->policyagreed && !is_siteadmin() && !NO_SITEPOLICY_CHECK`.
+
+Copy that shape. Register `\core\hook\after_config` (dispatched from
+`lib/setup.php:1209`, after `\core\session\manager::start()` at line 905, so
+`$USER` and `$SCRIPT` are both available). Then, in order:
+
+1. **Fail open, never closed.** Wrap the whole callback in try/catch and return on
+   anything thrown. This runs on every request; an exception here is a site
+   outage, not a page bug.
+2. Skip `CLI_SCRIPT`, `AJAX_SCRIPT`, `WS_SERVER`, `NO_MOODLE_COOKIES`,
+   `during_initial_install()`, `$CFG->upgraderunning`, `$CFG->adminsetuppending`,
+   and an empty `$SCRIPT`.
+3. Skip site admins and `\core\session\manager::is_loggedinas()`. Admins being
+   exempt is the first way back in when this misbehaves.
+4. **Allow-list, not deny-list.** A student without a style may still reach:
+   `/local/tutoragent/vark.php` (or the redirect loops), `/login/`,
+   `/user/policy.php`, `/pluginfile.php`, `/tokenpluginfile.php`, `/draftfile.php`,
+   `/theme/`, `/lib/javascript.php`, `/lib/requirejs.php`, `/lib/ajax/`.
+   **The asset paths are not optional**: without them the questionnaire is served
+   with no CSS and no JavaScript and its form cannot submit.
+5. Store `qualified_me()` in `$SESSION->wantsurl` before redirecting, so the
+   result page can offer a Continue button back to where they were going.
+
+Behind the admin setting `forceredirect`, **default on**, with the off switch
+documented in the setting's own description:
+`php admin/cli/cfg.php --component=local_tutoragent --name=forceredirect --set=0`.
+That command is the second way back in, and it works when no page will load.
+
+With the gate off, discovery falls back to the navigation link and the WP3
+notification.
 
 ### What the navigation actually needs in 5.2
 
@@ -663,6 +695,13 @@ worse than no file. And `recommenderurl` must be `PARAM_RAW_TRIMMED`, not
 
 ### Gate WP2
 
+- **Enable the gate, then immediately log in as an admin in a private window.**
+  If you are bounced, the guard is wrong. This is the test that matters.
+- A student with no style is redirected to the questionnaire from every page;
+  one with a style is not redirected at all.
+- The questionnaire renders **with** its stylesheet and JavaScript while gated.
+- Logout works while gated.
+- `admin/cli/cfg.php --set=0` releases everyone without loading a page.
 - Plugin appears under Site administration > Plugins > Local plugins and installs
   with **zero debug warnings** (debug is on `DEVELOPER`, so any "Coding error"
   banner is a failure).

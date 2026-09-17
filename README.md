@@ -94,6 +94,30 @@ The VARK questionnaire is copyright VARK Learn Limited. It is credited on the
 questionnaire page, and it is used here for the educational purpose the report
 describes. Check the terms before reusing it anywhere else.
 
+## Requiring the questionnaire
+
+A student with no learning style is redirected to the questionnaire whatever
+page they ask for, and released once they answer. This is on by default; turn it
+off under *Site administration > Plugins > Local plugins > Tutor agent*, or from
+the command line if a page will not load:
+
+```sh
+docker compose exec -u www-data moodle \
+  php /var/www/moodle/admin/cli/cfg.php \
+  --component=local_tutoragent --name=forceredirect --set=0
+```
+
+The gate runs on every request, so it is built to fail open, never closed. Site
+administrators are never redirected, which is the first way back in; the command
+above is the second. Anything that throws inside the gate is swallowed and the
+request continues normally. Login, logout, Moodle's own forced flows (site
+policy, forced password change) and every stylesheet, script and file endpoint
+are exempt - without those exemptions the questionnaire would render with no CSS
+and no JavaScript, and its form would not submit.
+
+With the gate off, students are invited to the questionnaire by a notification
+on the course page instead, and can ignore it.
+
 ## Versions, and why these ones
 
 | Layer | Version | Why |
