@@ -18,6 +18,9 @@ Moodle calls the recommender over the private compose network with a 1 second
 connect and 2 second total timeout, and ignores any failure. If the recommender
 is down, Moodle pages render normally and simply show no recommendation.
 
+For how it works internally - the request path, the model, the plugin's hooks and
+the boot sequence - see [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## Prerequisites
 
 Docker Desktop (or Docker Engine) with Compose v2, and about 1.7GB of disk for the
