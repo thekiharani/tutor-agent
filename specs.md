@@ -3,36 +3,54 @@
 A Moodle plugin plus a recommender service that delivers VARK-personalised learning
 resource links. This document is the complete specification. Follow it in order.
 
+> **Revision 2 (2026-09-17).** Revision 1 targeted Moodle 4.5 LTS and a numpy-only
+> recommender. This revision targets **Moodle 5.2** (current stable) and takes three
+> deliberate simplifications agreed with the human: sklearn at runtime instead of a
+> hand-written numpy forward pass, a regex tokeniser instead of `nltk.word_tokenize`,
+> and `zlib.crc32` instead of `hash()`. Revision 1 is preserved in git history.
+> Every acceptance gate from revision 1 survives unchanged in substance.
+
 ## 0. Ground rules
 
 1. **Work in work packages (WP0 to WP4). Do not start a WP until the previous one's
    acceptance gate passes.** Each gate is a command or an observable behaviour, not
    your opinion that the code looks right.
-2. **Verify version numbers and API signatures against current Moodle documentation
-   before using them.** This brief was written against Moodle 4.5 LTS knowledge that
-   may be stale. Where the brief and the live docs disagree, the docs win. Tell the
-   human what changed.
-3. **Commit after each WP** with the WP number in the message.
+2. **Verify version numbers and API signatures against the Moodle source in the
+   container, and against current Moodle documentation, before using them.** This
+   brief is written against Moodle 5.2 but the exact point release moves weekly.
+   Where the brief and the live source disagree, the source wins. Tell the human
+   what changed.
+3. **Commit after each WP** with the WP number in the message. The repository is
+   already initialised; commit `8ec2a3c` holds the unmodified inputs.
 4. **Never invent a Moodle API.** If you are unsure whether a function exists, grep
    the Moodle source in the container: `grep -rn "function add_moduleinfo" /var/www/html/course/`
 5. When something does not work, read the Moodle source rather than guessing a
    second variant of the same call.
+6. **This is an undergraduate demo, built by someone who is not a developer.**
+   Prefer the boring solution every time. Fewer moving parts beats elegance. If a
+   feature is not needed for the five-step demo in WP4, it does not belong here.
 
 ## 1. Input files
 
-The human will supply two files:
+Both files are already in the repository root and committed:
 
-- `intents.json` - the content repository. 16 tags, 84 patterns, 4 topics x 4
-  modalities. Place at `recommender/data/intents.json`.
-- `tutoragent.zip` - the original code from a 2022 MSc thesis. Contains `main.py`,
-  `observer.php`, `recommend.php`. Place at `reference/` for reading only.
+- `intents.json` - the content repository. 16 tags, 84 patterns, **100 responses**,
+  4 topics x 4 modalities. Move to `recommender/data/intents.json` in WP1.
+- `tutoragent.zip` - the original code from a 2022 thesis: `main.py`,
+  `observer.php`, `recommend.php`. Unpack to `reference/` for reading only.
 
 **The code in `tutoragent.zip` does not run and has never run.** Treat it as a
 statement of intent, not a starting point. Read it to understand what was meant.
 Do not copy from it. Appendix A lists the verified defects so you do not
 reintroduce them.
 
-`intents.json` is real content and you keep it, with the three cleanups in WP1.
+`intents.json` is real content and you keep it, with the two cleanups in WP1.
+
+### Still outstanding from the human
+
+- **The 16 VARK questionnaire questions and their four V/A/R/K options each.**
+  These are not in the zip and are not in this brief. WP2 cannot be completed
+  without them. WP0, WP1 and everything else in WP2 are unblocked.
 
 ## 2. Goal
 
@@ -53,13 +71,31 @@ architecture. Scope creep here costs a defense.
 
 ```
 docker compose
-  db           postgres:16
-  moodle       php:8.2-apache + Moodle 4.5 LTS
-  recommender  python:3.12-slim + FastAPI (numpy at runtime, sklearn at build only)
+  db           postgres  (latest stable the Moodle release supports)
+  moodle       php:<latest supported>-apache + Moodle 5.2
+  recommender  python:<latest with numpy/sklearn wheels>-slim + FastAPI + sklearn
 ```
 
 Moodle calls the recommender over the compose network via HTTP. There is no shared
 filesystem between them and no Python on the Moodle container.
+
+### Version policy
+
+"Latest" means **latest stable that the layer above actually supports**, resolved in
+this order and verified at WP0, not assumed:
+
+1. **Moodle**: current stable release, 5.2 at the time of writing. Confirm at
+   <https://download.moodle.org/releases/latest/>.
+2. **PHP**: the newest version Moodle 5.2 supports. The authoritative answer is
+   `admin/environment.xml` in the downloaded Moodle source - read it, do not guess.
+   Moodle's installer hard-blocks on an unsupported PHP version.
+3. **Postgres**: the newest version listed as supported in the same file.
+4. **Python**: the newest version with binary wheels for numpy and scikit-learn.
+   Wheels lag new Python releases by months; if `pip install` starts compiling from
+   source, step back one minor version.
+
+**Record the four versions you actually landed on in the README.** The human needs
+to be able to state them to a panel.
 
 **Hard constraints:**
 
@@ -82,8 +118,10 @@ filesystem between them and no Python on the Moodle container.
 .
 ├── docker-compose.yml
 ├── .env.example
+├── .gitignore
 ├── README.md
-├── Makefile                          # up, down, reset, seed, logs, purge
+├── Makefile                          # up, down, reset, seed, purge, logs, demo
+├── specs.md                          # this file
 ├── moodle/
 │   ├── Dockerfile
 │   ├── php.ini
@@ -91,25 +129,23 @@ filesystem between them and no Python on the Moodle container.
 ├── recommender/
 │   ├── Dockerfile
 │   ├── requirements.txt
-│   ├── app.py                        # FastAPI, numpy only
-│   ├── train.py                      # build-time, sklearn
+│   ├── train.py                      # tokeniser + build-time training
+│   ├── app.py                        # FastAPI, imports the tokeniser from train.py
 │   └── data/
 │       ├── intents.json
-│       └── model.npz                 # generated at image build, gitignored
+│       └── model.joblib              # generated at image build, gitignored
 ├── plugin/
 │   └── local/tutoragent/             # bind-mounted into the moodle container
 │       ├── version.php
 │       ├── settings.php
-│       ├── lib.php
-│       ├── vark.php
+│       ├── lib.php                   # navigation + VARK scoring + the HTTP call
+│       ├── vark.php                  # the questionnaire page
 │       ├── db/
 │       │   ├── install.xml
 │       │   ├── events.php
 │       │   └── access.php
 │       ├── classes/
 │       │   ├── observer.php
-│       │   ├── vark.php
-│       │   ├── recommender.php
 │       │   ├── form/vark_form.php
 │       │   └── privacy/provider.php
 │       ├── cli/seed_demo.php
@@ -120,20 +156,35 @@ filesystem between them and no Python on the Moodle container.
 Bind-mount `plugin/local/tutoragent` to `/var/www/html/local/tutoragent` so the
 human can edit and review without rebuilding the image.
 
+Revision 1 also specified `classes/vark.php` and `classes/recommender.php`. Scoring
+and the HTTP call are about sixty lines between them and both now live in `lib.php`.
+`observer.php`, `vark_form.php` and `privacy/provider.php` stay as separate files
+because Moodle's autoloader requires one class per file in `classes/`.
+
 ---
 
 ## WP0: Infrastructure
 
 Deliver `docker-compose.yml`, both Dockerfiles, `php.ini`, `entrypoint.sh`,
-`Makefile`, `README.md`.
+`Makefile`, `.env.example`, `.gitignore`, `README.md`.
 
 ### Moodle container
 
-Clone Moodle from `https://github.com/moodle/moodle.git` at branch
-`MOODLE_405_STABLE`. **Verify this branch exists and is the current LTS before
-using it.** Use `--depth 1`.
+Download the current stable Moodle tarball rather than cloning the git repository:
 
-PHP extensions to install: `gd intl mbstring opcache zip pgsql pdo_pgsql soap exif`.
+```
+https://download.moodle.org/download.php/direct/stable502/moodle-latest-502.tgz
+```
+
+**Verify this URL resolves and that 502 is still the current stable series before
+using it.** If 5.3 has shipped, use that series and say so. The tarball is roughly
+80MB against roughly 1GB for a `--depth 1` clone, which matters on a slow
+connection.
+
+PHP extensions: start from `gd intl mbstring opcache zip pgsql pdo_pgsql soap exif`
+and **reconcile against `admin/environment.xml` in the downloaded source**, which
+lists exactly what this Moodle release requires. Install what it asks for.
+
 System libs needed first: `libpng-dev libjpeg-dev libfreetype6-dev libicu-dev
 libxml2-dev libzip-dev libpq-dev`.
 
@@ -152,8 +203,9 @@ opcache.revalidate_freq = 60
 opcache.validate_timestamps = 1
 ```
 
-`max_input_vars = 5000` is a hard Moodle requirement and a common install blocker.
-`opcache.max_accelerated_files` default of 10000 is below Moodle's file count.
+`max_input_vars = 5000` is a hard Moodle requirement and a common install blocker;
+confirm the current minimum in `admin/environment.xml` and raise it if 5.2 asks for
+more. `opcache.max_accelerated_files` default of 10000 is below Moodle's file count.
 Keep `validate_timestamps = 1` so the human's plugin edits take effect without a
 restart.
 
@@ -178,6 +230,9 @@ php admin/cli/install.php --non-interactive --agree-license \
   --adminemail="${MOODLE_ADMIN_EMAIL}"
 ```
 
+Check this flag list against `php admin/cli/install.php --help` in the 5.2 source
+before relying on it.
+
 3. Run `php admin/cli/purge_caches.php`.
 4. `exec apache2-foreground`.
 
@@ -189,12 +244,16 @@ tedious to unpick.
 Append to `config.php` after install (in the entrypoint, guarded so it happens once):
 
 ```php
-$CFG->debug = (E_ALL | E_STRICT);
+$CFG->debug = E_ALL;
 $CFG->debugdisplay = 1;
 ```
 
+Revision 1 said `(E_ALL | E_STRICT)`. `E_STRICT` was removed in PHP 8.4 and `E_ALL`
+is what Moodle's `DEBUG_DEVELOPER` constant means anyway.
+
 These must be on for the whole build. They are how you catch the observer output
-bug in WP3.
+bug in WP3. **Turn `debugdisplay` off before the final demo run** so a stray notice
+cannot appear on screen during the presentation.
 
 ### Makefile
 
@@ -205,10 +264,15 @@ make reset   # docker compose down -v && make up   (full clean reinstall)
 make seed    # run the seed CLI script
 make purge   # purge Moodle caches
 make logs    # follow all logs
+make demo    # print the credentials table and the five demo steps
 ```
 
 `make purge` will be used constantly. Moodle caches aggressively and a code change
 with no visible effect is almost always a stale cache.
+
+`make demo` prints, it does not do anything. It exists so the student can recover
+the demo script and the logins from the terminal without opening the README
+mid-presentation.
 
 ### Gate WP0
 
@@ -216,6 +280,7 @@ with no visible effect is almost always a stale cache.
 - Moodle login page renders at `http://localhost:8080`.
 - Admin can log in with the credentials from `.env`.
 - `make reset` reproduces all of the above from scratch.
+- The README states the four resolved versions (Moodle, PHP, Postgres, Python).
 
 ---
 
@@ -226,50 +291,86 @@ and it is fully testable with `curl`.
 
 ### Clean `intents.json` first
 
-Three fixes, applied to the file in place:
+Two fixes, applied to the file in place. Every URL below is intact in the source -
+no link needs to be invented.
 
-1. **Strip whitespace from tags.** Six of sixteen have leading or trailing spaces:
-   `'functions visual '`, `'data types visual '`, `'functions kinesthetic  '`,
-   `' data types kinesthetic'`, `' arrays auditory'`, `' data types auditory'`.
-2. **Fix five malformed anchors.** Pattern `<a href>https://...` is missing `='`.
-   They render as plain text. Find them with
-   `grep -o "<a href>[^<]*" intents.json`.
-3. **Leave the patterns and responses otherwise untouched.** This is the student's
-   content.
+**1. Strip whitespace from tags.** Six of sixteen have leading or trailing spaces:
+`'functions visual '`, `'data types visual '`, `'functions kinesthetic  '`,
+`' data types kinesthetic'`, `' arrays auditory'`, `' data types auditory'`.
 
-### `train.py` (build time, sklearn)
+**2. Fix seven broken anchors.** Revision 1 said "five malformed anchors" found with
+`grep -o "<a href>[^<]*"`; that grep returns three, and there are seven genuinely
+broken anchors in four different shapes. All seven, exhaustively:
 
-1. Load `intents.json`.
-2. Tokenize each pattern with `nltk.word_tokenize`, stem with
-   `nltk.stem.lancaster.LancasterStemmer`.
+| Tag | Response # | Defect |
+|---|---|---|
+| `arrays read_write` | 2 | `<a href>https://www.tutorialspoint.com/...c_arrays.htm'>` - missing `='` |
+| `arrays read_write` | 4 | `<a href>http://ee.hawaii.edu/~tep/EE160/Book/PDF/Chapter7.pdf'>` - missing `='` |
+| `arrays read_write` | 5 | `<a href>https://www.slideshare.net/kaushal_kush/array-ppt'>` - missing `='` |
+| `arrays kinesthetic` | 3 | `, a href = '...F2oF4G9ouYg'>` - opening `<` replaced by a comma |
+| `functions kinesthetic` | 5 | `< a href=  '...dJMjfsjnOpA'>` - space after `<`, so it is not a tag |
+| `data types kinesthetic` | 0 | closing tag written `>/a>` |
+| `arrays auditory` | 3 | closing tag written `,/a>` |
+
+There is an eighth oddity, `<A HREF = '...oOMqMZWFYbw'>` in `data types kinesthetic`
+#3. Uppercase is valid HTML and renders correctly. Normalise it for tidiness or
+leave it; either is acceptable.
+
+**3. Leave the patterns and responses otherwise untouched.** This is the student's
+content. Record the edits in the README so the change is disclosed rather than
+discovered.
+
+### `train.py` (build time)
+
+1. Load `intents.json`, stripping whitespace from every tag on load.
+2. **Define the tokeniser here, once**, and have `app.py` import it:
+
+```python
+STEMMER = LancasterStemmer()
+
+def tokenize(text):
+    return [STEMMER.stem(t) for t in re.findall(r"[a-z_/]+", text.lower())]
+```
+
+Revision 1 used `nltk.word_tokenize`, which needs the `punkt_tab` data downloaded at
+image build. The regex does the same job on this corpus, keeps `if/else` and
+`read_write` as single tokens, and removes a network dependency from the build. The
+Lancaster stemmer needs no data file, so the write-up can still accurately say
+"Lancaster stemming".
+
+Put the training run behind `if __name__ == "__main__":` so `app.py` can import the
+tokeniser without triggering training. **Train and serve must tokenise through this
+one function.** If they ever diverge the system degrades silently.
+
 3. **Build the vocabulary with `sorted(set(...))`.** The original used
    `sorted(list(words))` with no dedupe, producing 328 slots for 41 distinct stems.
-   The verified vocabulary is exactly 41 stems.
 4. Bag-of-words encode. 84 samples, 16 classes.
 5. Train `MLPClassifier(hidden_layer_sizes=(8, 8), activation='relu',
    solver='adam', max_iter=1000, random_state=42)`. This matches the thesis
-   architecture (41 -> 8 -> 8 -> 16, softmax).
-6. Export to `data/model.npz`: `vocab`, `labels`, and the weights and biases from
-   `clf.coefs_` and `clf.intercepts_`.
-7. Print training accuracy and assert it is 1.0. It will be. All 84 input vectors
-   are unique with zero class collisions, so the model memorises the table exactly.
-   This is expected, not a bug, but see the note in section 6.
+   architecture (input -> 8 -> 8 -> 16, softmax).
+6. `joblib.dump({"clf": clf, "vocab": vocab, "labels": labels}, "data/model.joblib")`.
+   Revision 1 exported raw weights to `model.npz` and reimplemented the forward pass
+   in numpy. Serialising the fitted estimator removes that whole class of bugs.
+7. Print the vocabulary size, the training accuracy, and assert accuracy is 1.0. It
+   will be. All 84 input vectors are unique with zero class collisions, so the model
+   memorises the table exactly. This is expected, not a bug, but see section 6.
+   **Record the vocabulary size the run actually prints.** Revision 1 asserted 41
+   stems, but that was measured with `word_tokenize`; the regex tokeniser may give a
+   slightly different number. Whatever it prints is the truth - put it in the README
+   and in the `/health` response.
 
-Run `train.py` in the Dockerfile. `model.npz` is a build artifact, gitignored.
-Download `punkt_tab` at image build so runtime never touches the network.
+Run `train.py` in the Dockerfile. `model.joblib` is a build artifact, gitignored.
 
-### `app.py` (runtime, numpy only)
+### `app.py` (runtime)
 
-No sklearn import at runtime. Load `model.npz` and do the forward pass in numpy:
-two ReLU layers then softmax. Tokenize and stem exactly as `train.py` does, using
-the same nltk calls. Train/serve tokenization must be identical or the whole thing
-silently degrades.
+`from train import tokenize`. Load `model.joblib` once at startup and classify with
+`clf.predict_proba()`.
 
 **Endpoints:**
 
 ```
 GET  /health
-     -> {"status": "ok", "classes": 16, "vocab": 41}
+     -> {"status": "ok", "classes": 16, "vocab": <the number train.py printed>}
 
 POST /recommend
      {"module_name": "Arrays", "module_intro": "Introduction to arrays in C",
@@ -279,7 +380,7 @@ POST /recommend
 ```
 
 `style` is one of `visual`, `auditory`, `read_write`, `kinesthetic`. Reject anything
-else with a 422.
+else with a 422 (a pydantic `Literal` gives you this for free).
 
 ### The two fixes that make this actually work
 
@@ -298,46 +399,56 @@ and the model could not discriminate. Verified behaviour of the original:
 'Arrays Introduction to arrays in C auditory'  -> 'arrays auditory'
 ```
 
-The four modality stems `vis`, `audit`, `read_write`, `kinesthet` are in the
+The four modality stems (`vis`, `audit`, `read_write`, `kinesthet`) are in the
 vocabulary. They just never got sent.
 
 **Fix 2: topic alias expansion.**
 
-The 41-stem vocabulary is:
+The vocabulary contains `if/else`, `loop`, `swic` and `whil` but **not** `control`.
+A Moodle activity named "Control Structures" matches nothing. Apply a synonym
+expansion to the input text before encoding.
 
-```
-access an and argu array assign audit bas c cal class dat decl defin der do el
-enum for funct if/else in index is kinesthet loop of or read_write recurs select
-stat stor swic the typ valu vis void what whil
-```
-
-Note it contains `if/else`, `loop`, `swic`, `whil` but **not** `control`. A Moodle
-activity named "Control Structures" matches nothing. Apply a synonym expansion to
-the input text before encoding:
+Note the tags in `intents.json` use plural topics (`arrays`, `controls`,
+`functions`, `data types`) while the natural alias keys are singular. One table
+carries both, so the fallback cannot build a tag that does not exist:
 
 ```python
-TOPIC_ALIASES = {
-    "array":     "array index declaration accessing elements",
-    "control":   "if/else selection statement for loop while do switch",
-    "function":  "function calling defining arguments recursion storage class",
-    "data type": "data type basic derived enumerated void",
+TOPICS = {
+    "array":     ("arrays",     "array index declaration accessing elements"),
+    "control":   ("controls",   "if/else selection statement for loop while do switch"),
+    "function":  ("functions",  "function calling defining arguments recursion storage class"),
+    "data type": ("data types", "data type basic derived enumerated void"),
 }
 ```
 
-If a key appears in the lowercased `module_name + module_intro`, append its
-expansion to the classifier input. This is a legitimate, explainable layer, not a
-hack, and it is defensible in a viva.
+Scan the lowercased `module_name + module_intro` against the keys **in the order
+listed and take the first match only**, appending that one expansion to the
+classifier input. First-match-only keeps the result deterministic and stops an intro
+that mentions two topics from blurring into both. This is a legitimate, explainable
+layer, not a hack, and it is defensible in a viva.
 
 ### Confidence gate and fallback
 
-If `max(softmax) < RECOMMENDER_THRESHOLD` (env var, default `0.45`), fall back to a
-deterministic lookup: derive the topic by keyword match against the four topics,
-build the tag as `f"{topic} {modality}"`, and return a response from that tag.
-Set `"source": "fallback"` so this is visible in testing.
+If `max(predict_proba) < RECOMMENDER_THRESHOLD` (env var, default `0.45`), fall back
+to the deterministic lookup: take the topic from the same first-match scan, build the
+tag as `f"{topic} {style}"`, and return a response from that tag with
+`"source": "fallback"` so it is visible in testing.
 
-**Response selection must be deterministic**, not `random.choice`. Use
-`hash(module_name + style) % len(responses)`. The demo must show the same link on
-every rehearsal.
+**If no topic matches at all and confidence is below the threshold**, return
+**HTTP 204 No Content**. The observer then shows no notification. This is the
+"student opens an activity we have no content for" path and it must not produce a
+wrong recommendation or an error.
+
+**Response selection must be deterministic**, not `random.choice`:
+
+```python
+index = zlib.crc32((module_name + style).encode()) % len(responses)
+```
+
+Revision 1 said `hash(module_name + style)`. Python randomises `hash()` for strings
+per process, so that would have changed the chosen link on every container restart -
+the exact failure the requirement exists to prevent. `crc32` is stable across
+processes and machines. The demo must show the same link on every rehearsal.
 
 ### Gate WP1
 
@@ -360,14 +471,21 @@ and `auditory`, an article or PDF for `read_write`, a practical video for
 the topic is recognised as controls, not arrays. If any two styles return the same
 link for the same module, WP1 has failed. Do not proceed.
 
+Also confirm: a nonsense module name (`"module_name":"Pointers"`) returns 204 rather
+than an error or a confident wrong answer, and that repeating the whole loop after
+`docker compose restart recommender` returns byte-identical links.
+
 ---
 
 ## WP2: Plugin scaffolding and the VARK questionnaire
 
+> Blocked on the human supplying the 16 questions. Everything except `vark.php` and
+> `vark_form.php` can be built first.
+
 ### Files and the things that go wrong in them
 
 **`version.php`** - `$plugin->component = 'local_tutoragent';`,
-`$plugin->version` as `YYYYMMDDXX`, `$plugin->requires` set to the Moodle 4.5
+`$plugin->version` as `YYYYMMDDXX`, `$plugin->requires` set to the Moodle 5.2
 version integer. Look that integer up in `/var/www/html/version.php` rather than
 guessing it.
 
@@ -375,9 +493,10 @@ guessing it.
 `class observer`. The original used a non-namespaced `local_tutoragent_observer`
 in a root-level file, which Moodle's autoloader will not find.
 
-**`db/install.xml`** - use Appendix B verbatim. Invalid XMLDB is a common failure
-and it fails in a way that leaves the DB half-upgraded, needing `make reset` to
-retry cleanly.
+**`db/install.xml`** - use Appendix B as the starting point, but **validate it
+against `lib/xmldb/xmldb.xsd` in the 5.2 source** before installing. XMLDB is
+stable, so it should apply unchanged; invalid XMLDB fails in a way that leaves the
+DB half-upgraded and needs `make reset` to retry cleanly.
 
 **`classes/privacy/provider.php`** - the plugin stores per-user data, so a
 `null_provider` is not acceptable. Implement
@@ -388,11 +507,13 @@ warning, which you do not want on screen during a defense.
 **`settings.php`** - one admin setting, `recommenderurl`, defaulting to
 `http://recommender:8000`. Do not hardcode the URL in the observer.
 
+**`lib.php`** - three things: the navigation hook that surfaces the questionnaire
+link, the VARK scoring function, and the `curl_*` call to the recommender with the
+timeouts from section 3.
+
 **`vark.php` and `classes/form/vark_form.php`** - the 16-question VARK
-questionnaire using Moodle's Forms API (`moodleform`). Questions are in Appendix A
-of the source thesis; the human will supply them if they are not in the zip. Each
-question has four options mapping to V, A, R, K. Multi-select is allowed by the
-VARK instrument.
+questionnaire using Moodle's Forms API (`moodleform`). Each question has four
+options mapping to V, A, R, K. Multi-select is allowed by the VARK instrument.
 
 **Scoring:** count selections per dimension. The dominant style is the highest
 score. On a tie, prefer the order V, A, R, K and record it. Store the full score
@@ -408,15 +529,16 @@ Read/Write  -> read_write
 Kinesthetic -> kinesthetic
 ```
 
-After submission, show the detected style with a short description
-(this is Figure 5.2 of the thesis) and a link back to the course.
+After submission, show the detected style with a short description and a link back
+to the course.
 
-### Do NOT build a global redirect yet
+### Do NOT build a global redirect
 
 The thesis describes force-redirecting first-time users to the questionnaire. A
 global redirect from `lib.php` is one bad conditional away from locking the admin
-out of the site. It is deferred to WP4 as optional. For now, discovery happens
-through a navigation link plus the notification added in WP3.
+out of the site the night before a defense. Revision 1 deferred it to WP4 as
+optional; this revision cuts it. Discovery happens through the navigation link plus
+the notification added in WP3, which is enough for the demo.
 
 ### Gate WP2
 
@@ -460,7 +582,7 @@ the gate.** If it does not fire, fall back to observing `*` and filtering with
    $DB->get_record($event->objecttable, ['id' => $event->objectid],
                    'name, intro', IGNORE_MISSING)
 4. Strip tags from name and intro.
-5. POST to the recommender. On any error or timeout, return silently.
+5. POST to the recommender. On any error, timeout, or 204, return silently.
 6. \core\notification::info($response['html']);
 ```
 
@@ -482,6 +604,15 @@ the gate.** If it does not fire, fall back to observing `*` and filtering with
    recommender`, then load a course page and confirm it renders in normal time with
    no error.
 
+### A timing caveat to know about
+
+`\core\notification::info()` queues into the session and renders in the page header.
+`mod_page` triggers its view event *before* the header is output, so the
+notification appears on the same page load - which is what the demo needs, and WP4
+seeds only `mod_page` activities. Other module types trigger the event after the
+header and the notification would land on the *next* page load. Say this in the
+README rather than implying it works identically everywhere.
+
 ### Gate WP3
 
 - Student with a stored style clicks an activity, notification appears with a link
@@ -499,8 +630,12 @@ the gate.** If it does not fire, fall back to observing `*` and filtering with
 ### `cli/seed_demo.php`
 
 Creates a course "Introduction to Programming in C" with four `mod_page`
-activities: Arrays, Control Structures, Functions, Data Types. Give each a `name`
-and `intro` that the topic aliases will match.
+activities: Arrays, Control Structures, Functions, Data Types.
+
+Give each a `name` and `intro` that the topic aliases match - and **keep each intro
+topically clean**. Alias matching is substring-based on `name + intro`, so an Arrays
+intro that mentions "loops" would match the `control` key first and misclassify the
+activity. One topic per intro.
 
 Then five users, all enrolled as students, all with a known password from `.env`:
 
@@ -517,29 +652,23 @@ no row and is used to demo the questionnaire live.
 
 Use `create_course()` from `course/lib.php`, `add_moduleinfo()` from
 `course/modlib.php`, `user_create_user()` from `user/lib.php`, and
-`enrol_try_internal_enrol()` from `lib/enrollib.php`.
+`enrol_try_internal_enrol()` from `lib/enrollib.php`. **Check each signature against
+the 5.2 source before calling it.**
 
-**`add_moduleinfo()` needs a more complete object than its signature suggests.**
-It will want `modulename`, `course`, `section`, `name`, `intro`, `introformat`,
+**`add_moduleinfo()` needs a more complete object than its signature suggests.** In
+4.5 it wanted `modulename`, `course`, `section`, `name`, `intro`, `introformat`,
 `content`, `contentformat`, `visible`, `visibleoncoursepage`, `cmidnumber`,
-`groupmode`, `completion`, `completionview`, `showdescription`. Expect to iterate.
+`groupmode`, `completion`, `completionview`, `showdescription`. Treat that as a
+starting list for 5.2, not gospel. Expect to iterate.
 
 **If `add_moduleinfo()` costs you more than 30 minutes, switch approach:** have the
-human build the course once in the UI, export it with
-`admin/cli/backup.php`, commit the resulting `.mbz` to `fixtures/`, and restore it
-in the seed script with `admin/cli/restore_backup.php`. That is deterministic and
-avoids the API entirely. Flag the switch to the human rather than grinding.
+human build the course once in the UI, export it with `admin/cli/backup.php`, commit
+the resulting `.mbz` to `fixtures/`, and restore it in the seed script with
+`admin/cli/restore_backup.php`. That is deterministic and avoids the API entirely.
+Flag the switch to the human rather than grinding.
 
 The script must be idempotent, or detect an existing seed and refuse with a clear
 message.
-
-### Optional: the forced redirect
-
-Only if everything above is green and time remains. Behind an admin setting
-`forceredirect`, **default off**. Must skip: site admins, the questionnaire page
-itself, login and logout pages, AJAX requests (`AJAX_SCRIPT`), CLI (`CLI_SCRIPT`),
-and users who already have a style. Test by logging in as admin immediately after
-enabling it. If you get bounced, the guard is wrong.
 
 ### Gate WP4
 
@@ -564,10 +693,15 @@ done.
 
 ## 5. README
 
-The README must get a reader from clone to working demo with no prior knowledge:
-prerequisites, `.env` setup, `make up`, `make seed`, the demo script above, the
-credentials table, a troubleshooting section (stale cache, port conflicts,
-recommender down), and the architecture in five lines.
+The README must get a reader from clone to working demo with no prior knowledge.
+Write it for someone who does not write code: exact commands to copy, what each one
+should print, and what to do when it does not.
+
+Required sections: prerequisites; `.env` setup; `make up`; `make seed`; the demo
+script above; the credentials table; the four resolved version numbers; the
+disclosed `intents.json` edits; troubleshooting (stale cache, port conflicts,
+recommender down, first build is slow); the architecture in five lines; and the
+known limitations from section 6.
 
 ## 6. Honest framing for the defense
 
@@ -581,6 +715,9 @@ a panel member finds it.
   model that generalises". Reporting 100% accuracy as a result without this context
   invites a hard question.
 - Recommendations are limited to the content in `intents.json`.
+- The topic alias expansion is a deliberate, disclosed layer in front of the
+  classifier, added because the vocabulary has no stem for "control". It is part of
+  the system, not a hidden fix.
 - The VARK learning-styles matching hypothesis is contested in the education
   literature. The correct position is that this implements VARK as specified by the
   source thesis, not that matching has been shown to improve outcomes.
@@ -589,7 +726,7 @@ a panel member finds it.
 
 ## Appendix A: verified defects in `tutoragent.zip`
 
-Confirmed by reading and running the code. Do not reintroduce any of these.
+Confirmed by reading the code in the zip. Do not reintroduce any of these.
 
 | # | File | Defect |
 |---|---|---|
@@ -605,10 +742,13 @@ Confirmed by reading and running the code. Do not reintroduce any of these.
 | 10 | `main.py` | Trains at import time; would retrain on every page view. |
 | 11 | `main.py` | Vocabulary built with `sorted(list(words))`, no dedupe: 328 slots for 41 distinct stems. |
 | 12 | `main.py` | `nltk.word_tokenize` used with no data download. |
-| 13 | `intents.json` | 6 of 16 tags carry stray leading or trailing whitespace. |
-| 14 | `intents.json` | 5 of 98 anchors malformed as `<a href>https://...`, rendering as plain text. |
+| 13 | `main.py` | `random.choice(responses)` - a different link on every identical request. |
+| 14 | `intents.json` | 6 of 16 tags carry stray leading or trailing whitespace. |
+| 15 | `intents.json` | 7 of 100 responses have broken anchor markup, rendering as plain text. Enumerated in WP1. |
 
-## Appendix B: known-good `db/install.xml`
+## Appendix B: starting-point `db/install.xml`
+
+Validate against `lib/xmldb/xmldb.xsd` in the 5.2 source before use.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -639,7 +779,7 @@ Confirmed by reading and running the code. Do not reintroduce any of these.
 1. **Caches.** A code change with no visible effect is a stale cache. `make purge`.
    Make this your first reflex, not your last.
 2. **Failed plugin install leaves the DB half-upgraded.** `make reset` rather than
-   trying to patch forward. Get `install.xml` right the first time using Appendix B.
+   trying to patch forward. Get `install.xml` right the first time.
 3. **Event observers run mid-request.** No output, ever.
 4. **`moodledata` outside the web root.** Always.
 5. **`max_input_vars = 5000`.** Moodle refuses to install below this.
@@ -662,6 +802,9 @@ grep -rn "get_record(" plugin/ | grep "array()" || echo "CLEAN"
 
 # no output in the observer
 grep -nE "echo|print|var_dump" plugin/local/tutoragent/classes/observer.php || echo "CLEAN"
+
+# no randomness in response selection
+grep -rn "random\.\|hash(" recommender/ || echo "CLEAN"
 
 # recommender url not hardcoded outside settings/defaults
 grep -rn "recommender:8000" plugin/ | grep -v "settings.php" || echo "CLEAN"
