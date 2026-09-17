@@ -1,0 +1,52 @@
+# Moodle 5.2 requires PHP >= 8.3 (public/admin/environment.xml, and
+# composer.json: "php": ">=8.3.0") and declares no upper bound.  PHP 8.5 was
+# tried first and installs fine, but Moodle 5.2 core emits ~120 PHP 8.5
+# deprecation notices (non-canonical casts, `case ...;`, the backtick
+# operator, xml_parser_free()).  With debugdisplay on for development those
+# render in the browser, so 8.4 is the newest version that is actually usable
+# here.  Re-test 8.5 when Moodle ships a release that clears them.
+FROM php:8.4-apache
+
+# Moodle 5.2 changed its layout: the code root holds config.php and the CLI
+# shims, and the *web* root is <root>/public.  Serving the code root directly
+# now throws a deliberate "rootdirpublic" exception.
+ENV MOODLE_ROOT=/var/www/moodle
+ENV MOODLE_DOCROOT=/var/www/moodle/public
+
+# System libraries for the PHP extensions below.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libxml2-dev \
+        libzip-dev libpq-dev libsodium-dev libonig-dev \
+        ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Extensions Moodle 5.2 lists in environment.xml that are NOT already compiled
+# into php:8.4-apache.  That image already ships mbstring, sodium, opcache,
+# curl, openssl, ctype, dom, xml, xmlreader, simplexml, iconv, json, hash,
+# fileinfo and filter - asking docker-php-ext-install to build those again
+# fails with "cp: cannot stat 'modules/*'".
+RUN docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-install -j"$(nproc)" \
+        gd intl zip pgsql pdo_pgsql soap exif
+
+COPY php.ini /usr/local/etc/php/conf.d/zz-moodle.ini
+
+# Point Apache at public/, not at the code root.
+RUN sed -ri "s!/var/www/html!${MOODLE_DOCROOT}!g" \
+        /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf \
+    && printf 'ServerName localhost\n' > /etc/apache2/conf-available/servername.conf \
+    && a2enconf servername \
+    && a2enmod rewrite headers
+
+ARG MOODLE_TARBALL=https://download.moodle.org/download.php/direct/stable502/moodle-latest-502.tgz
+RUN mkdir -p "${MOODLE_ROOT}" \
+    && curl -fsSL "${MOODLE_TARBALL}" | tar xz --strip-components=1 -C "${MOODLE_ROOT}" \
+    && mkdir -p /var/moodledata \
+    && chown -R www-data:www-data "${MOODLE_ROOT}" /var/moodledata
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR ${MOODLE_ROOT}
+EXPOSE 80
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

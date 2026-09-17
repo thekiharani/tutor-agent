@@ -71,10 +71,25 @@ architecture. Scope creep here costs a defense.
 
 ```
 docker compose
-  db           postgres  (latest stable the Moodle release supports)
-  moodle       php:<latest supported>-apache + Moodle 5.2
-  recommender  python:<latest with numpy/sklearn wheels>-slim + FastAPI + sklearn
+  db           postgres:18
+  moodle       php:8.4-apache + Moodle 5.2.3+
+  recommender  python:3.14-slim + FastAPI + scikit-learn
 ```
+
+**Moodle 5.2 serves from a `public/` subdirectory.** This is new in 5.x and it
+changes every path in this brief:
+
+```
+/var/www/moodle/                 <- code root, holds config.php
+  admin/cli/*.php                <- CLI shims; run these
+  public/                        <- Apache DocumentRoot
+    config.php                   <- shim that requires ../config.php
+    local/tutoragent/            <- our plugin is bind-mounted here
+```
+
+Serving the code root instead of `public/` throws a deliberate `rootdirpublic`
+exception, so the DocumentRoot must be `public/`. `moodledata` stays at
+`/var/moodledata`, outside both.
 
 Moodle calls the recommender over the compose network via HTTP. There is no shared
 filesystem between them and no Python on the Moodle container.
@@ -94,8 +109,26 @@ this order and verified at WP0, not assumed:
    Wheels lag new Python releases by months; if `pip install` starts compiling from
    source, step back one minor version.
 
-**Record the four versions you actually landed on in the README.** The human needs
-to be able to state them to a panel.
+**Resolved at WP0 on 2026-09-17** (verified, not assumed):
+
+| Layer | Version | Where the constraint came from |
+|---|---|---|
+| Moodle | 5.2.3+ (Build 20260916), `$version = 2026042003.01` | current stable; `stable503` returns 404 |
+| PHP | 8.4 | `composer.json` requires `>=8.3.0`, no upper bound - but see below |
+| Postgres | 18 | `environment.xml` requires `>= 16` |
+| Python | 3.14 | newest with numpy/scikit-learn wheels |
+
+**PHP 8.5 was tried first and rejected on evidence.** Moodle 5.2 installs fine on
+it, but core emits about 120 deprecation notices under PHP 8.5 - non-canonical
+casts, `case ...;`, the backtick operator, `xml_parser_free()` - in
+`bigbluebuttonbn`, `lib/antivirus/clamav`, `lib/adminlib.php`, `lib/moodlelib.php`,
+`mod/workshop` and `group/lib.php`. With `debugdisplay` on those render in the
+browser, and they would make the WP2 and WP3 gates ("zero debug warnings", "page
+source is clean") impossible to read. PHP 8.4 produces **zero** deprecations and
+zero warnings on the same install. Re-test 8.5 when Moodle clears them.
+
+Record these versions in the README. The human needs to be able to state them to a
+panel.
 
 **Hard constraints:**
 
@@ -121,6 +154,7 @@ to be able to state them to a panel.
 ├── .gitignore
 ├── README.md
 ├── Makefile                          # up, down, reset, seed, purge, logs, demo
+├── scripts/demo.sh                   # what `make demo` prints
 ├── specs.md                          # this file
 ├── moodle/
 │   ├── Dockerfile
@@ -153,8 +187,8 @@ to be able to state them to a panel.
 └── reference/                        # the original thesis code, read-only
 ```
 
-Bind-mount `plugin/local/tutoragent` to `/var/www/html/local/tutoragent` so the
-human can edit and review without rebuilding the image.
+Bind-mount `plugin/local/tutoragent` to `/var/www/moodle/public/local/tutoragent`
+(note the `public/`) so the human can edit and review without rebuilding the image.
 
 Revision 1 also specified `classes/vark.php` and `classes/recommender.php`. Scoring
 and the HTTP call are about sixty lines between them and both now live in `lib.php`.
@@ -176,17 +210,29 @@ Download the current stable Moodle tarball rather than cloning the git repositor
 https://download.moodle.org/download.php/direct/stable502/moodle-latest-502.tgz
 ```
 
-**Verify this URL resolves and that 502 is still the current stable series before
-using it.** If 5.3 has shipped, use that series and say so. The tarball is roughly
+**Verified 2026-09-17**: this URL resolves (86MB), `stable503` returns 404, and the
+extracted `public/version.php` reports `5.2.3+ (Build: 20260916)`. Re-check before
+a fresh build; if 5.3 has shipped, use that series and say so. The tarball is roughly
 80MB against roughly 1GB for a `--depth 1` clone, which matters on a slow
 connection.
 
-PHP extensions: start from `gd intl mbstring opcache zip pgsql pdo_pgsql soap exif`
-and **reconcile against `admin/environment.xml` in the downloaded source**, which
-lists exactly what this Moodle release requires. Install what it asks for.
+**PHP extensions.** `public/admin/environment.xml` for 5.2 requires: `iconv`,
+`mbstring`, `curl`, `openssl`, `ctype`, `zip`, `zlib`, `gd`, `simplexml`, `spl`,
+`pcre`, `dom`, `xml`, `xmlreader`, `intl`, `json`, `hash`, `fileinfo`, `sodium`,
+`filter`; optional: `tokenizer`, `soap`, `exif`. `sodium` is newly required in 5.x.
+
+`php:8.4-apache` already ships most of them. Build **only** the missing ones:
+
+```
+gd intl zip pgsql pdo_pgsql soap exif
+```
+
+Asking `docker-php-ext-install` for an extension the image already has (`mbstring`,
+`sodium`, `opcache`) fails with `cp: cannot stat 'modules/*'`, and with `-j` in
+play the error does not name the culprit. Check `php -m` in the base image first.
 
 System libs needed first: `libpng-dev libjpeg-dev libfreetype6-dev libicu-dev
-libxml2-dev libzip-dev libpq-dev`.
+libxml2-dev libzip-dev libpq-dev libsodium-dev libonig-dev`.
 
 `php.ini` must set:
 
@@ -203,9 +249,9 @@ opcache.revalidate_freq = 60
 opcache.validate_timestamps = 1
 ```
 
-`max_input_vars = 5000` is a hard Moodle requirement and a common install blocker;
-confirm the current minimum in `admin/environment.xml` and raise it if 5.2 asks for
-more. `opcache.max_accelerated_files` default of 10000 is below Moodle's file count.
+`max_input_vars = 5000` is a hard Moodle requirement and a common install blocker.
+5.2's `environment.xml` asks only for `memory_limit >= 96M` and checks
+`max_input_vars` through a custom check, so these values clear it comfortably. `opcache.max_accelerated_files` default of 10000 is below Moodle's file count.
 Keep `validate_timestamps = 1` so the human's plugin edits take effect without a
 restart.
 
@@ -230,8 +276,9 @@ php admin/cli/install.php --non-interactive --agree-license \
   --adminemail="${MOODLE_ADMIN_EMAIL}"
 ```
 
-Check this flag list against `php admin/cli/install.php --help` in the 5.2 source
-before relying on it.
+Verified against `admin/cli/install.php --help` in 5.2: every flag above exists.
+Note there is only one installer, the shim at the **code root**, and it writes
+`config.php` to the code root (`dirname(__DIR__, 2)`), not into `public/`.
 
 3. Run `php admin/cli/purge_caches.php`.
 4. `exec apache2-foreground`.
@@ -281,6 +328,9 @@ mid-presentation.
 - Admin can log in with the credentials from `.env`.
 - `make reset` reproduces all of the above from scratch.
 - The README states the four resolved versions (Moodle, PHP, Postgres, Python).
+- **No PHP deprecation notices or warnings in `docker compose logs moodle`.**
+  On the right PHP version this count is zero; a non-zero count means the PHP
+  version is wrong, not that Moodle is broken.
 
 ---
 
@@ -787,7 +837,14 @@ Validate against `lib/xmldb/xmldb.xsd` in the 5.2 source before use.
    Use native curl for the internal service call.
 7. **Table names are length-limited.** `local_tutoragent_vark` is fine at 21 chars.
 8. **Run CLI scripts as `www-data`**, or file ownership in `moodledata` breaks:
-   `docker compose exec -u www-data moodle php admin/cli/purge_caches.php`
+   `docker compose exec -u www-data moodle php /var/www/moodle/admin/cli/purge_caches.php`
+9. **The web root is `public/`, the code root is its parent.** Plugins live in
+   `public/local/`, `config.php` lives in the parent, CLI shims live in the
+   parent's `admin/cli/`. Getting this wrong gives a `rootdirpublic` exception.
+10. **`postgres:18` moved `PGDATA`** to `/var/lib/postgresql/18/docker` and
+    declares its volume at `/var/lib/postgresql`. Mount the parent or the data
+    does not persist.
+11. **Do not rebuild PHP extensions the base image already has.** See WP0.
 
 ## Appendix D: final self-check before handing back
 
