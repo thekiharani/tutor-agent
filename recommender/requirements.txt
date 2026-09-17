@@ -1,6 +1,5 @@
-# Runtime only; scikit-learn and scipy are build-time (requirements-train.txt).
-# Plain uvicorn, not uvicorn[standard]: the extras are 24MB of throughput
-# tuning that means nothing here. Pinned so a rebuild gives the same links.
+# Runtime only. Plain uvicorn, not uvicorn[standard]: the extras are 24MB of
+# throughput tuning that means nothing here.
 fastapi==0.141.1
 uvicorn==0.53.0
 pydantic==2.13.5

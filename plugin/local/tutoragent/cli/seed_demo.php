@@ -1,7 +1,6 @@
 <?php
-// One course, four activities, five students. Run via `make seed`; refuses to
-// run twice. `make rehearse` passes --reset-blank to clear student.blank's
-// style so the demo can be run again from the top.
+// One course, four activities, five students. `make seed` runs it, `make
+// rehearse` passes --reset-blank to clear student.blank for another run.
 
 define('CLI_SCRIPT', true);
 
@@ -16,9 +15,8 @@ require_once($CFG->dirroot . '/local/tutoragent/lib.php');
 
 const SEED_SHORTNAME = 'PROG-C';
 
-// One topic per intro, deliberately: topic matching is substring-based over
-// name and intro together, so an Arrays intro mentioning "loops" would pull the
-// activity towards control structures.
+// One topic per intro: matching is substring-based over name and intro, so an
+// Arrays intro mentioning "loops" would pull it towards control structures.
 const SEED_ACTIVITIES = [
     [
         'name' => 'Arrays',
@@ -97,8 +95,7 @@ cli_writeln("  course id {$course->id}");
 
 foreach (SEED_ACTIVITIES as $index => $activity) {
     // add_moduleinfo() wants more than its signature suggests: the generic
-    // course_modules fields plus whatever the module's add_instance() reads -
-    // for mod_page, content, display and the print options.
+    // course_modules fields plus whatever the module's add_instance() reads.
     $moduleinfo = (object) [
         'modulename' => 'page',
         'module' => $DB->get_field('modules', 'id', ['name' => 'page'], MUST_EXIST),
@@ -144,8 +141,7 @@ foreach (SEED_USERS as $seeduser) {
     enrol_try_internal_enrol($course->id, $userid, $studentrole->id);
 
     if ($seeduser['style'] !== null) {
-        // A plausible breakdown rather than a flat 16/0/0/0, flagged as seeded
-        // so nobody mistakes it for a real submission.
+        // Flagged as seeded so nobody mistakes it for a real submission.
         $dominant = array_search($seeduser['style'], LOCAL_TUTORAGENT_STYLES, true);
         $counts = ['V' => 3, 'A' => 3, 'R' => 3, 'K' => 3];
         $counts[$dominant] = 9;

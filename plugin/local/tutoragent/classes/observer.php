@@ -7,15 +7,13 @@ use core\output\notification;
 use moodle_url;
 
 /**
- * Turns "a student opened an activity" into a recommendation.
- *
- * Observers run mid-request. Nothing here may write to the output buffer -
- * that trips "Coding error: unexpected output" - and nothing here may be slow
- * or throw, hence \core\notification and the quiet failure paths.
+ * Observers run mid-request: nothing here may write to the output buffer, which
+ * trips "Coding error: unexpected output", and nothing here may be slow or
+ * throw. Hence \core\notification and the quiet failure paths.
  */
 class observer {
 
-    /** On the course page, invite a student who has no learning style yet. */
+    /** On the course page, only ever the invitation: there is no activity yet. */
     public static function course_viewed(course_viewed $event): void {
         global $CFG;
 
@@ -69,7 +67,7 @@ class observer {
         \core\notification::add($html, notification::NOTIFY_INFO);
     }
 
-    /** True only when there is a page to write to and it is the viewer's own event. */
+    /** Only when there is a page to write to and it is the viewer's own event. */
     private static function should_act(?int $userid): bool {
         global $USER;
 

@@ -37,9 +37,8 @@ services:
     ports:
       - "${MOODLE_PORT}:80"
     volumes:
-      # moodledata must stay outside the served directory.
+      # Must stay outside the served directory.
       - moodledata:/var/moodledata
-      # Bind-mounted so plugin edits apply without rebuilding.
       - ./plugin/local/tutoragent:/var/www/moodle/public/local/tutoragent
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost/login/index.php > /dev/null || exit 1"]

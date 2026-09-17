@@ -1,11 +1,9 @@
-"""Trains the model at image build time, and holds the code that serves it.
+"""Trains the model at image build time.
 
 app.py imports tokenize() and forward() from here, so training and serving
-cannot drift apart. main() proves it: after fitting, it asserts forward()
-reproduces scikit-learn's predict_proba, and the build fails if it does not.
-That is what lets the runtime image ship without scikit-learn or scipy.
-
-Architecture per the project report: bag-of-words -> 8 -> 8 -> softmax, 16 classes.
+cannot drift apart, and main() asserts forward() reproduces predict_proba
+before the weights ship. That is what lets the runtime image omit scikit-learn.
+Architecture per the project report: bag-of-words -> 8 -> 8 -> softmax.
 """
 
 import json
@@ -21,9 +19,8 @@ MODEL_PATH = os.path.join(DATA_DIR, "model.npz")
 
 _STEMMER = LancasterStemmer()
 
-# A regex split rather than nltk.word_tokenize, which would need the punkt_tab
-# corpus downloaded at build time. Keeps "if/else" and "read_write" whole -
-# both are real vocabulary entries.
+# Regex rather than nltk.word_tokenize, which would need punkt_tab downloaded
+# at build time. Keeps "if/else" and "read_write" whole; both are real entries.
 _WORD_RE = re.compile(r"[a-z_/]+")
 
 
@@ -43,8 +40,7 @@ def bag_of_words(text: str, vocab: list[str]) -> np.ndarray:
 
 
 def forward(features: np.ndarray, weights: list, biases: list) -> np.ndarray:
-    """Hidden layers through ReLU, output through softmax: what MLPClassifier
-    does at predict time, written out."""
+    """What MLPClassifier does at predict time, written out."""
     activations = np.atleast_2d(features)
 
     for weight, bias in zip(weights[:-1], biases[:-1]):
@@ -104,8 +100,8 @@ def main() -> None:
     print(f"training accuracy: {accuracy:.4f}")
     print(f"vocabulary: {' '.join(vocab)}")
 
-    # Every input vector is unique with no class collisions, so the network
-    # memorises the table exactly. See "Known limitations" in the README.
+    # Unique vectors, no class collisions: memorisation is expected. See the
+    # README's "Known limitations".
     assert accuracy == 1.0, f"expected perfect fit on the intent table, got {accuracy}"
 
     np.savez(
@@ -116,9 +112,8 @@ def main() -> None:
         **{f"b{layer}": bias for layer, bias in enumerate(classifier.intercepts_)},
     )
 
-    # Read back exactly what was written and prove the served forward pass
-    # reproduces the fitted model. The demo inputs are checked too: they carry
-    # the alias expansion and look nothing like a training row.
+    # Read back what was written and prove the served path matches. The demo
+    # inputs matter: alias expansion makes them unlike any training row.
     model = load_model()
     demo = np.array([
         bag_of_words(f"{name} {intro} {style} {expansion}", vocab)

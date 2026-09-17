@@ -9,16 +9,13 @@ use html_writer;
 use moodleform;
 
 /**
- * Sixteen questions, four options each, one per dimension. More than one may be
- * selected: the instrument allows it and scoring counts selections.
- *
- * Reproduced from Appendix A of the project report. Option order varies by
- * question, as the instrument is written - do not sort, or every answer becomes
- * the first checkbox. Copyright VARK Learn Limited; credited on the page.
+ * The VARK questionnaire, from Appendix A of the project report. Copyright VARK
+ * Learn Limited; credited on the page. Option order varies by question, as the
+ * instrument is written: do not sort, or every answer is the first checkbox.
  */
 class vark_form extends moodleform {
 
-    /** @var bool True while QUESTIONS holds placeholder text rather than the instrument. */
+    /** @var bool True while QUESTIONS holds placeholders rather than the instrument. */
     const SAMPLE_QUESTIONS = false;
 
     const QUESTIONS = [
@@ -145,10 +142,7 @@ class vark_form extends moodleform {
         $this->add_action_buttons(false, get_string('varksubmit', 'local_tutoragent'));
     }
 
-    /**
-     * An entirely empty form would score every dimension zero and hand back
-     * "Visual" by tie-break, which would be a lie rather than a result.
-     */
+    /** An empty form would score zero everywhere and return "Visual" by tie-break. */
     public function validation($data, $files) {
         foreach ($data as $key => $value) {
             if (str_starts_with($key, 'q') && $value) {
@@ -159,7 +153,7 @@ class vark_form extends moodleform {
         return ['question0' => get_string('varkanswernone', 'local_tutoragent')];
     }
 
-    /** Submitted form data -> the per-question dimension lists score() expects. */
+    /** Form data -> the per-question dimension lists score() expects. */
     public static function answers_from(\stdClass $data): array {
         $answers = [];
 

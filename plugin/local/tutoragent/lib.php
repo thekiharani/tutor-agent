@@ -1,9 +1,7 @@
 <?php
-// VARK scoring and the call out to the recommender service.
-
 defined('MOODLE_INTERNAL') || die();
 
-/** VARK dimensions in tie-break order, mapped to the recommender's style strings. */
+/** In tie-break order. Values are the style strings the recommender expects. */
 const LOCAL_TUTORAGENT_STYLES = [
     'V' => 'visual',
     'A' => 'auditory',
@@ -11,7 +9,6 @@ const LOCAL_TUTORAGENT_STYLES = [
     'K' => 'kinesthetic',
 ];
 
-/** The stored learning style for a user, or null if they have not answered yet. */
 function local_tutoragent_get_style(int $userid): ?stdClass {
     global $DB;
 
@@ -20,7 +17,7 @@ function local_tutoragent_get_style(int $userid): ?stdClass {
 }
 
 /**
- * Score a questionnaire. Highest count wins; ties break V, A, R, K.
+ * Highest count wins; ties break V, A, R, K.
  *
  * @param array $answers one array of 'V'|'A'|'R'|'K' per question
  * @return array ['style' => string, 'scores' => array]
@@ -55,7 +52,6 @@ function local_tutoragent_score(array $answers): array {
     ];
 }
 
-/** Store a scored questionnaire, replacing any previous answer. */
 function local_tutoragent_save_style(int $userid, string $style, array $scores) {
     global $DB;
 
@@ -79,14 +75,9 @@ function local_tutoragent_save_style(int $userid, string $style, array $scores) 
 }
 
 /**
- * Ask the recommender for a resource. Every failure path returns null so a dead
- * or slow service costs the page nothing.
- *
- * Native curl_*, not Moodle's \curl wrapper: the wrapper enforces
- * $CFG->curlsecurityblockedhosts, which blocks the private IP the recommender
- * runs on.
- *
- * @return string|null HTML for the recommendation, or null to say nothing
+ * Every failure path returns null, so a dead or slow service costs the page
+ * nothing. Native curl_*, not Moodle's \curl wrapper, which enforces
+ * $CFG->curlsecurityblockedhosts and blocks the recommender's private IP.
  */
 function local_tutoragent_request_recommendation(string $modulename, string $moduleintro, string $style): ?string {
     $base = get_config('local_tutoragent', 'recommenderurl');

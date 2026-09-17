@@ -1,6 +1,5 @@
-# train.py writes this during the build; a stale local copy must not be sent in.
+# Written by the build; a stale local copy must not be sent in.
 data/model.npz
-
 __pycache__/
 *.py[cod]
 .venv/
