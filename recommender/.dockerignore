@@ -1,0 +1,11 @@
+# The build context is this directory. Keep out of it anything the image
+# builds for itself, so a stale local copy can never end up inside.
+
+# train.py writes this during the build. A local one would be shipped and then
+# silently overwritten, which is the kind of thing that wastes an afternoon.
+data/model.joblib
+
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store

@@ -1,0 +1,4 @@
+# The build context is this directory: a Dockerfile, a php.ini and an
+# entrypoint. This keeps it that way if anything else lands here.
+.DS_Store
+*.swp
