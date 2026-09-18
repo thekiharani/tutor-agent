@@ -42,10 +42,13 @@ RUN sed -ri "s!/var/www/html!${MOODLE_DOCROOT}!g" \
     && a2enconf servername \
     && a2enmod rewrite headers
 
-ARG MOODLE_TARBALL=https://download.moodle.org/download.php/direct/stable502/moodle-latest-502.tgz
+# Same tree as download.moodle.org's stable502 tarball, which 403s any
+# datacenter IP and so cannot be fetched from CI.
+ARG MOODLE_TARBALL=https://github.com/moodle/moodle/archive/refs/heads/MOODLE_502_STABLE.tar.gz
 RUN set -eux; \
     mkdir -p "${MOODLE_ROOT}"; \
-    curl -fsSL "${MOODLE_TARBALL}" | tar xz --strip-components=1 -C "${MOODLE_ROOT}"; \
+    curl -fsSL --retry 3 --retry-delay 2 "${MOODLE_TARBALL}" \
+        | tar xz --strip-components=1 -C "${MOODLE_ROOT}"; \
     \
     # Of 632 vendored Google service definitions Moodle reaches one, YouTube;
     # the rest are 173MB of dead weight. Do NOT extend this to tests/ -
