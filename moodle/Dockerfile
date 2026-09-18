@@ -1,18 +1,19 @@
 # Not 8.5: Moodle 5.2 core raises ~120 deprecation notices on it.
 FROM php:8.4-apache
 
-# Moodle 5.2 serves from <root>/public; serving the code root is refused.
 ENV MOODLE_ROOT=/var/www/moodle
 ENV MOODLE_DOCROOT=/var/www/moodle/public
 
-# Before the purge below, so curl survives it for the healthcheck.
+# Must stay ahead of the purge below, or curl goes with it and the
+# healthcheck fails.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Only what php:8.4-apache lacks; rebuilding one it has fails with
-# "cp: cannot stat 'modules/*'". The apt-mark dance is the official images'
-# pattern for purging the -dev packages afterwards, worth ~100MB.
+# Only the extensions php:8.4-apache lacks: rebuilding one it already has
+# fails with "cp: cannot stat 'modules/*'". The apt-mark/ldd dance below is
+# the official PHP images' pattern for keeping the shared libraries the built
+# extensions link against while purging the -dev packages, worth ~100MB.
 RUN set -eux; \
     savedAptMark="$(apt-mark showmanual)"; \
     apt-get update; \
@@ -46,13 +47,12 @@ RUN set -eux; \
     mkdir -p "${MOODLE_ROOT}"; \
     curl -fsSL "${MOODLE_TARBALL}" | tar xz --strip-components=1 -C "${MOODLE_ROOT}"; \
     \
-    # Of 632 vendored Google service definitions Moodle uses one, YouTube.
-    # The rest are 173MB no code path reaches. lib/google2 itself is kept.
+    # Of 632 vendored Google service definitions Moodle reaches one, YouTube;
+    # the rest are 173MB of dead weight. Do NOT extend this to tests/ -
+    # mlbackend/python requires a file under analytics/tests/ and a fresh
+    # install dies half-way without it.
     find "${MOODLE_DOCROOT}/lib/google2-service/src" -mindepth 1 -maxdepth 1 \
         ! -name 'YouTube*' -exec rm -rf {} +; \
-    \
-    # Do NOT also delete tests/: mlbackend/python's processor.php requires a
-    # file under analytics/tests/, so a fresh install dies half-way.
     \
     mkdir -p /var/moodledata; \
     chown -R www-data:www-data "${MOODLE_ROOT}" /var/moodledata

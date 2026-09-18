@@ -1,5 +1,4 @@
 #!/bin/sh
-# Printed by `make demo`; reads .env so the passwords shown are the real ones.
 set -e
 . ./.env
 

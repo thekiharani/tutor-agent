@@ -21,10 +21,9 @@ until php -r '
 done
 echo "[entrypoint] postgres is up"
 
-# config.php lives in the container's own filesystem, not in a volume, so a
-# recreated container has none even though the database is fully populated.
-# Keep a copy on the data volume and restore it; running the full installer
-# then would fail on "already installed".
+# config.php sits in the container filesystem, not a volume, so a recreated
+# container has none even though the database is fully populated. Keep a copy
+# on the data volume: reinstalling instead would fail on "already installed".
 CONFIG_BACKUP=/var/moodledata/.config.php
 
 if [ ! -f "${CONFIG}" ] && [ -f "${CONFIG_BACKUP}" ]; then
@@ -34,8 +33,6 @@ if [ ! -f "${CONFIG}" ] && [ -f "${CONFIG_BACKUP}" ]; then
 fi
 
 if [ ! -f "${CONFIG}" ]; then
-    # No copy to restore. If the database is already populated, the installer
-    # must write config.php and stop; otherwise it installs from scratch.
     if php -r '
         $c = @pg_connect(sprintf(
             "host=%s port=5432 dbname=%s user=%s password=%s",
@@ -69,12 +66,10 @@ chown www-data:www-data "${CONFIG_BACKUP}"
 chmod 600 "${CONFIG_BACKUP}"
 echo "[entrypoint] config.php ready"
 
-# Debug goes in the config table, not config.php. Editing config.php from here
-# is how this script once truncated it and left the container restarting
-# forever: never rewrite the file Moodle needs in order to boot.
-#
-# Neither this nor the purge below may be fatal. A site that starts without
-# debug settings is a nuisance; a site that will not start is a lost demo.
+# Set debug through cfg.php, never by editing config.php: doing that once
+# truncated the file and left the container restarting forever. Both this and
+# the purge below must stay non-fatal - a site that will not start is worse
+# than one without debug settings.
 DEBUG_DISPLAY="${MOODLE_DEBUG:-0}"
 set +e
 su -s /bin/sh -c "php ${MOODLE_ROOT}/admin/cli/cfg.php --name=debug --set=32767" www-data > /dev/null \

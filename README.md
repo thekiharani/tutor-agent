@@ -57,6 +57,34 @@ Then open <http://localhost:8080>.
 | `make logs` | Follow the logs |
 | `make demo` | Print the logins and the demo script |
 
+## Published images
+
+`.github/workflows/ci.yml` builds both images on every push to `main` and
+publishes them to the GitHub Container Registry:
+
+```
+ghcr.io/thekiharani/tutor-agent/moodle
+ghcr.io/thekiharani/tutor-agent/recommender
+```
+
+Each is tagged `latest` on `main`, `sha-<commit>` on every build, and
+`1.2.3` / `1.2` when a `v1.2.3` tag is pushed. The packages inherit the
+repository's visibility, so pulling needs a token with `read:packages`:
+
+```sh
+echo "$GITHUB_TOKEN" | docker login ghcr.io -u <your-username> --password-stdin
+docker pull ghcr.io/thekiharani/tutor-agent/recommender:latest
+```
+
+Pull requests build both images but publish nothing, so a broken Dockerfile
+fails the check without reaching the registry.
+
+Two things the published images do not carry. The plugin is bind-mounted in
+`docker-compose.yml`, not baked in, so the Moodle image is stock Moodle until
+that mount is present; and the images are `linux/amd64` only, since building
+the Moodle image for arm64 under emulation costs far more CI time than a
+demo project justifies. `make up` still builds natively on Apple Silicon.
+
 ## Logins
 
 Every account uses the same password, `DEMO_PASSWORD` in `.env`, which defaults

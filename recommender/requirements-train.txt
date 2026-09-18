@@ -1,4 +1,3 @@
-# Build-time only; only model.npz ships.
 numpy==2.5.3
 nltk==3.10.3
 scikit-learn==1.9.1
