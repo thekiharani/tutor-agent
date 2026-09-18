@@ -86,6 +86,40 @@ are `linux/amd64` only, since building the Moodle image for arm64 under
 emulation costs far more CI time than a demo project justifies. `make up`
 still builds natively on Apple Silicon.
 
+## Production
+
+`compose.prod.yml` is the deploy file. It differs from `docker-compose.yml` in
+four ways: it pulls the published images instead of building, it runs no `db`
+service, it joins the external `norialabs` network, and it publishes Moodle on
+`127.0.0.1` only.
+
+Postgres is expected to be an existing service named `postgres` on that
+network. Create the database and its owner before the first start - Moodle's
+installer creates tables, not the database. The recommender publishes no port
+at all; Moodle reaches it at `http://recommender:8000` across the network.
+
+```sh
+cp .env.prod.example .env      # then fill in every CHANGE_ME
+docker compose -f compose.prod.yml up -d
+docker compose -f compose.prod.yml exec -u www-data moodle \
+    php /var/www/moodle/public/local/tutoragent/cli/seed_demo.php
+```
+
+Point your TLS proxy at `127.0.0.1:${MOODLE_PORT}` and make `MOODLE_WWWROOT`
+match the public origin exactly, or Moodle redirects in a loop.
+
+Since the plugin now ships in the image, deploying a plugin change means
+pulling a new image - and the entrypoint deliberately does not touch the
+database beyond the first install, so a bumped `version.php` needs the upgrade
+run by hand:
+
+```sh
+docker compose -f compose.prod.yml pull
+docker compose -f compose.prod.yml up -d
+docker compose -f compose.prod.yml exec -u www-data moodle \
+    php /var/www/moodle/admin/cli/upgrade.php --non-interactive
+```
+
 ## Logins
 
 Every account uses the same password, `DEMO_PASSWORD` in `.env`, which defaults
@@ -169,7 +203,8 @@ Moodle 5.2 serves from a `public/` subdirectory: the code root holds `config.php
 and the CLI scripts, and Apache's document root is `<root>/public`. The plugin
 therefore lives at `/var/www/moodle/public/local/tutoragent`. The image copies
 it in at build time; `docker-compose.yml` also bind-mounts `plugin/local/tutoragent`
-over the top so you can edit it without rebuilding.
+over the top so you can edit it without rebuilding. `compose.prod.yml` drops
+that mount and runs what the image carries.
 
 ## How a recommendation is chosen
 

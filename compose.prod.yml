@@ -1,0 +1,51 @@
+name: tutoragent
+
+services:
+  moodle:
+    image: ghcr.io/thekiharani/tutor-agent/moodle:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      MOODLE_WWWROOT: ${MOODLE_WWWROOT}
+      MOODLE_ADMIN_USER: ${MOODLE_ADMIN_USER}
+      MOODLE_ADMIN_EMAIL: ${MOODLE_ADMIN_EMAIL}
+      MOODLE_DEBUG: ${MOODLE_DEBUG:-0}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:?set DEMO_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:${MOODLE_PORT}:80"
+    volumes:
+      # Must stay outside the served directory.
+      - moodledata:/var/moodledata
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost/login/index.php > /dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 180s
+    networks:
+      - norialabs
+
+  recommender:
+    image: ghcr.io/thekiharani/tutor-agent/recommender:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      RECOMMENDER_THRESHOLD: ${RECOMMENDER_THRESHOLD}
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - norialabs
+
+networks:
+  norialabs:
+    external: true
+
+volumes:
+  moodledata:

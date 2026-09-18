@@ -14,3 +14,6 @@ recommender/data/model.npz
 __pycache__/
 *.py[cod]
 .venv/
+
+# Real production values, never committed. .env.prod.example is the template.
+.env.prod

@@ -226,6 +226,7 @@ recommender  python:3.14-slim + FastAPI                 264MB
 The Moodle image copies `plugin/local/tutoragent` in at build time, so a pulled
 image serves the plugin unaided; `docker-compose.yml` bind-mounts the same
 directory over the top so local edits apply without rebuilding.
+`compose.prod.yml` omits the mount.
 
 ### Moodle 5.2 serves from `public/`
 
