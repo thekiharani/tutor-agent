@@ -79,11 +79,12 @@ docker pull ghcr.io/thekiharani/tutor-agent/recommender:latest
 Pull requests build both images but publish nothing, so a broken Dockerfile
 fails the check without reaching the registry.
 
-Two things the published images do not carry. The plugin is bind-mounted in
-`docker-compose.yml`, not baked in, so the Moodle image is stock Moodle until
-that mount is present; and the images are `linux/amd64` only, since building
-the Moodle image for arm64 under emulation costs far more CI time than a
-demo project justifies. `make up` still builds natively on Apple Silicon.
+The Moodle image carries the plugin: it builds from the repository root
+(`moodle/Dockerfile` with context `.`) and copies `plugin/local/tutoragent`
+into the tree, so a pulled image serves the plugin with no mount. The images
+are `linux/amd64` only, since building the Moodle image for arm64 under
+emulation costs far more CI time than a demo project justifies. `make up`
+still builds natively on Apple Silicon.
 
 ## Logins
 
@@ -166,8 +167,9 @@ appear in the browser. PHP 8.4 produces none.
 
 Moodle 5.2 serves from a `public/` subdirectory: the code root holds `config.php`
 and the CLI scripts, and Apache's document root is `<root>/public`. The plugin
-therefore lives at `/var/www/moodle/public/local/tutoragent`, bind-mounted from
-`plugin/local/tutoragent` so you can edit it without rebuilding the image.
+therefore lives at `/var/www/moodle/public/local/tutoragent`. The image copies
+it in at build time; `docker-compose.yml` also bind-mounts `plugin/local/tutoragent`
+over the top so you can edit it without rebuilding.
 
 ## How a recommendation is chosen
 

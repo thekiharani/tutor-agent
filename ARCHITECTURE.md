@@ -223,8 +223,9 @@ moodle       php:8.4-apache + Moodle 5.2.3+             928MB
 recommender  python:3.14-slim + FastAPI                 264MB
 ```
 
-`plugin/local/tutoragent` is bind-mounted into the Moodle container, so plugin
-edits apply without rebuilding. Everything else is baked in.
+The Moodle image copies `plugin/local/tutoragent` in at build time, so a pulled
+image serves the plugin unaided; `docker-compose.yml` bind-mounts the same
+directory over the top so local edits apply without rebuilding.
 
 ### Moodle 5.2 serves from `public/`
 
@@ -232,7 +233,7 @@ edits apply without rebuilding. Everything else is baked in.
 /var/www/moodle/          code root: config.php and the CLI shims
   admin/cli/*.php         run these
   public/                 Apache DocumentRoot
-    local/tutoragent/     the bind mount lands here
+    local/tutoragent/     the plugin: copied in at build, mounted over in dev
 ```
 
 Serving the code root throws a deliberate `rootdirpublic` exception. Every path
@@ -287,7 +288,8 @@ design, and sorting would put every correct answer in the same checkbox position
 Local plugins → Tutor agent*, or `admin/cli/cfg.php --component=local_tutoragent
 --name=recommenderurl`.
 
-**Edit the plugin.** The directory is bind-mounted, so just edit and reload —
+**Edit the plugin.** `docker-compose.yml` bind-mounts the directory, so just
+edit and reload —
 but **`make purge` after touching `db/events.php`, `db/hooks.php` or any lang
 file.** Observers and strings are cached, and a version bump plus
 `admin/cli/upgrade.php` does not refresh the observer list.

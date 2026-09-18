@@ -18,7 +18,9 @@ services:
       retries: 20
 
   moodle:
-    build: ./moodle
+    build:
+      context: .
+      dockerfile: moodle/Dockerfile
     restart: unless-stopped
     depends_on:
       db:
@@ -38,6 +40,7 @@ services:
     volumes:
       # Must stay outside the served directory.
       - moodledata:/var/moodledata
+      # Baked into the image too; mounted here so edits need no rebuild.
       - ./plugin/local/tutoragent:/var/www/moodle/public/local/tutoragent
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost/login/index.php > /dev/null || exit 1"]

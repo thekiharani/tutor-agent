@@ -1,0 +1,7 @@
+# The Moodle image builds from the repository root; only moodle/ and plugin/
+# belong in its context.
+*
+!moodle
+!plugin
+**/.DS_Store
+**/*.swp

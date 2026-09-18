@@ -34,7 +34,7 @@ RUN set -eux; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/*
 
-COPY php.ini /usr/local/etc/php/conf.d/zz-moodle.ini
+COPY moodle/php.ini /usr/local/etc/php/conf.d/zz-moodle.ini
 
 RUN sed -ri "s!/var/www/html!${MOODLE_DOCROOT}!g" \
         /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf \
@@ -60,7 +60,11 @@ RUN set -eux; \
     mkdir -p /var/moodledata; \
     chown -R www-data:www-data "${MOODLE_ROOT}" /var/moodledata
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+# The build context is the repository root, not ./moodle, so that this line
+# can reach the plugin.
+COPY --chown=www-data:www-data plugin/local/tutoragent ${MOODLE_DOCROOT}/local/tutoragent
+
+COPY moodle/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR ${MOODLE_ROOT}
