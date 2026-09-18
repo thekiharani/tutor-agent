@@ -89,7 +89,7 @@ if ($DB->record_exists('course', ['shortname' => SEED_SHORTNAME])) {
 
 $password = getenv('DEMO_PASSWORD');
 if (empty($password)) {
-    cli_error('DEMO_PASSWORD is not set. It comes from .env via docker-compose.yml.');
+    cli_error('DEMO_PASSWORD is not set. It comes from .env via compose.yml.');
 }
 
 /** Every seeded account is identical apart from its name. */

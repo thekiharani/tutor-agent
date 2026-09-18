@@ -88,7 +88,7 @@ still builds natively on Apple Silicon.
 
 ## Production
 
-`compose.prod.yml` is the deploy file. It differs from `docker-compose.yml` in
+`compose.prod.yml` is the deploy file. It differs from `compose.yml` in
 four ways: it pulls the published images instead of building, it runs no `db`
 service, it joins the external `norialabs` network, and it publishes Moodle on
 `127.0.0.1` only.
@@ -202,7 +202,7 @@ appear in the browser. PHP 8.4 produces none.
 Moodle 5.2 serves from a `public/` subdirectory: the code root holds `config.php`
 and the CLI scripts, and Apache's document root is `<root>/public`. The plugin
 therefore lives at `/var/www/moodle/public/local/tutoragent`. The image copies
-it in at build time; `docker-compose.yml` also bind-mounts `plugin/local/tutoragent`
+it in at build time; `compose.yml` also bind-mounts `plugin/local/tutoragent`
 over the top so you can edit it without rebuilding. `compose.prod.yml` drops
 that mount and runs what the image carries.
 
