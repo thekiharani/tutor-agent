@@ -89,9 +89,10 @@ still builds natively on Apple Silicon.
 ## Production
 
 `compose.prod.yml` is the deploy file. It differs from `compose.yml` in
-four ways: it pulls the published images instead of building, it runs no `db`
-service, it joins the external `norialabs` network, and it publishes Moodle on
-`127.0.0.1` only.
+three ways: it pulls the published images instead of building, it runs no `db`
+service, and it joins the external `norialabs` network. Moodle publishes
+`${MOODLE_PORT}` on every interface, so whatever fronts it does not have to
+run on the host.
 
 Postgres is expected to be an existing service named `postgres` on that
 network. Create the database and its owner before the first start - Moodle's
@@ -105,8 +106,21 @@ docker compose -f compose.prod.yml exec -u www-data moodle \
     php /var/www/moodle/public/local/tutoragent/cli/seed_demo.php
 ```
 
-Point your TLS proxy at `127.0.0.1:${MOODLE_PORT}` and make `MOODLE_WWWROOT`
-match the public origin exactly, or Moodle redirects in a loop.
+Point your TLS proxy at `${MOODLE_PORT}` and make `MOODLE_WWWROOT` match the
+public origin exactly. The container speaks plain HTTP on that port and it is
+open to the network, so the host firewall has to be what keeps it off the
+public internet.
+
+Set `MOODLE_SSLPROXY=1` whenever something else terminates TLS - a Cloudflare
+tunnel, nginx, Caddy. Without it Moodle sees a plain HTTP request, compares it
+to an `https` wwwroot and redirects to https, which arrives as HTTP again:
+`ERR_TOO_MANY_REDIRECTS`. A wwwroot that does not match the address in the
+browser loops the same way, so check both before blaming the proxy.
+
+`wwwroot` and `sslproxy` are rewritten from the environment on every start.
+The installer writes them once and the entrypoint restores config.php from the
+data volume on every recreate, so without that rewrite an edited
+`MOODLE_WWWROOT` would silently do nothing.
 
 Since the plugin now ships in the image, deploying a plugin change means
 pulling a new image - and the entrypoint deliberately does not touch the

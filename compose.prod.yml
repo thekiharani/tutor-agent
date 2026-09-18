@@ -13,9 +13,10 @@ services:
       MOODLE_ADMIN_USER: ${MOODLE_ADMIN_USER}
       MOODLE_ADMIN_EMAIL: ${MOODLE_ADMIN_EMAIL}
       MOODLE_DEBUG: ${MOODLE_DEBUG:-0}
+      MOODLE_SSLPROXY: ${MOODLE_SSLPROXY:-0}
       DEMO_PASSWORD: ${DEMO_PASSWORD:?set DEMO_PASSWORD in .env}
     ports:
-      - "127.0.0.1:${MOODLE_PORT}:80"
+      - "${MOODLE_PORT}:80"
     volumes:
       # Must stay outside the served directory.
       - moodledata:/var/moodledata

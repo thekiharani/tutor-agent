@@ -61,6 +61,33 @@ if [ ! -f "${CONFIG}" ]; then
         --adminemail='${MOODLE_ADMIN_EMAIL}'" www-data
 fi
 
+# wwwroot and sslproxy are written once by the installer and then restored from
+# the backup above, so changing them in .env would otherwise never take effect.
+# Rewrite both on every start. The earlier truncation came from editing
+# config.php in place: build the new file beside it, refuse it unless php -l
+# parses it and wwwroot survived, and only then overwrite through cat, which
+# keeps the existing owner and mode.
+if [ "${MOODLE_SSLPROXY:-0}" = "1" ]; then SSLPROXY=true; else SSLPROXY=false; fi
+CONFIG_NEW="${CONFIG}.new"
+awk -v url="${MOODLE_WWWROOT}" -v ssl="${SSLPROXY}" -v q="'" '
+    /^\$CFG->wwwroot/  { next }
+    /^\$CFG->sslproxy/ { next }
+    /^require_once/ {
+        print "$CFG->wwwroot   = " q url q ";";
+        print "$CFG->sslproxy  = " ssl ";";
+        print "";
+    }
+    { print }
+' "${CONFIG}" > "${CONFIG_NEW}" 2>/dev/null
+
+if php -l "${CONFIG_NEW}" > /dev/null 2>&1 && grep -q "^\$CFG->wwwroot" "${CONFIG_NEW}"; then
+    cat "${CONFIG_NEW}" > "${CONFIG}"
+    echo "[entrypoint] wwwroot=${MOODLE_WWWROOT} sslproxy=${SSLPROXY}"
+else
+    echo "[entrypoint] WARNING: could not rewrite wwwroot/sslproxy; keeping config.php"
+fi
+rm -f "${CONFIG_NEW}"
+
 cp "${CONFIG}" "${CONFIG_BACKUP}"
 chown www-data:www-data "${CONFIG_BACKUP}"
 chmod 600 "${CONFIG_BACKUP}"
