@@ -67,7 +67,18 @@ fi
 # config.php in place: build the new file beside it, refuse it unless php -l
 # parses it and wwwroot survived, and only then overwrite through cat, which
 # keeps the existing owner and mode.
-if [ "${MOODLE_SSLPROXY:-0}" = "1" ]; then SSLPROXY=true; else SSLPROXY=false; fi
+# Moodle throws a fatal coding_exception if sslproxy is on and wwwroot is not
+# https, which serves a white page rather than a wrong one. Refuse the
+# combination here instead.
+if [ "${MOODLE_SSLPROXY:-0}" = "1" ]; then
+    case "${MOODLE_WWWROOT}" in
+        https://*) SSLPROXY=true ;;
+        *) SSLPROXY=false
+           echo "[entrypoint] WARNING: MOODLE_SSLPROXY=1 needs an https MOODLE_WWWROOT; ignoring it" ;;
+    esac
+else
+    SSLPROXY=false
+fi
 CONFIG_NEW="${CONFIG}.new"
 awk -v url="${MOODLE_WWWROOT}" -v ssl="${SSLPROXY}" -v q="'" '
     /^\$CFG->wwwroot/  { next }
