@@ -167,6 +167,8 @@ safe to run repeatedly, and what it does depends on the object:
 | Course dates | **Set on creation, and repaired only if never set.** A course someone has dated deliberately is left alone. |
 | Users, passwords, learning styles | **Created if missing. Names may be corrected; passwords and styles never are.** Rewriting a password would lock someone out mid-demo and rewriting a style would undo `make rehearse` or reset a student who has just taken the questionnaire. |
 | Enrolments | Added if missing; Moodle does not duplicate them. |
+| Self enrolment | **Opened on every seeded course, with no enrolment key**, unless `SEED_SELF_ENROL=0`. |
+| The front page | **Set to the course catalogue**: Home turned on, categories and a course search box on it, and logging in lands there rather than on the Dashboard. |
 | Anything you removed from `seed_demo.php` | **Never deleted.** |
 
 Activities are keyed on a stable `idnumber` (`tutoragent:<course>:<activity>`), not
@@ -186,8 +188,9 @@ that never sets the variable still cannot put demo accounts on a real site.
 With `SEED_USERS=0` the categories, courses and activities are seeded exactly as
 before and **no people are**: no teacher, no students, no enrolments and no saved
 learning styles. The only account is the administrator the installer creates from
-`MOODLE_ADMIN_USER`. Real students sign in with their own accounts and take the
-questionnaire the first time they open a course, which is the point of the thing.
+`MOODLE_ADMIN_USER`. Real students sign in with their own accounts, enrol
+themselves from the front page, and take the questionnaire the first time they
+open a course, which is the point of the thing.
 
 Turning it off never removes accounts that already exist. If a site was seeded
 with them once, they stay until someone deletes them deliberately.
@@ -244,6 +247,35 @@ only four that run on the original author's material.
 Seeded addresses are all `@example.com`, which is reserved by RFC 2606 for
 exactly this purpose. It is deliberate: a plausible-looking real domain would
 mean a misconfigured site could email strangers.
+
+### Students enrol themselves
+
+A production site seeds no student enrolments, so without this a real student
+signs in to "You're not enrolled in any courses" and has no way out of it: Moodle
+gives every new course a self enrolment method and leaves it **disabled**, and a
+fresh Moodle 5.2 also ships with the Home page turned off and the Dashboard as
+the landing page, so there is not even a catalogue to browse.
+
+Seeding fixes both, on every run:
+
+- **Self enrolment is enabled on all ten courses**, with no enrolment key, the
+  student role, no capacity limit and the welcome email off (there is no mail
+  server in the container). A signed-in student opens a course and gets "Enrol
+  me"; the questionnaire gate and the recommendations then work exactly as they
+  do for the demo students.
+- **Home is turned on and the front page is the catalogue** - the category tree
+  with its courses, and a course search box - and `defaulthomepage` sends people
+  there when they log in instead of to an empty Dashboard.
+
+`SEED_SELF_ENROL=0`, or `php seed_demo.php --no-self-enrol`, leaves every
+course's enrolment methods exactly as they are. Use it if enrolment is meant to
+be controlled by hand, because seeding runs on every container start: closing
+self enrolment in the Moodle UI and leaving the variable at `1` means the next
+restart opens it again.
+
+Accounts are a separate question. Moodle's own self-registration is off, so
+somebody still has to create student accounts, by hand or by CSV upload, unless
+an administrator turns email-based registration on.
 
 ## The demo
 

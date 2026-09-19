@@ -580,7 +580,8 @@ function seed_term(): array {
 }
 
 list($options) = cli_get_params(
-    ['reset-blank' => false, 'no-users' => false, 'help' => false], ['h' => 'help']);
+    ['reset-blank' => false, 'no-users' => false, 'no-self-enrol' => false, 'help' => false],
+    ['h' => 'help']);
 
 if ($options['help']) {
     cli_writeln("Seed the demo courses, activities, admin and students.\n"
@@ -588,7 +589,9 @@ if ($options['help']) {
         . "activities are updated, and users and learning styles are left alone.\n\n"
         . "  --reset-blank   Only clear the student.blank* learning styles, for another rehearsal.\n"
         . "  --no-users      Seed categories, courses and activities only. Same as\n"
-        . "                  SEED_USERS=0, which is how production is configured.\n");
+        . "                  SEED_USERS=0, which is how production is configured.\n"
+        . "  --no-self-enrol Leave every course's enrolment methods as they are. Same\n"
+        . "                  as SEED_SELF_ENROL=0.\n");
     exit(0);
 }
 
@@ -597,6 +600,8 @@ if ($options['help']) {
 // accounts are never removed by this, so turning it off on a site that already
 // has them leaves them in place to be deleted deliberately.
 $seedusers = !$options['no-users'] && getenv('SEED_USERS') !== '0';
+
+$selfenrol = !$options['no-self-enrol'] && getenv('SEED_SELF_ENROL') !== '0';
 
 /**
  * The teacher comes from the environment, not from a constant, and is created
@@ -885,6 +890,81 @@ if (get_config('enrol_manual', 'sendcoursewelcomemessage') != ENROL_DO_NOT_SEND_
     set_config('sendcoursewelcomemessage', ENROL_DO_NOT_SEND_EMAIL, 'enrol_manual');
 }
 
+foreach ([
+    'enablemyhome' => 1,
+    'frontpage' => FRONTPAGECATEGORYCOMBO . ',' . FRONTPAGECOURSESEARCH,
+    'frontpageloggedin' => FRONTPAGECATEGORYCOMBO . ',' . FRONTPAGECOURSESEARCH,
+    'defaulthomepage' => HOMEPAGE_SITE,
+] as $setting => $value) {
+    if ((string) get_config('core', $setting) !== (string) $value) {
+        set_config($setting, $value);
+    }
+}
+
+/**
+ * Moodle gives a new course a self enrolment instance and leaves it disabled, so
+ * a seeded site is ten courses nobody but the teacher can reach. Enabled here
+ * with no enrolment key, and with the welcome email off for the same reason as
+ * the manual one above.
+ */
+function seed_self_enrolment(stdClass $course, int $studentroleid, array &$tally): void {
+    global $DB;
+
+    $plugin = enrol_get_plugin('self');
+    if ($plugin === null) {
+        $tally['self enrolment skipped']++;
+        return;
+    }
+
+    $instance = $DB->get_record('enrol', ['courseid' => $course->id, 'enrol' => 'self'],
+        '*', IGNORE_MULTIPLE);
+
+    if (!$instance) {
+        $instanceid = $plugin->add_instance($course, $plugin->get_instance_defaults());
+        if (!$instanceid) {
+            $tally['self enrolment skipped']++;
+            return;
+        }
+        $instance = $DB->get_record('enrol', ['id' => $instanceid], '*', MUST_EXIST);
+    }
+
+    // customint1 group key, 3 capacity, 4 welcome email, 5 cohort, 6 new enrolments.
+    $wanted = [
+        'roleid' => $studentroleid,
+        'password' => '',
+        'customint1' => 0,
+        'customint3' => 0,
+        'customint4' => ENROL_DO_NOT_SEND_EMAIL,
+        'customint5' => 0,
+        'customint6' => 1,
+        'enrolperiod' => 0,
+        'enrolstartdate' => 0,
+        'enrolenddate' => 0,
+    ];
+
+    $changed = false;
+    foreach ($wanted as $field => $value) {
+        if ((string) $instance->$field !== (string) $value) {
+            $instance->$field = $value;
+            $changed = true;
+        }
+    }
+
+    if ((int) $instance->status !== ENROL_INSTANCE_ENABLED) {
+        $plugin->update_status($instance, ENROL_INSTANCE_ENABLED);
+        $tally['self enrolment opened']++;
+        return;
+    }
+
+    if ($changed) {
+        $DB->update_record('enrol', $instance);
+        $tally['self enrolment opened']++;
+        return;
+    }
+
+    $tally['self enrolment unchanged']++;
+}
+
 /**
  * enrol_try_internal_enrol() rewrites the enrolment even when it already exists,
  * which re-fires the welcome-message hook on every start. Check first.
@@ -912,7 +992,13 @@ $tally = array_fill_keys([
     'activities adopted', 'activities skipped',
     'users created', 'users renamed', 'users left alone', 'users skipped',
     'enrolments added', 'styles set',
+    'self enrolment opened', 'self enrolment unchanged', 'self enrolment skipped',
 ], 0);
+
+if ($selfenrol && !in_array('self', explode(',', (string) $CFG->enrol_plugins_enabled), true)) {
+    set_config('enrol_plugins_enabled',
+        trim($CFG->enrol_plugins_enabled . ',self', ','));
+}
 
 $categoryids = seed_categories($tally);
 
@@ -925,9 +1011,16 @@ foreach (SEED_COURSES as $seedcourse) {
     foreach ($seedcourse['activities'] as $index => $activity) {
         seed_activity($course, $seedcourse['key'], $activity, $index, $pagemoduleid, $tally);
     }
+
+    if ($selfenrol) {
+        seed_self_enrolment($course, $studentrole->id, $tally);
+    }
 }
 
 cli_writeln('Courses and activities are in step with seed_demo.php.');
+cli_writeln($selfenrol
+    ? 'Students can enrol themselves in any of them, no enrolment key.'
+    : 'SEED_SELF_ENROL=0, so the enrolment methods were left as they are.');
 
 // Outside the SEED_USERS gate on purpose: production wants a teacher on its
 // courses even though it wants none of the demo students.
@@ -1007,7 +1100,7 @@ purge_all_caches();
 cli_writeln('');
 foreach ($tally as $what => $count) {
     if ($count > 0) {
-        cli_writeln(sprintf('  %-22s %d', $what, $count));
+        cli_writeln(sprintf('  %-24s %d', $what, $count));
     }
 }
 cli_writeln('');
@@ -1017,5 +1110,8 @@ cli_writeln(count(SEED_CATEGORIES) . ' categories, ' . count($courses) . ' cours
     . ($seedusers ? ', ' . count(SEED_USERS) . ' students.' : ', no demo students.'));
 cli_writeln($seedusers
     ? 'Done. Run `make demo` for the logins and the demo script.'
-    : 'Done. Students sign in with their own accounts and take the questionnaire'
-        . ' the first time they open a course.');
+    : ($selfenrol
+        ? 'Done. Students sign in with their own accounts, enrol themselves from the'
+            . ' front page, and take the questionnaire the first time they open a course.'
+        : 'Done. Students sign in with their own accounts and take the questionnaire'
+            . ' the first time they open a course.'));

@@ -171,7 +171,9 @@ plugin/local/tutoragent/
 ├── cli/seed_demo.php      the ten demo courses, admin and students;
 │                          idempotent, run on every container start, and
 │                          SEED_USERS=0 in production seeds no students,
-│                          but MOODLE_TEACHER_* still seeds a teacher
+│                          but MOODLE_TEACHER_* still seeds a teacher;
+│                          opens self enrolment on every course and puts
+│                          the catalogue on the front page
 └── lang/en/…
 ```
 
