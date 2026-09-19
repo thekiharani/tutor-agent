@@ -581,15 +581,24 @@ function seed_term(): array {
     return [$start, $start + (17 * WEEKSECS)];
 }
 
-list($options) = cli_get_params(['reset-blank' => false, 'help' => false], ['h' => 'help']);
+list($options) = cli_get_params(
+    ['reset-blank' => false, 'no-users' => false, 'help' => false], ['h' => 'help']);
 
 if ($options['help']) {
     cli_writeln("Seed the demo courses, activities, admin and students.\n"
         . "Safe to run repeatedly: missing things are created, changed courses and\n"
         . "activities are updated, and users and learning styles are left alone.\n\n"
-        . "  --reset-blank   Only clear the student.blank* learning styles, for another rehearsal.\n");
+        . "  --reset-blank   Only clear the student.blank* learning styles, for another rehearsal.\n"
+        . "  --no-users      Seed categories, courses and activities only. Same as\n"
+        . "                  SEED_USERS=0, which is how production is configured.\n");
     exit(0);
 }
+
+// Production seeds the catalogue but none of the people: the only account there
+// is the administrator the installer makes from MOODLE_ADMIN_USER. Existing
+// accounts are never removed by this, so turning it off on a site that already
+// has them leaves them in place to be deleted deliberately.
+$seedusers = !$options['no-users'] && getenv('SEED_USERS') !== '0';
 
 if ($options['reset-blank']) {
     $blanks = $DB->get_fieldset_select('user', 'id', $DB->sql_like('username', ':name'),
@@ -603,8 +612,10 @@ if ($options['reset-blank']) {
     exit(0);
 }
 
-$password = getenv('DEMO_PASSWORD');
-if (empty($password)) {
+// Only the accounts this script creates need it; the installer's own admin
+// password was set at install time.
+$password = (string) getenv('DEMO_PASSWORD');
+if ($seedusers && $password === '') {
     cli_error('DEMO_PASSWORD is not set. It comes from .env via compose.yml.');
 }
 
@@ -856,7 +867,7 @@ $tally = array_fill_keys([
     'courses created', 'courses updated', 'courses unchanged',
     'activities created', 'activities updated', 'activities unchanged',
     'activities adopted', 'activities skipped',
-    'users created', 'users renamed', 'users left alone',
+    'users created', 'users renamed', 'users left alone', 'users skipped',
     'enrolments added', 'styles set',
 ], 0);
 
@@ -875,62 +886,68 @@ foreach (SEED_COURSES as $seedcourse) {
 
 cli_writeln('Courses and activities are in step with seed_demo.php.');
 
-// An existing account is never touched: its password may have been changed and
-// its learning style may be mid-demo.
-$adminid = $DB->get_field('user', 'id', ['username' => SEED_ADMIN['username']]);
-if (!$adminid) {
-    $adminid = seed_create_user(SEED_ADMIN, $password);
-    // Site admins are a config list, not a role assignment.
-    $siteadmins = array_filter(explode(',', (string) $CFG->siteadmins));
-    $siteadmins[] = $adminid;
-    set_config('siteadmins', implode(',', array_unique($siteadmins)));
-    $tally['users created']++;
+if (!$seedusers) {
+    cli_writeln('SEED_USERS=0, so no people were created. The only account is the'
+        . ' administrator the installer made from MOODLE_ADMIN_USER.');
+    $tally['users skipped'] = count(SEED_USERS) + 2;
 } else {
-    seed_rename($adminid, SEED_ADMIN, $tally);
-}
-
-// A course with no teacher is the other thing that gives a seeded site away.
-$teacherid = $DB->get_field('user', 'id', ['username' => SEED_TEACHER['username']]);
-if (!$teacherid) {
-    $teacherid = seed_create_user(SEED_TEACHER, $password);
-    $tally['users created']++;
-} else {
-    seed_rename($teacherid, SEED_TEACHER, $tally);
-}
-foreach ($courses as $course) {
-    seed_enrol($course, $teacherid, $teacherrole->id, $tally);
-}
-
-foreach (SEED_USERS as $seeduser) {
-    $userid = $DB->get_field('user', 'id', ['username' => $seeduser['username']]);
-    $isnew = !$userid;
-
-    if ($isnew) {
-        $userid = seed_create_user($seeduser, $password);
+    // An existing account is never touched: its password may have been changed and
+    // its learning style may be mid-demo.
+    $adminid = $DB->get_field('user', 'id', ['username' => SEED_ADMIN['username']]);
+    if (!$adminid) {
+        $adminid = seed_create_user(SEED_ADMIN, $password);
+        // Site admins are a config list, not a role assignment.
+        $siteadmins = array_filter(explode(',', (string) $CFG->siteadmins));
+        $siteadmins[] = $adminid;
+        set_config('siteadmins', implode(',', array_unique($siteadmins)));
         $tally['users created']++;
     } else {
-        seed_rename($userid, $seeduser, $tally);
+        seed_rename($adminid, SEED_ADMIN, $tally);
     }
 
+    // A course with no teacher is the other thing that gives a seeded site away.
+    $teacherid = $DB->get_field('user', 'id', ['username' => SEED_TEACHER['username']]);
+    if (!$teacherid) {
+        $teacherid = seed_create_user(SEED_TEACHER, $password);
+        $tally['users created']++;
+    } else {
+        seed_rename($teacherid, SEED_TEACHER, $tally);
+    }
     foreach ($courses as $course) {
-        seed_enrol($course, $userid, $studentrole->id, $tally);
+        seed_enrol($course, $teacherid, $teacherrole->id, $tally);
     }
 
-    // Only ever set on a new account. Overwriting would undo `make rehearse`,
-    // or reset someone who is halfway through the questionnaire.
-    if ($isnew && $seeduser['style'] !== null) {
-        // Flagged as seeded so nobody mistakes it for a real submission.
-        $dominant = array_search($seeduser['style'], LOCAL_TUTORAGENT_STYLES, true);
-        $counts = ['V' => 3, 'A' => 3, 'R' => 3, 'K' => 3];
-        $counts[$dominant] = 9;
+    foreach (SEED_USERS as $seeduser) {
+        $userid = $DB->get_field('user', 'id', ['username' => $seeduser['username']]);
+        $isnew = !$userid;
 
-        local_tutoragent_save_style($userid, $seeduser['style'], [
-            'counts' => $counts,
-            'dominant' => $dominant,
-            'tiebreak' => null,
-            'seeded' => true,
-        ]);
-        $tally['styles set']++;
+        if ($isnew) {
+            $userid = seed_create_user($seeduser, $password);
+            $tally['users created']++;
+        } else {
+            seed_rename($userid, $seeduser, $tally);
+        }
+
+        foreach ($courses as $course) {
+            seed_enrol($course, $userid, $studentrole->id, $tally);
+        }
+
+        // Only ever set on a new account. Overwriting would undo `make rehearse`,
+        // or reset someone who is halfway through the questionnaire.
+        if ($isnew && $seeduser['style'] !== null) {
+            // Flagged as seeded so nobody mistakes it for a real submission.
+            $dominant = array_search($seeduser['style'], LOCAL_TUTORAGENT_STYLES, true);
+            $counts = ['V' => 3, 'A' => 3, 'R' => 3, 'K' => 3];
+            $counts[$dominant] = 9;
+
+            local_tutoragent_save_style($userid, $seeduser['style'], [
+                'counts' => $counts,
+                'dominant' => $dominant,
+                'tiebreak' => null,
+                'seeded' => true,
+            ]);
+            $tally['styles set']++;
+        }
     }
 }
 
@@ -944,6 +961,9 @@ foreach ($tally as $what => $count) {
 }
 cli_writeln('');
 cli_writeln(count(SEED_CATEGORIES) . ' categories, ' . count($courses) . ' courses, '
-    . array_sum(array_map(fn($c) => count($c['activities']), SEED_COURSES))
-    . ' activities, 1 teacher, ' . count(SEED_USERS) . ' students.');
-cli_writeln('Done. Run `make demo` for the logins and the demo script.');
+    . array_sum(array_map(fn($c) => count($c['activities']), SEED_COURSES)) . ' activities'
+    . ($seedusers ? ', 1 teacher, ' . count(SEED_USERS) . ' students.' : ', no seeded people.'));
+cli_writeln($seedusers
+    ? 'Done. Run `make demo` for the logins and the demo script.'
+    : 'Done. Students sign in with their own accounts and take the questionnaire'
+        . ' the first time they open a course.');

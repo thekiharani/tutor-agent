@@ -177,6 +177,23 @@ next run instead of duplicated.
 Set `SEED_ON_START=0` in `.env` to turn the automatic seeding off. `make seed`
 still runs it by hand at any time.
 
+### Production seeds the catalogue but none of the people
+
+`SEED_USERS` controls whether the demo teacher and the ten students are created.
+`compose.yml` defaults it to `1` and `compose.prod.yml` to `0`, so a deployment
+that never sets the variable still cannot put demo accounts on a real site.
+
+With `SEED_USERS=0` the categories, courses and activities are seeded exactly as
+before and **no people are**: no teacher, no students, no enrolments and no saved
+learning styles. The only account is the administrator the installer creates from
+`MOODLE_ADMIN_USER`. Real students sign in with their own accounts and take the
+questionnaire the first time they open a course, which is the point of the thing.
+
+Turning it off never removes accounts that already exist. If a site was seeded
+with them once, they stay until someone deletes them deliberately.
+
+`php seed_demo.php --no-users` does the same for a one-off run.
+
 They sit in a category tree rather than in the installer's "Category 1", carry
 course codes and real term dates, and have a teacher on them, because an empty
 category called "Category 1" and a course starting on 1 January 1970 are the

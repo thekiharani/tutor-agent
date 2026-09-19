@@ -169,7 +169,8 @@ plugin/local/tutoragent/
 │   ├── form/vark_form.php the 16 questions and the form
 │   └── privacy/provider.php
 ├── cli/seed_demo.php      the ten demo courses, admin and students;
-│                          idempotent, and run on every container start
+│                          idempotent, run on every container start, and
+│                          SEED_USERS=0 in production seeds no people
 └── lang/en/…
 ```
 
