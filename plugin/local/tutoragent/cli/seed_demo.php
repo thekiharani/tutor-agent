@@ -467,8 +467,6 @@ const SEED_CATEGORIES = [
     ],
 ];
 
-const SEED_TEACHER = ['username' => 'demo.teacher', 'firstname' => 'Miriam', 'lastname' => 'Wafula'];
-
 const SEED_ADMIN = ['username' => 'demo.admin', 'firstname' => 'Lydia', 'lastname' => 'Muthoni'];
 
 const SEED_USERS = [
@@ -600,6 +598,33 @@ if ($options['help']) {
 // has them leaves them in place to be deleted deliberately.
 $seedusers = !$options['no-users'] && getenv('SEED_USERS') !== '0';
 
+/**
+ * The teacher comes from the environment, not from a constant, and is created
+ * whether or not the demo students are: a course with no teacher is the other
+ * thing that gives a seeded site away, and production wants one too. Leave
+ * MOODLE_TEACHER_USER empty to have no teacher at all.
+ */
+function seed_teacher(): ?array {
+    $username = trim((string) getenv('MOODLE_TEACHER_USER'));
+    if ($username === '') {
+        return null;
+    }
+
+    $email = trim((string) getenv('MOODLE_TEACHER_EMAIL'));
+
+    return [
+        'username' => $username,
+        'firstname' => trim((string) getenv('MOODLE_TEACHER_FIRSTNAME')) ?: 'Course',
+        'lastname' => trim((string) getenv('MOODLE_TEACHER_LASTNAME')) ?: 'Teacher',
+        'email' => $email !== '' ? $email : $username . '@example.com',
+        // Falls back to DEMO_PASSWORD so a deployment need only set one.
+        'password' => (string) getenv('MOODLE_TEACHER_PASSWORD')
+            ?: (string) getenv('DEMO_PASSWORD'),
+    ];
+}
+
+$teacher = seed_teacher();
+
 if ($options['reset-blank']) {
     $blanks = $DB->get_fieldset_select('user', 'id', $DB->sql_like('username', ':name'),
         ['name' => 'student.blank%']);
@@ -618,8 +643,12 @@ $password = (string) getenv('DEMO_PASSWORD');
 if ($seedusers && $password === '') {
     cli_error('DEMO_PASSWORD is not set. It comes from .env via compose.yml.');
 }
+if ($teacher !== null && $teacher['password'] === '') {
+    cli_error('MOODLE_TEACHER_USER is set but there is no password for it. Set '
+        . 'MOODLE_TEACHER_PASSWORD, or DEMO_PASSWORD for both.');
+}
 
-/** Every seeded account is identical apart from its name. */
+/** Every seeded account is identical apart from its name and address. */
 function seed_create_user(array $person, string $password): int {
     global $CFG;
 
@@ -628,7 +657,7 @@ function seed_create_user(array $person, string $password): int {
         'password' => $password,
         'firstname' => $person['firstname'],
         'lastname' => $person['lastname'],
-        'email' => $person['username'] . '@example.com',
+        'email' => $person['email'] ?? $person['username'] . '@example.com',
         'auth' => 'manual',
         'confirmed' => 1,
         'mnethostid' => $CFG->mnet_localhost_id,
@@ -818,18 +847,32 @@ function seed_activity(stdClass $course, string $coursekey, array $activity, int
     $tally['activities updated']++;
 }
 
-/** Names may be corrected; passwords and learning styles never are. */
+/** Name and address may be corrected; passwords and learning styles never are. */
 function seed_rename(int $userid, array $person, array &$tally): void {
     global $DB;
 
-    $user = $DB->get_record('user', ['id' => $userid], 'id, firstname, lastname', MUST_EXIST);
-    if ($user->firstname === $person['firstname'] && $user->lastname === $person['lastname']) {
+    $user = $DB->get_record('user', ['id' => $userid],
+        'id, firstname, lastname, email', MUST_EXIST);
+
+    $wanted = [
+        'firstname' => $person['firstname'],
+        'lastname' => $person['lastname'],
+        'email' => $person['email'] ?? $user->email,
+    ];
+
+    $changed = false;
+    foreach ($wanted as $field => $value) {
+        if ($user->$field !== $value) {
+            $user->$field = $value;
+            $changed = true;
+        }
+    }
+
+    if (!$changed) {
         $tally['users left alone']++;
         return;
     }
 
-    $user->firstname = $person['firstname'];
-    $user->lastname = $person['lastname'];
     user_update_user($user, false, false);
     $tally['users renamed']++;
 }
@@ -886,10 +929,29 @@ foreach (SEED_COURSES as $seedcourse) {
 
 cli_writeln('Courses and activities are in step with seed_demo.php.');
 
+// Outside the SEED_USERS gate on purpose: production wants a teacher on its
+// courses even though it wants none of the demo students.
+if ($teacher !== null) {
+    $teacherid = $DB->get_field('user', 'id', ['username' => $teacher['username']]);
+
+    if (!$teacherid) {
+        $teacherid = seed_create_user($teacher, $teacher['password']);
+        $tally['users created']++;
+    } else {
+        seed_rename($teacherid, $teacher, $tally);
+    }
+
+    foreach ($courses as $course) {
+        seed_enrol($course, $teacherid, $teacherrole->id, $tally);
+    }
+} else {
+    cli_writeln('MOODLE_TEACHER_USER is empty, so the courses have no teacher.');
+}
+
 if (!$seedusers) {
-    cli_writeln('SEED_USERS=0, so no people were created. The only account is the'
-        . ' administrator the installer made from MOODLE_ADMIN_USER.');
-    $tally['users skipped'] = count(SEED_USERS) + 2;
+    cli_writeln('SEED_USERS=0, so no demo students were created. The accounts are'
+        . ' the administrator from MOODLE_ADMIN_USER and the teacher above.');
+    $tally['users skipped'] = count(SEED_USERS) + 1;
 } else {
     // An existing account is never touched: its password may have been changed and
     // its learning style may be mid-demo.
@@ -905,17 +967,6 @@ if (!$seedusers) {
         seed_rename($adminid, SEED_ADMIN, $tally);
     }
 
-    // A course with no teacher is the other thing that gives a seeded site away.
-    $teacherid = $DB->get_field('user', 'id', ['username' => SEED_TEACHER['username']]);
-    if (!$teacherid) {
-        $teacherid = seed_create_user(SEED_TEACHER, $password);
-        $tally['users created']++;
-    } else {
-        seed_rename($teacherid, SEED_TEACHER, $tally);
-    }
-    foreach ($courses as $course) {
-        seed_enrol($course, $teacherid, $teacherrole->id, $tally);
-    }
 
     foreach (SEED_USERS as $seeduser) {
         $userid = $DB->get_field('user', 'id', ['username' => $seeduser['username']]);
@@ -962,7 +1013,8 @@ foreach ($tally as $what => $count) {
 cli_writeln('');
 cli_writeln(count(SEED_CATEGORIES) . ' categories, ' . count($courses) . ' courses, '
     . array_sum(array_map(fn($c) => count($c['activities']), SEED_COURSES)) . ' activities'
-    . ($seedusers ? ', 1 teacher, ' . count(SEED_USERS) . ' students.' : ', no seeded people.'));
+    . ($teacher !== null ? ', 1 teacher' : ', no teacher')
+    . ($seedusers ? ', ' . count(SEED_USERS) . ' students.' : ', no demo students.'));
 cli_writeln($seedusers
     ? 'Done. Run `make demo` for the logins and the demo script.'
     : 'Done. Students sign in with their own accounts and take the questionnaire'

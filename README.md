@@ -194,6 +194,22 @@ with them once, they stay until someone deletes them deliberately.
 
 `php seed_demo.php --no-users` does the same for a one-off run.
 
+The teacher is the exception, and deliberately so: it sits outside `SEED_USERS`
+and is created in both environments, because a course with no teacher is the
+other thing that gives a seeded site away. It comes from the environment rather
+than from the seed file:
+
+| Variable | |
+|---|---|
+| `MOODLE_TEACHER_USER` | The username. **Empty means no teacher at all.** |
+| `MOODLE_TEACHER_FIRSTNAME` / `_LASTNAME` | Default to "Course Teacher". |
+| `MOODLE_TEACHER_EMAIL` | Defaults to `<username>@example.com`. |
+| `MOODLE_TEACHER_PASSWORD` | Falls back to `DEMO_PASSWORD`, so a deployment need only set one. |
+
+Set these to a real person before deploying. As with every other account, an
+existing one is never given a new password; only the name and address are
+brought into line.
+
 They sit in a category tree rather than in the installer's "Category 1", carry
 course codes and real term dates, and have a teacher on them, because an empty
 category called "Category 1" and a course starting on 1 January 1970 are the

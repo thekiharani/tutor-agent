@@ -170,7 +170,8 @@ plugin/local/tutoragent/
 │   └── privacy/provider.php
 ├── cli/seed_demo.php      the ten demo courses, admin and students;
 │                          idempotent, run on every container start, and
-│                          SEED_USERS=0 in production seeds no people
+│                          SEED_USERS=0 in production seeds no students,
+│                          but MOODLE_TEACHER_* still seeds a teacher
 └── lang/en/…
 ```
 
