@@ -20,7 +20,10 @@ require_once($CFG->dirroot . '/local/tutoragent/lib.php');
 // longer match. recommender/app.py holds the table these have to agree with.
 const SEED_COURSES = [
     [
-        'shortname' => 'PROG-C',
+        'key' => 'prog-c',
+        'shortname' => 'CS 101',
+        'idnumber' => 'CS101',
+        'category' => 'fundamentals',
         'fullname' => 'Introduction to Programming in C',
         'summary' => 'A first course in C: the language core, from a first program through '
             . 'operators, control flow, arrays and functions.',
@@ -73,7 +76,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-DS',
+        'key' => 'cs-ds',
+        'shortname' => 'CS 201',
+        'idnumber' => 'CS201',
+        'category' => 'core',
         'fullname' => 'Data Structures',
         'summary' => 'How data is organised in memory and what each arrangement costs: '
             . 'lists, stacks, queues, trees and hash tables.',
@@ -113,7 +119,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-ALGO',
+        'key' => 'cs-algo',
+        'shortname' => 'CS 202',
+        'idnumber' => 'CS202',
+        'category' => 'core',
         'fullname' => 'Algorithms and Complexity',
         'summary' => 'Sorting, searching and recursion, and how to describe what an '
             . 'algorithm costs as its input grows.',
@@ -153,7 +162,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-OOP',
+        'key' => 'cs-oop',
+        'shortname' => 'CS 203',
+        'idnumber' => 'CS203',
+        'category' => 'core',
         'fullname' => 'Object-Oriented Programming',
         'summary' => 'Modelling a problem as objects that hold their own data: classes, '
             . 'inheritance, polymorphism and encapsulation.',
@@ -193,7 +205,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-DB',
+        'key' => 'cs-db',
+        'shortname' => 'CS 204',
+        'idnumber' => 'CS204',
+        'category' => 'data-web',
         'fullname' => 'Databases and SQL',
         'summary' => 'Storing data in relations and getting it back out: the relational '
             . 'model, SQL, joins and normalisation.',
@@ -233,7 +248,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-OS',
+        'key' => 'cs-os',
+        'shortname' => 'CS 301',
+        'idnumber' => 'CS301',
+        'category' => 'systems',
         'fullname' => 'Operating Systems',
         'summary' => 'What the operating system does underneath a running program: '
             . 'processes, threads and memory.',
@@ -265,7 +283,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-NET',
+        'key' => 'cs-net',
+        'shortname' => 'CS 302',
+        'idnumber' => 'CS302',
+        'category' => 'systems',
         'fullname' => 'Computer Networks',
         'summary' => 'How machines talk to each other: the layered model, the internet '
             . 'protocols, and the web\'s own protocol.',
@@ -297,7 +318,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-WEB',
+        'key' => 'cs-web',
+        'shortname' => 'CS 303',
+        'idnumber' => 'CS303',
+        'category' => 'data-web',
         'fullname' => 'Web Development',
         'summary' => 'Building for the browser: document structure, presentation, behaviour, '
             . 'and talking to a server.',
@@ -337,7 +361,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-SWE',
+        'key' => 'cs-swe',
+        'shortname' => 'CS 304',
+        'idnumber' => 'CS304',
+        'category' => 'software-engineering',
         'fullname' => 'Software Engineering Practice',
         'summary' => 'Working on software with other people: tracking change, proving it '
             . 'works, and reusing known designs.',
@@ -369,7 +396,10 @@ const SEED_COURSES = [
         ],
     ],
     [
-        'shortname' => 'CS-PY',
+        'key' => 'cs-py',
+        'shortname' => 'CS 102',
+        'idnumber' => 'CS102',
+        'category' => 'fundamentals',
         'fullname' => 'Python Programming',
         'summary' => 'Python from the ground up: the basics, its built-in collections, and '
             . 'writing your own functions.',
@@ -402,21 +432,58 @@ const SEED_COURSES = [
     ],
 ];
 
-const SEED_ADMIN = ['username' => 'demo.admin', 'firstname' => 'Dana', 'lastname' => 'Admin'];
+// The installer leaves one category called "Category 1" and every course would
+// otherwise land in it. Parent is a key from this same list, or null for the top.
+const SEED_CATEGORIES = [
+    [
+        'key' => 'computing', 'parent' => null,
+        'name' => 'School of Computing and Informatics',
+        'description' => 'Undergraduate computing courses.',
+    ],
+    [
+        'key' => 'fundamentals', 'parent' => 'computing',
+        'name' => 'Programming Fundamentals',
+        'description' => 'First courses in a programming language.',
+    ],
+    [
+        'key' => 'core', 'parent' => 'computing',
+        'name' => 'Core Computer Science',
+        'description' => 'Data structures, algorithms and program design.',
+    ],
+    [
+        'key' => 'data-web', 'parent' => 'computing',
+        'name' => 'Data and Web Systems',
+        'description' => 'Storing data and building for the browser.',
+    ],
+    [
+        'key' => 'systems', 'parent' => 'computing',
+        'name' => 'Systems and Networks',
+        'description' => 'What runs underneath a program, and how machines talk.',
+    ],
+    [
+        'key' => 'software-engineering', 'parent' => 'computing',
+        'name' => 'Software Engineering',
+        'description' => 'Working on software with other people.',
+    ],
+];
+
+const SEED_TEACHER = ['username' => 'demo.teacher', 'firstname' => 'Miriam', 'lastname' => 'Wafula'];
+
+const SEED_ADMIN = ['username' => 'demo.admin', 'firstname' => 'Lydia', 'lastname' => 'Muthoni'];
 
 const SEED_USERS = [
-    ['username' => 'student.visual', 'firstname' => 'Vera', 'lastname' => 'Visual', 'style' => 'visual'],
-    ['username' => 'student.aural', 'firstname' => 'Alan', 'lastname' => 'Aural', 'style' => 'auditory'],
-    ['username' => 'student.rw', 'firstname' => 'Rita', 'lastname' => 'Reader', 'style' => 'read_write'],
-    ['username' => 'student.kines', 'firstname' => 'Ken', 'lastname' => 'Kinetic', 'style' => 'kinesthetic'],
+    ['username' => 'student.visual', 'firstname' => 'Amara', 'lastname' => 'Otieno', 'style' => 'visual'],
+    ['username' => 'student.aural', 'firstname' => 'Brian', 'lastname' => 'Kamau', 'style' => 'auditory'],
+    ['username' => 'student.rw', 'firstname' => 'Chloe', 'lastname' => 'Wanjiru', 'style' => 'read_write'],
+    ['username' => 'student.kines', 'firstname' => 'David', 'lastname' => 'Mwangi', 'style' => 'kinesthetic'],
     // Several with no style, so the questionnaire can be demonstrated more than
     // once, or handed to someone in the room to try.
-    ['username' => 'student.blank', 'firstname' => 'Blair', 'lastname' => 'Blank', 'style' => null],
-    ['username' => 'student.blank2', 'firstname' => 'Bruno', 'lastname' => 'Blank', 'style' => null],
-    ['username' => 'student.blank3', 'firstname' => 'Bella', 'lastname' => 'Blank', 'style' => null],
-    ['username' => 'student.blank4', 'firstname' => 'Bilal', 'lastname' => 'Blank', 'style' => null],
-    ['username' => 'student.blank5', 'firstname' => 'Bina', 'lastname' => 'Blank', 'style' => null],
-    ['username' => 'student.blank6', 'firstname' => 'Bram', 'lastname' => 'Blank', 'style' => null],
+    ['username' => 'student.blank', 'firstname' => 'Esther', 'lastname' => 'Achieng', 'style' => null],
+    ['username' => 'student.blank2', 'firstname' => 'Felix', 'lastname' => 'Njoroge', 'style' => null],
+    ['username' => 'student.blank3', 'firstname' => 'Grace', 'lastname' => 'Wambui', 'style' => null],
+    ['username' => 'student.blank4', 'firstname' => 'Hassan', 'lastname' => 'Ali', 'style' => null],
+    ['username' => 'student.blank5', 'firstname' => 'Irene', 'lastname' => 'Chebet', 'style' => null],
+    ['username' => 'student.blank6', 'firstname' => 'Joseph', 'lastname' => 'Kiprono', 'style' => null],
 ];
 
 // Re-runnable. Courses and activities are brought into line with this file on
@@ -427,10 +494,91 @@ const SEED_USERS = [
 // rewriting those mid-demo locks someone out or resets a run in progress.
 // Nothing is ever deleted.
 
-/** Stable key per activity, so renaming one in Moodle does not create a second. */
-function seed_idnumber(string $shortname, string $activityname): string {
-    return 'tutoragent:' . $shortname . ':'
+/**
+ * Stable key per activity. Built from the course's 'key', never its shortname,
+ * which is a course code now and could be renumbered.
+ */
+function seed_idnumber(string $coursekey, string $activityname): string {
+    return 'tutoragent:' . $coursekey . ':'
         . preg_replace('/[^a-z0-9]+/', '-', strtolower($activityname));
+}
+
+/**
+ * The category tree, created once and then found by idnumber. The top level
+ * adopts the installer's placeholder rather than leaving an empty "Category 1"
+ * next to the real one - but only while it is still untouched.
+ *
+ * @return array key => category id
+ */
+function seed_categories(array &$tally): array {
+    global $DB;
+
+    $ids = [];
+    foreach (SEED_CATEGORIES as $seedcat) {
+        $idnumber = 'tutoragent:cat:' . $seedcat['key'];
+        // Cast: ids come back from the database as strings, and comparing one
+        // strictly against (int) $category->parent marked every child changed on
+        // every run.
+        $parentid = $seedcat['parent'] === null ? 0 : (int) $ids[$seedcat['parent']];
+
+        $record = $DB->get_record('course_categories', ['idnumber' => $idnumber], '*', IGNORE_MISSING);
+
+        if (!$record && $seedcat['parent'] === null) {
+            $record = $DB->get_record('course_categories',
+                ['name' => 'Category 1', 'idnumber' => null], '*', IGNORE_MISSING)
+                ?: $DB->get_record('course_categories',
+                    ['name' => 'Category 1', 'idnumber' => ''], '*', IGNORE_MISSING);
+            if ($record) {
+                $tally['categories adopted']++;
+            }
+        }
+
+        if (!$record) {
+            $category = core_course_category::create([
+                'name' => $seedcat['name'],
+                'idnumber' => $idnumber,
+                'parent' => $parentid,
+                'description' => $seedcat['description'],
+                'descriptionformat' => FORMAT_HTML,
+            ]);
+            $ids[$seedcat['key']] = (int) $category->id;
+            $tally['categories created']++;
+            continue;
+        }
+
+        $category = core_course_category::get($record->id, MUST_EXIST, true);
+        if ($category->name !== $seedcat['name']
+                || (string) $category->idnumber !== $idnumber
+                || (int) $category->parent !== $parentid) {
+            $category->update([
+                'name' => $seedcat['name'],
+                'idnumber' => $idnumber,
+                'parent' => $parentid,
+                'description' => $seedcat['description'],
+                'descriptionformat' => FORMAT_HTML,
+            ]);
+            $tally['categories updated']++;
+        } else {
+            $tally['categories unchanged']++;
+        }
+        $ids[$seedcat['key']] = (int) $category->id;
+    }
+
+    return $ids;
+}
+
+/**
+ * The teaching term. Courses created with no dates show 1 January 1970 on the
+ * course listing, which is the first thing anyone notices.
+ *
+ * @return array [start, end]
+ */
+function seed_term(): array {
+    $year = (int) date('Y');
+    $september = make_timestamp($year, 9, 1);
+    $start = time() >= $september ? $september : make_timestamp($year, 1, 1);
+
+    return [$start, $start + (17 * WEEKSECS)];
 }
 
 list($options) = cli_get_params(['reset-blank' => false, 'help' => false], ['h' => 'help']);
@@ -477,29 +625,76 @@ function seed_create_user(array $person, string $password): int {
     ], true, false);
 }
 
-/** Create the course, or bring its name and summary into line with this file. */
-function seed_course(array $seedcourse, int $categoryid, array &$tally): stdClass {
+/**
+ * By course code first, then by shortname, then by the shortname the course had
+ * before it was given a code. Without that last step this run would leave the
+ * ten original courses in place and create ten more beside them.
+ */
+function seed_find_course(array $seedcourse): ?stdClass {
     global $DB;
 
-    $course = $DB->get_record('course', ['shortname' => $seedcourse['shortname']]);
+    foreach ([
+        ['idnumber' => $seedcourse['idnumber']],
+        ['shortname' => $seedcourse['shortname']],
+        ['shortname' => strtoupper($seedcourse['key'])],
+    ] as $conditions) {
+        $course = $DB->get_record('course', $conditions, '*', IGNORE_MULTIPLE);
+        if ($course) {
+            return $course;
+        }
+    }
+
+    return null;
+}
+
+/** Create the course, or bring it into line with this file. */
+function seed_course(array $seedcourse, int $categoryid, array &$tally): stdClass {
+    list($start, $end) = seed_term();
+
+    $course = seed_find_course($seedcourse);
 
     if (!$course) {
         $tally['courses created']++;
         return create_course((object) [
             'fullname' => $seedcourse['fullname'],
             'shortname' => $seedcourse['shortname'],
+            'idnumber' => $seedcourse['idnumber'],
             'category' => $categoryid,
             'summary' => $seedcourse['summary'],
             'summaryformat' => FORMAT_HTML,
             'format' => 'topics',
             'numsections' => count($seedcourse['activities']),
+            'startdate' => $start,
+            'enddate' => $end,
             'visible' => 1,
         ]);
     }
 
-    if ($course->fullname !== $seedcourse['fullname'] || $course->summary !== $seedcourse['summary']) {
-        $course->fullname = $seedcourse['fullname'];
-        $course->summary = $seedcourse['summary'];
+    $wanted = [
+        'fullname' => $seedcourse['fullname'],
+        'shortname' => $seedcourse['shortname'],
+        'idnumber' => $seedcourse['idnumber'],
+        'category' => $categoryid,
+        'summary' => $seedcourse['summary'],
+    ];
+
+    $changed = false;
+    foreach ($wanted as $field => $value) {
+        if ((string) $course->$field !== (string) $value) {
+            $course->$field = $value;
+            $changed = true;
+        }
+    }
+
+    // Repaired only when it was never set. Courses created before this existed
+    // sit at the epoch; a course someone has dated deliberately is left alone.
+    if (empty($course->startdate)) {
+        $course->startdate = $start;
+        $course->enddate = $end;
+        $changed = true;
+    }
+
+    if ($changed) {
         update_course($course);
         $tally['courses updated']++;
     } else {
@@ -541,11 +736,11 @@ function seed_find_activity(stdClass $course, array $activity, int $pagemoduleid
 }
 
 /** Create the activity, or rewrite the fields the recommender reads. */
-function seed_activity(stdClass $course, array $activity, int $index, int $pagemoduleid,
-                       array &$tally): void {
+function seed_activity(stdClass $course, string $coursekey, array $activity, int $index,
+                       int $pagemoduleid, array &$tally): void {
     global $DB;
 
-    $idnumber = seed_idnumber($course->shortname, $activity['name']);
+    $idnumber = seed_idnumber($coursekey, $activity['name']);
     $cm = seed_find_activity($course, $activity, $pagemoduleid, $idnumber, $tally);
 
     if (!$cm) {
@@ -612,25 +807,69 @@ function seed_activity(stdClass $course, array $activity, int $index, int $pagem
     $tally['activities updated']++;
 }
 
+/** Names may be corrected; passwords and learning styles never are. */
+function seed_rename(int $userid, array $person, array &$tally): void {
+    global $DB;
+
+    $user = $DB->get_record('user', ['id' => $userid], 'id, firstname, lastname', MUST_EXIST);
+    if ($user->firstname === $person['firstname'] && $user->lastname === $person['lastname']) {
+        $tally['users left alone']++;
+        return;
+    }
+
+    $user->firstname = $person['firstname'];
+    $user->lastname = $person['lastname'];
+    user_update_user($user, false, false);
+    $tally['users renamed']++;
+}
+
+// Now that the courses have a start date and a teacher to send as, Moodle tries
+// to email a welcome on every enrolment. There is no mail server in the
+// container, so each one fails and writes a stack trace into the startup log,
+// where it would bury anything that actually matters.
+if (get_config('enrol_manual', 'sendcoursewelcomemessage') != ENROL_DO_NOT_SEND_EMAIL) {
+    set_config('sendcoursewelcomemessage', ENROL_DO_NOT_SEND_EMAIL, 'enrol_manual');
+}
+
+/**
+ * enrol_try_internal_enrol() rewrites the enrolment even when it already exists,
+ * which re-fires the welcome-message hook on every start. Check first.
+ */
+function seed_enrol(stdClass $course, int $userid, int $roleid, array &$tally): void {
+    $context = context_course::instance($course->id);
+
+    if (is_enrolled($context, $userid)
+            && user_has_role_assignment($userid, $roleid, $context->id)) {
+        return;
+    }
+
+    enrol_try_internal_enrol($course->id, $userid, $roleid);
+    $tally['enrolments added']++;
+}
+
 $studentrole = $DB->get_record('role', ['shortname' => 'student'], '*', MUST_EXIST);
-$categoryid = $DB->get_field_sql('SELECT MIN(id) FROM {course_categories}');
+$teacherrole = $DB->get_record('role', ['shortname' => 'editingteacher'], '*', MUST_EXIST);
 $pagemoduleid = $DB->get_field('modules', 'id', ['name' => 'page'], MUST_EXIST);
 
 $tally = array_fill_keys([
+    'categories created', 'categories updated', 'categories unchanged', 'categories adopted',
     'courses created', 'courses updated', 'courses unchanged',
     'activities created', 'activities updated', 'activities unchanged',
     'activities adopted', 'activities skipped',
-    'users created', 'users left alone', 'styles set',
+    'users created', 'users renamed', 'users left alone',
+    'enrolments added', 'styles set',
 ], 0);
+
+$categoryids = seed_categories($tally);
 
 $courses = [];
 
 foreach (SEED_COURSES as $seedcourse) {
-    $course = seed_course($seedcourse, $categoryid, $tally);
+    $course = seed_course($seedcourse, $categoryids[$seedcourse['category']], $tally);
     $courses[] = $course;
 
     foreach ($seedcourse['activities'] as $index => $activity) {
-        seed_activity($course, $activity, $index, $pagemoduleid, $tally);
+        seed_activity($course, $seedcourse['key'], $activity, $index, $pagemoduleid, $tally);
     }
 }
 
@@ -647,7 +886,19 @@ if (!$adminid) {
     set_config('siteadmins', implode(',', array_unique($siteadmins)));
     $tally['users created']++;
 } else {
-    $tally['users left alone']++;
+    seed_rename($adminid, SEED_ADMIN, $tally);
+}
+
+// A course with no teacher is the other thing that gives a seeded site away.
+$teacherid = $DB->get_field('user', 'id', ['username' => SEED_TEACHER['username']]);
+if (!$teacherid) {
+    $teacherid = seed_create_user(SEED_TEACHER, $password);
+    $tally['users created']++;
+} else {
+    seed_rename($teacherid, SEED_TEACHER, $tally);
+}
+foreach ($courses as $course) {
+    seed_enrol($course, $teacherid, $teacherrole->id, $tally);
 }
 
 foreach (SEED_USERS as $seeduser) {
@@ -658,12 +909,11 @@ foreach (SEED_USERS as $seeduser) {
         $userid = seed_create_user($seeduser, $password);
         $tally['users created']++;
     } else {
-        $tally['users left alone']++;
+        seed_rename($userid, $seeduser, $tally);
     }
 
-    // Idempotent in Moodle: an existing enrolment is not duplicated.
     foreach ($courses as $course) {
-        enrol_try_internal_enrol($course->id, $userid, $studentrole->id);
+        seed_enrol($course, $userid, $studentrole->id, $tally);
     }
 
     // Only ever set on a new account. Overwriting would undo `make rehearse`,
@@ -693,7 +943,7 @@ foreach ($tally as $what => $count) {
     }
 }
 cli_writeln('');
-cli_writeln(count($courses) . ' courses, '
+cli_writeln(count(SEED_CATEGORIES) . ' categories, ' . count($courses) . ' courses, '
     . array_sum(array_map(fn($c) => count($c['activities']), SEED_COURSES))
-    . ' activities, ' . count(SEED_USERS) . ' students.');
+    . ' activities, 1 teacher, ' . count(SEED_USERS) . ' students.');
 cli_writeln('Done. Run `make demo` for the logins and the demo script.');

@@ -142,11 +142,12 @@ to `Demo@2026!`.
 | Username | Role |
 |---|---|
 | `admin` | site administrator, created by the installer |
-| `demo.admin` | site administrator, created by `make seed` |
-| `student.visual` | student, pre-set style: visual |
-| `student.aural` | student, pre-set style: auditory |
-| `student.rw` | student, pre-set style: read/write |
-| `student.kines` | student, pre-set style: kinesthetic |
+| `demo.admin` | Lydia Muthoni, site administrator, created by the seed |
+| `demo.teacher` | Miriam Wafula, editing teacher on all ten courses |
+| `student.visual` | Amara Otieno, pre-set style: visual |
+| `student.aural` | Brian Kamau, pre-set style: auditory |
+| `student.rw` | Chloe Wanjiru, pre-set style: read/write |
+| `student.kines` | David Mwangi, pre-set style: kinesthetic |
 | `student.blank` | student, no style yet - use this one to demo the questionnaire |
 | `student.blank2` … `student.blank6` | five more with no style, for repeat runs or for someone else to try |
 
@@ -162,7 +163,9 @@ safe to run repeatedly, and what it does depends on the object:
 | | On every run |
 |---|---|
 | Courses and activities | **Created if missing, updated if they differ from `seed_demo.php`.** An activity's intro is what the recommender routes on, so letting the database drift from the file means recommendations quietly go to the wrong topic. |
-| Users, passwords, learning styles | **Created if missing, otherwise left alone.** Rewriting a password would lock someone out mid-demo and rewriting a style would undo `make rehearse` or reset a student who has just taken the questionnaire. |
+| Categories | **Created if missing, renamed if they differ.** The top level adopts the installer's "Category 1" while it is still untouched, so the site is not left with an empty placeholder next to the real tree. |
+| Course dates | **Set on creation, and repaired only if never set.** A course someone has dated deliberately is left alone. |
+| Users, passwords, learning styles | **Created if missing. Names may be corrected; passwords and styles never are.** Rewriting a password would lock someone out mid-demo and rewriting a style would undo `make rehearse` or reset a student who has just taken the questionnaire. |
 | Enrolments | Added if missing; Moodle does not duplicate them. |
 | Anything you removed from `seed_demo.php` | **Never deleted.** |
 
@@ -174,40 +177,53 @@ next run instead of duplicated.
 Set `SEED_ON_START=0` in `.env` to turn the automatic seeding off. `make seed`
 still runs it by hand at any time.
 
-| Short name | Course | Activities |
-|---|---|---|
-| `PROG-C` | Introduction to Programming in C | 6 |
-| `CS-DS` | Data Structures | 4 |
-| `CS-ALGO` | Algorithms and Complexity | 4 |
-| `CS-OOP` | Object-Oriented Programming | 4 |
-| `CS-DB` | Databases and SQL | 4 |
-| `CS-OS` | Operating Systems | 3 |
-| `CS-NET` | Computer Networks | 3 |
-| `CS-WEB` | Web Development | 4 |
-| `CS-SWE` | Software Engineering Practice | 3 |
-| `CS-PY` | Python Programming | 3 |
+They sit in a category tree rather than in the installer's "Category 1", carry
+course codes and real term dates, and have a teacher on them, because an empty
+category called "Category 1" and a course starting on 1 January 1970 are the
+first things anyone notices on a seeded site.
+
+| Category | Code | Course | Activities |
+|---|---|---|---|
+| Programming Fundamentals | `CS 101` | Introduction to Programming in C | 6 |
+| | `CS 102` | Python Programming | 3 |
+| Core Computer Science | `CS 201` | Data Structures | 4 |
+| | `CS 202` | Algorithms and Complexity | 4 |
+| | `CS 203` | Object-Oriented Programming | 4 |
+| Data and Web Systems | `CS 204` | Databases and SQL | 4 |
+| | `CS 303` | Web Development | 4 |
+| Systems and Networks | `CS 301` | Operating Systems | 3 |
+| | `CS 302` | Computer Networks | 3 |
+| Software Engineering | `CS 304` | Software Engineering Practice | 3 |
+
+All five sit under one top-level category, **School of Computing and
+Informatics**, which is the installer's placeholder category renamed rather than
+a seventh category created beside it.
 
 All 38 activities are covered by the recommender: every one of them returns a
 resource for every one of the four styles, 152 combinations in total, and each
 activity's four links are four different links. That was checked by logging into
 the running site as each of the four pre-set students and loading all 38 activity
-pages, 152 page loads, rather than only by calling the service. `PROG-C`
+pages, 152 page loads, rather than only by calling the service. `CS 101`
 is the deepest because it is the course the supplied content library was written
 for; its Data Types, Control Structures, Arrays and Functions activities are the
 only four that run on the original author's material.
+
+Seeded addresses are all `@example.com`, which is reserved by RFC 2606 for
+exactly this purpose. It is deliberate: a plausible-looking real domain would
+mean a misconfigured site could email strangers.
 
 ## The demo
 
 1. Log in as `student.blank`, open "Introduction to Programming in C".
    A notification invites you to take the VARK questionnaire.
 2. Take it. The page names your learning style.
-3. Open the activity "Arrays". A notification appears with a matching resource.
+3. Open `CS 101` and the activity "Arrays". A notification appears with a matching resource.
 4. Log out, log in as `student.rw`, open **the same** Arrays activity.
 5. A different link appears: an article instead of a video.
 
 Steps 3 and 5 are the point of the project. `make demo` prints this at any time.
 Any of the 38 activities shows the same contrast; if you are asked whether the
-system only knows C, "Joins" in `CS-DB` and "Sorting Algorithms" in `CS-ALGO`
+system only knows C, "Joins" in `CS 204` and "Sorting Algorithms" in `CS 202`
 make the point quickly.
 
 To run it again, `make rehearse` puts `student.blank` back to having no learning
