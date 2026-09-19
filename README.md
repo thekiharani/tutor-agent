@@ -150,6 +150,52 @@ to `Demo@2026!`.
 | `student.blank` | student, no style yet - use this one to demo the questionnaire |
 | `student.blank2` … `student.blank6` | five more with no style, for repeat runs or for someone else to try |
 
+## The courses
+
+Ten courses, with every seeded student enrolled in all of them, so any student
+can open any activity without checking a roster mid-demo.
+
+**Seeding runs by itself on every container start**, so a fresh stack comes up
+with the courses already in it and you do not have to remember `make seed`. It is
+safe to run repeatedly, and what it does depends on the object:
+
+| | On every run |
+|---|---|
+| Courses and activities | **Created if missing, updated if they differ from `seed_demo.php`.** An activity's intro is what the recommender routes on, so letting the database drift from the file means recommendations quietly go to the wrong topic. |
+| Users, passwords, learning styles | **Created if missing, otherwise left alone.** Rewriting a password would lock someone out mid-demo and rewriting a style would undo `make rehearse` or reset a student who has just taken the questionnaire. |
+| Enrolments | Added if missing; Moodle does not duplicate them. |
+| Anything you removed from `seed_demo.php` | **Never deleted.** |
+
+Activities are keyed on a stable `idnumber` (`tutoragent:<course>:<activity>`), not
+on their name, so renaming one in Moodle updates it rather than creating a second
+beside it. A site seeded before this existed has its activities adopted on the
+next run instead of duplicated.
+
+Set `SEED_ON_START=0` in `.env` to turn the automatic seeding off. `make seed`
+still runs it by hand at any time.
+
+| Short name | Course | Activities |
+|---|---|---|
+| `PROG-C` | Introduction to Programming in C | 6 |
+| `CS-DS` | Data Structures | 4 |
+| `CS-ALGO` | Algorithms and Complexity | 4 |
+| `CS-OOP` | Object-Oriented Programming | 4 |
+| `CS-DB` | Databases and SQL | 4 |
+| `CS-OS` | Operating Systems | 3 |
+| `CS-NET` | Computer Networks | 3 |
+| `CS-WEB` | Web Development | 4 |
+| `CS-SWE` | Software Engineering Practice | 3 |
+| `CS-PY` | Python Programming | 3 |
+
+All 38 activities are covered by the recommender: every one of them returns a
+resource for every one of the four styles, 152 combinations in total, and each
+activity's four links are four different links. That was checked by logging into
+the running site as each of the four pre-set students and loading all 38 activity
+pages, 152 page loads, rather than only by calling the service. `PROG-C`
+is the deepest because it is the course the supplied content library was written
+for; its Data Types, Control Structures, Arrays and Functions activities are the
+only four that run on the original author's material.
+
 ## The demo
 
 1. Log in as `student.blank`, open "Introduction to Programming in C".
@@ -157,9 +203,12 @@ to `Demo@2026!`.
 2. Take it. The page names your learning style.
 3. Open the activity "Arrays". A notification appears with a matching resource.
 4. Log out, log in as `student.rw`, open **the same** Arrays activity.
-5. A different link appears: an article or PDF instead of a video.
+5. A different link appears: an article instead of a video.
 
 Steps 3 and 5 are the point of the project. `make demo` prints this at any time.
+Any of the 38 activities shows the same contrast; if you are asked whether the
+system only knows C, "Joins" in `CS-DB` and "Sorting Algorithms" in `CS-ALGO`
+make the point quickly.
 
 To run it again, `make rehearse` puts `student.blank` back to having no learning
 style. Do this between rehearsals, or step 1 shows a recommendation instead of the
@@ -222,16 +271,19 @@ that mount and runs what the image carries.
 
 ## How a recommendation is chosen
 
-The content library is `recommender/data/intents.json`: 16 tags (4 topics x 4
-modalities), 84 example phrasings, 100 responses. At image build time `train.py`
-stems every phrasing with the Lancaster stemmer, builds a 41-word vocabulary,
+The content library is `recommender/data/intents.json`: 152 tags (38 topics x 4
+modalities), 900 example phrasings, 372 responses. At image build time `train.py`
+stems every phrasing with the Lancaster stemmer, builds a 363-word vocabulary,
 and trains the feed-forward network the project report describes - two hidden
-layers of 8 units, 41 -> 8 -> 8 -> 16 with a softmax output, `batch_size=8` and
-up to 1000 iterations, matching the report's appendix.
+layers of 8 units, 363 -> 8 -> 8 -> 152 with a softmax output, `batch_size=8` and
+up to 1000 iterations, matching the report's appendix. The architecture is the
+report's unchanged; only `random_state` moved, from 42 to 0, because at 152
+classes seed 42 leaves one pattern of 900 misfitted and the build asserts a
+perfect fit. Eight of the first ten seeds reach it.
 
 Training needs scikit-learn; serving does not. `train.py` saves the fitted
 weights to `model.npz` and then asserts that the numpy forward pass in the same
-file reproduces scikit-learn's `predict_proba` exactly - on all 84 training
+file reproduces scikit-learn's `predict_proba` exactly - on all 900 training
 vectors and on the demo's own inputs - before the build is allowed to succeed.
 The runtime image therefore carries numpy and nltk but neither scikit-learn nor
 scipy, which is 211MB it would otherwise never use. Measured over 20,002
@@ -242,17 +294,23 @@ request.
 At request time the service receives the activity's name, its intro text and the
 student's stored style, and:
 
-1. **Checks it recognises the activity at all.** If nothing in the text is in the
-   vocabulary and no topic keyword matches, it returns `204 No Content` and
-   Moodle shows nothing. An activity about pointers gets silence, not
-   a recommendation about data types.
+1. **Looks the activity up in the topic table.** `TOPICS` in `app.py` maps 38
+   keywords to topics. The keys are matched as substrings of the activity's name
+   and intro, **longest first**, so `python function` beats `function` and
+   `hash table` beats `array`. If nothing matches, the service returns
+   `204 No Content` and Moodle shows nothing: the library covers 38 topics and an
+   activity about pointers gets silence, not the nearest of 152 tags.
 2. **Expands topic synonyms.** The vocabulary contains `if/else`, `loop`, `swic`
    and `whil` but no stem for "control", so an activity called "Control
-   Structures" would match nothing on its own. Four alias entries fix that.
+   Structures" would match nothing on its own. Every topic carries an alias entry.
 3. **Classifies, restricted to the student's style.** The style is stored data,
    not something to infer, so the softmax is masked to the four classes for that
    modality and the network chooses the topic among them.
-4. **Picks a response deterministically**, `crc32(module + style) % len(responses)`,
+4. **Lets the keyword match settle any disagreement.** A substring hit is
+   evidence; the softmax is an estimate. Where they differ the keyword wins and
+   the response is marked `"source": "keyword"`. This is the one step that is not
+   in the original design, and the reason for it is measured below.
+5. **Picks a response deterministically**, `crc32(module + style) % len(responses)`,
    so the same activity shows the same link on every rehearsal.
 
 Try it without Moodle:
@@ -268,9 +326,14 @@ anything else is rejected with 422.
 
 ## Changes made to the supplied content
 
-`intents.json` is the original author's content. The patterns and the tags that
-drive the model are untouched, and no URL was changed or invented. Four classes of
-defect were repaired, all of which showed on screen:
+The supplied content is the **first 16 tags** of `intents.json`, which cover
+arrays, control structures, functions and data types. Its patterns and tags are
+untouched and no URL in it was changed or invented; the 136 tags that follow it
+are new and are marked `"source": "demo"`, so the two are never confused. The
+first 16 objects are also byte-identical to the file as supplied.
+
+Four classes of defect were repaired in the supplied content, all of which showed
+on screen:
 
 - **Six of sixteen tags** carried stray leading or trailing spaces
   (`'functions visual '`, `' arrays auditory'`, and four more), which made the
@@ -286,31 +349,87 @@ defect were repaired, all of which showed on screen:
   "progarm", "poinetrs", "pactical", "Declaringand" and others. Only spelling
   changed; no sentence was reworded.
 
+## Content added for the ten-course demo
+
+The client asked for courses students could enrol in, around C and the wider CS
+and software-engineering syllabus. That meant 34 new topics on top of the
+supplied four, and 136 new tags.
+
+- **272 new links, every one checked.** Each new topic carries two resources per
+  modality. All 198 distinct URLs were requested and returned HTTP 200 at the
+  time of writing. Anything that 404'd was replaced, and anything that could only
+  be reached by a browser and not by a script was replaced too, so that nothing
+  in the library is a link nobody has opened.
+- **The eight URLs under a topic are all different.** This matters more than it
+  sounds: `pick_response` shows one link per activity and style, so a URL sitting
+  under two modalities of the same topic can put the *same* link in front of a
+  visual learner and a read/write learner, which is precisely the comparison the
+  demo is built on. The first draft did that on 8 topics of 34 and reused a URL
+  across modalities on 27. Both are now zero, checked over all 38 topics.
+- **No YouTube video IDs were invented.** The supplied content uses YouTube for
+  three of its four modalities. An invented 11-character video ID still returns
+  HTTP 200 on the watch page, so a wrong one cannot be caught by checking it, and
+  it would fail in front of the person being shown the demo. The new content uses
+  sources whose URLs are structural - documentation, university course pages,
+  visualisations, interactive exercises - which can be verified.
+- **The four modalities are now genuinely different kinds of resource.** In the
+  supplied content, visual, auditory and kinesthetic are all YouTube and only the
+  framing sentence differs. The new content gives visual an animation or diagram,
+  auditory a recorded lecture, read/write documentation or an article, and
+  kinesthetic something to run or solve.
+- **The response sentences are templated**, per topic and modality, rather than
+  written one at a time as the supplied ones were. Only one response is ever
+  shown for a given activity and style - `pick_response` is deterministic - so
+  the repetition is not visible in the product, and consistency was worth more
+  than variety at this volume.
+
 ## Known limitations
 
 State these before a panel member finds them.
 
-- The network has **552 parameters and 84 training examples**: 6.6 parameters
+- The network has **2,984 parameters and 900 training examples**: 3.3 parameters
   per example. Perfect training accuracy is arithmetic, not evidence. The report
   calls this a deep neural network, using the established sense of more than one
   hidden layer; it is two hidden layers of 8 units, and it would not be called
   deep learning today. The architecture is reproduced exactly as the report
   specifies rather than improved, because the system demonstrated has to be the
   system described.
-- The model is trained on 84 patterns across 16 classes and fits them at 100%.
-  In the source thesis the training data was also the test data. All 84 input
+- The model is trained on 900 patterns across 152 classes and fits them at 100%.
+  In the source thesis the training data was also the test data. All 900 input
   vectors are unique and no two classes collide, so the network memorises the
   table exactly. The honest description is "a classifier over a curated intent
   table", not "a model that generalises". Quoting 100% accuracy as a result
   without that context invites a hard question.
-- Two layers sit around the classifier and both are deliberate, not hidden. The
-  alias expansion adds topic synonyms because the vocabulary has no stem for
-  "control". The style mask restricts the output to the student's stored
-  modality. Measured over 12 activity variants and 4 styles: expansion alone
-  gets the modality wrong 5 times in 48, the mask alone gets the topic wrong 10
-  times in 48, and together they are correct 48 times in 48.
-- Recommendations are limited to the four topics in `intents.json`: arrays,
-  control structures, functions and data types.
+- **Going from 4 topics to 38 is what the classifier could not absorb, and this
+  is the most important thing to be able to say out loud.** The style mask leaves
+  4 candidates when there are 4 topics and 38 when there are 38, and a network
+  that memorises its table does not generalise to the denser vector the server
+  builds at request time. Measured over the 152 seeded combinations, the
+  classifier on its own was right 82 times. Adding one training pattern per new
+  tag in the exact shape the server sends took that to 145; the 7 it still gets
+  wrong are all on the four supplied topics, whose patterns are frozen. The
+  keyword table is right 152 times out of 152 on its own, so it is what decides
+  when the two disagree. On the shipped system the classifier and the keyword
+  agree 142 times and the keyword corrects the other 10.
+- Two further layers sit around the classifier and both are deliberate, not
+  hidden. The alias expansion adds topic synonyms because the vocabulary has no
+  stem for "control". The style mask restricts the output to the student's stored
+  modality. Measured over 12 activity variants and 4 styles on the original four
+  topics: expansion alone gets the modality wrong 5 times in 48, the mask alone
+  gets the topic wrong 10 times in 48, and together they are correct 48 times
+  in 48.
+- Topic lookup is substring matching, not understanding. It is correct for all 38
+  seeded activities, and a test of that is the reason three activity intros are
+  worded as they are: "Functions" says "return values" rather than "recursion",
+  because `recursion` is a topic of its own and the longer match. But an activity
+  called "Wave functions and the Schrodinger equation" contains the whole word
+  "functions" and will be offered C material. A teacher writing their own
+  activity gets a recommendation only if its name or intro happens to contain one
+  of the 38 keys; otherwise they get silence, which is the safe failure but not
+  an intelligent one.
+- Recommendations are limited to the 38 topics in `intents.json`. Ten courses
+  is a demonstration catalogue, not a syllabus: each course has 3 to 6
+  activities, where a real one would have dozens.
 - The VARK learning-styles matching hypothesis is contested in the education
   literature. The defensible claim is that this implements VARK as specified by
   the source thesis, not that style matching has been shown to improve outcomes.

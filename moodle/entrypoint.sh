@@ -115,6 +115,19 @@ su -s /bin/sh -c "php ${MOODLE_ROOT}/admin/cli/cfg.php --name=debug --set=32767"
     && echo "[entrypoint] debugdisplay=${DEBUG_DISPLAY}" \
     || echo "[entrypoint] WARNING: could not set debug options; continuing"
 
+# Seeding runs on every start, not just the first: the script creates what is
+# missing and brings courses and activities into line with seed_demo.php, while
+# leaving existing users, passwords and saved learning styles alone. Non-fatal
+# for the same reason as everything else here - a site that will not start is
+# worse than a site with no demo data. Set SEED_ON_START=0 to skip it.
+if [ "${SEED_ON_START:-1}" = "1" ]; then
+    echo "[entrypoint] seeding demo courses"
+    su -s /bin/sh -c "php ${MOODLE_ROOT}/public/local/tutoragent/cli/seed_demo.php" www-data \
+        || echo "[entrypoint] WARNING: seeding failed; continuing"
+else
+    echo "[entrypoint] SEED_ON_START=0, skipping the demo seed"
+fi
+
 su -s /bin/sh -c "php ${MOODLE_ROOT}/admin/cli/purge_caches.php" www-data \
     || echo "[entrypoint] WARNING: cache purge failed; continuing"
 set -e

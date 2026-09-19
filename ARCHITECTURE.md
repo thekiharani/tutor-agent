@@ -39,15 +39,15 @@ POST http://recommender:8000/recommend                      private network
         ▼
 recommend()                                                 app.py
         │
-        │  1. recognises()?  is any stem of the text in the vocabulary,
-        │                    or does any topic alias match?
-        │       no ──► 204 No Content
-        │  2. find_topic()  first alias match wins, appends its expansion
-        │  3. forward()     numpy pass over the trained weights
-        │  4. mask to the four classes ending in this style; argmax picks
+        │  1. find_topic()  longest of the 38 keys found in the text wins,
+        │                    appends its expansion
+        │       none ──► 204 No Content
+        │  2. forward()     numpy pass over the trained weights
+        │  3. mask to the four classes ending in this style; argmax picks
         │                    the topic; renormalise for confidence
-        │  5. below THRESHOLD ──► deterministic keyword fallback
-        │  6. pick_response()  crc32(module + style) % len(responses)
+        │  4. disagrees with the key ──► the key wins, "source": "keyword"
+        │     agrees but below THRESHOLD ──► "source": "fallback"
+        │  5. pick_response()  crc32(module + style) % len(responses)
         ▼
 {"tag": "arrays read_write", "confidence": 0.99,
  "html": "<a href='...'>this link</a>", "source": "model"}
@@ -109,14 +109,16 @@ is actually asked is *which topic is this activity about*.
 `recommender/train.py` runs once, at image build time, in a stage that has
 scikit-learn. It:
 
-1. reads `data/intents.json` — 16 tags (4 topics x 4 modalities), 84 patterns,
-   100 responses
+1. reads `data/intents.json` — 152 tags (38 topics x 4 modalities), 900
+   patterns, 372 responses
 2. tokenises with `tokenize()`: lowercase, `re.findall(r"[a-z_/]+")`, Lancaster
    stem. The regex keeps `if/else` and `read_write` whole; both are real
    vocabulary entries
-3. builds the vocabulary with `sorted(set(...))` — **41 stems**
+3. builds the vocabulary with `sorted(set(...))` — **363 stems**
 4. trains `MLPClassifier(hidden_layer_sizes=(8, 8), activation="relu",
-   solver="adam", max_iter=1000, batch_size=8)`, matching the project report
+   solver="adam", max_iter=1000, batch_size=8, random_state=0)`, matching the
+   project report. Only the seed is not the report's: at 152 classes seed 42
+   leaves one pattern of 900 misfitted and step 6 fails the build
 5. saves the weights to `data/model.npz`
 6. **asserts `forward()` reproduces `predict_proba`** on every training vector
    and on the demo's own inputs, and fails the build on any disagreement
@@ -139,9 +141,11 @@ restart. The demo shows the same link on every rehearsal.
 
 ### Honest framing
 
-552 parameters, 84 training examples — 6.6 per example. All 84 input vectors are
-unique with no class collisions, so 100% training accuracy is arithmetic, not
-achievement. The defensible description is "a classifier over a curated intent
+2,984 parameters, 900 training examples — 3.3 per example. All 900 input vectors
+are unique with no class collisions, so 100% training accuracy is arithmetic, not
+achievement. On the 152 seeded activity-and-style combinations the classifier
+alone is right 145 times and the keyword table 152; the keyword table decides
+where they differ. The defensible description is "a classifier over a curated intent
 table", not "a model that generalises". See *Known limitations* in the README;
 that section is the one to read before a viva.
 
@@ -164,7 +168,8 @@ plugin/local/tutoragent/
 │   ├── hook_callbacks.php navigation link + the gate
 │   ├── form/vark_form.php the 16 questions and the form
 │   └── privacy/provider.php
-├── cli/seed_demo.php      the demo course, admin and students
+├── cli/seed_demo.php      the ten demo courses, admin and students;
+│                          idempotent, and run on every container start
 └── lang/en/…
 ```
 
@@ -275,9 +280,18 @@ settings is a nuisance; a site that will not start is a lost demo.
 ## 6. Changing things
 
 **Add a topic.** Add its four tags to `intents.json`, add an entry to `TOPICS` in
-`app.py` mapping a keyword to `(tag topic, expansion)`, rebuild. The vocabulary
-and the model rebuild themselves; keep the tag naming consistent, because the
-fallback builds tags as `f"{topic} {style}"`.
+`app.py` mapping a keyword to `(tag topic, expansion)`, and add the activity to
+`seed_demo.php`. Rebuild; the vocabulary and the model rebuild themselves. Three
+things have to hold, and all three have bitten:
+
+- Keep the tag naming consistent, because the keyword path builds tags as
+  `f"{topic} {style}"`.
+- The new key must not be a longer substring of another topic's activity text,
+  and no other key may be longer inside its own. `recursion` inside the Functions
+  intro and `process` inside the Threads intro both had to be worded away.
+- Give each tag one pattern in the exact shape the server sends
+  (`name intro style alias`). Without it the classifier routes 82 of 152
+  activities correctly instead of 145.
 
 **Change the questions.** One array: `vark_form::QUESTIONS`. Keep `dim` as one of
 V, A, R, K, and do not sort the options — the order varies per question by

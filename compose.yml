@@ -36,6 +36,7 @@ services:
       MOODLE_DEBUG: ${MOODLE_DEBUG}
       MOODLE_SSLPROXY: ${MOODLE_SSLPROXY:-0}
       DEMO_PASSWORD: ${DEMO_PASSWORD}
+      SEED_ON_START: ${SEED_ON_START:-1}
     ports:
       - "${MOODLE_PORT}:80"
     volumes:
