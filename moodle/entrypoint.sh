@@ -79,13 +79,30 @@ if [ "${MOODLE_SSLPROXY:-0}" = "1" ]; then
 else
     SSLPROXY=false
 fi
+# Moodle nags every unregistered site with "Don't miss out on important updates
+# and security alerts" across the admin pages. The renderer shows it when
+# !is_registered() && site_is_public(), and site_is_public() returns
+# $CFG->site_is_public first if an admin has set it. That flag gates nothing
+# else: its only four uses in core are the banner, the registration page, the
+# registration prompt and the registration cron task. Setting it false is
+# therefore how you turn the nagging off without pretending to be registered.
+# MOODLE_REGISTRATION_PROMPT=1 leaves Moodle to decide for itself.
+if [ "${MOODLE_REGISTRATION_PROMPT:-0}" = "1" ]; then
+    PUBLIC_LINE=""
+else
+    PUBLIC_LINE="false"
+fi
 CONFIG_NEW="${CONFIG}.new"
-awk -v url="${MOODLE_WWWROOT}" -v ssl="${SSLPROXY}" -v q="'" '
-    /^\$CFG->wwwroot/  { next }
-    /^\$CFG->sslproxy/ { next }
+awk -v url="${MOODLE_WWWROOT}" -v ssl="${SSLPROXY}" -v pub="${PUBLIC_LINE}" -v q="'" '
+    /^\$CFG->wwwroot/        { next }
+    /^\$CFG->sslproxy/       { next }
+    /^\$CFG->site_is_public/ { next }
     /^require_once/ {
         print "$CFG->wwwroot   = " q url q ";";
         print "$CFG->sslproxy  = " ssl ";";
+        if (pub != "") {
+            print "$CFG->site_is_public = " pub ";";
+        }
         print "";
     }
     { print }
@@ -94,6 +111,7 @@ awk -v url="${MOODLE_WWWROOT}" -v ssl="${SSLPROXY}" -v q="'" '
 if php -l "${CONFIG_NEW}" > /dev/null 2>&1 && grep -q "^\$CFG->wwwroot" "${CONFIG_NEW}"; then
     cat "${CONFIG_NEW}" > "${CONFIG}"
     echo "[entrypoint] wwwroot=${MOODLE_WWWROOT} sslproxy=${SSLPROXY}"
+    [ -z "${PUBLIC_LINE}" ] || echo "[entrypoint] registration prompt suppressed (site_is_public=false)"
 else
     echo "[entrypoint] WARNING: could not rewrite wwwroot/sslproxy; keeping config.php"
 fi

@@ -485,6 +485,22 @@ State these before a panel member finds them.
 
 ## Troubleshooting
 
+**"Don't miss out on important updates and security alerts" on every admin page.**
+That is core Moodle asking you to register the site with moodle.org, shown only
+to users who can configure the site. It is off by default here:
+`MOODLE_REGISTRATION_PROMPT=0` makes the entrypoint write
+`$CFG->site_is_public = false`, which is the flag `site_is_public()` checks
+before anything else. In core that flag gates nothing but registration - the
+banner, the registration page, the prompt and the registration cron - so turning
+it off costs nothing else. Set `MOODLE_REGISTRATION_PROMPT=1` if you do want to
+register. On a site already running an older image, one command does the same
+thing without redeploying:
+
+```sh
+docker compose -f compose.prod.yml exec -u www-data moodle \
+    php /var/www/moodle/admin/cli/cfg.php --name=site_is_public --set=0
+```
+
 **A change to the plugin has no effect.** Moodle caches aggressively. `make purge`.
 This is the first thing to try, not the last. It applies to event observers and
 language strings too, not just code: after editing `db/events.php` the old
