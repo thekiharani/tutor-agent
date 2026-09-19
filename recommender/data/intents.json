@@ -311,6 +311,2318 @@
         "Void data type in C. Listen the following <a href = 'https://www.youtube.com/watch?v=1nAJiybMZNw'> link</a>"
       ],
       "context_set": ""
+    },
+    {
+      "tag": "intro c visual",
+      "patterns": [
+        "What is introduction to c visual?",
+        "program compile visual",
+        "introduction to c explained visual",
+        "main header visual",
+        "printf statement visual",
+        "Introduction to C Your first C program, the main function, headers, and how a source file becomes a running program. visual program compile main header printf statement syntax"
+      ],
+      "responses": [
+        "Introduction to C: Your first C program, the main function, headers, and how a source file becomes a running program. Watch the Programiz tutorial: <a href='https://www.programiz.com/c-programming/getting-started'>this link</a>",
+        "Introduction to C: Your first C program, the main function, headers, and how a source file becomes a running program. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/c/c_intro.php'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "intro c auditory",
+      "patterns": [
+        "What is introduction to c auditory?",
+        "program compile auditory",
+        "introduction to c explained auditory",
+        "main header auditory",
+        "printf statement auditory",
+        "Introduction to C Your first C program, the main function, headers, and how a source file becomes a running program. auditory program compile main header printf statement syntax"
+      ],
+      "responses": [
+        "Introduction to C: Your first C program, the main function, headers, and how a source file becomes a running program. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-087-practical-programming-in-c-january-iap-2010/'>this link</a>",
+        "Introduction to C: Your first C program, the main function, headers, and how a source file becomes a running program. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/1/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "intro c read_write",
+      "patterns": [
+        "What is introduction to c read_write?",
+        "program compile read_write",
+        "introduction to c explained read_write",
+        "main header read_write",
+        "printf statement read_write",
+        "Introduction to C Your first C program, the main function, headers, and how a source file becomes a running program. read_write program compile main header printf statement syntax"
+      ],
+      "responses": [
+        "Introduction to C: Your first C program, the main function, headers, and how a source file becomes a running program. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/c-programming-language/'>this link</a>",
+        "Introduction to C: Your first C program, the main function, headers, and how a source file becomes a running program. Read the C language reference: <a href='https://en.cppreference.com/w/c/language/main_function'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "intro c kinesthetic",
+      "patterns": [
+        "What is introduction to c kinesthetic?",
+        "program compile kinesthetic",
+        "introduction to c explained kinesthetic",
+        "main header kinesthetic",
+        "printf statement kinesthetic",
+        "Introduction to C Your first C program, the main function, headers, and how a source file becomes a running program. kinesthetic program compile main header printf statement syntax"
+      ],
+      "responses": [
+        "Introduction to C: Your first C program, the main function, headers, and how a source file becomes a running program. Work through the C online compiler: <a href='https://www.programiz.com/c-programming/online-compiler/'>this link</a>",
+        "Introduction to C: Your first C program, the main function, headers, and how a source file becomes a running program. Work through the W3Schools exercises: <a href='https://www.w3schools.com/c/c_exercises.php'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "operators visual",
+      "patterns": [
+        "What is operators visual?",
+        "operator arithmetic visual",
+        "operators explained visual",
+        "relational logical visual",
+        "bitwise assignment visual",
+        "Operators Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. visual operator arithmetic relational logical bitwise assignment precedence"
+      ],
+      "responses": [
+        "Operators: Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. Watch the Programiz tutorial: <a href='https://www.programiz.com/c-programming/c-operators'>this link</a>",
+        "Operators: Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/c/c_operators.php'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "operators auditory",
+      "patterns": [
+        "What is operators auditory?",
+        "operator arithmetic auditory",
+        "operators explained auditory",
+        "relational logical auditory",
+        "bitwise assignment auditory",
+        "Operators Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. auditory operator arithmetic relational logical bitwise assignment precedence"
+      ],
+      "responses": [
+        "Operators: Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-087-practical-programming-in-c-january-iap-2010/'>this link</a>",
+        "Operators: Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/1/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "operators read_write",
+      "patterns": [
+        "What is operators read_write?",
+        "operator arithmetic read_write",
+        "operators explained read_write",
+        "relational logical read_write",
+        "bitwise assignment read_write",
+        "Operators Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. read_write operator arithmetic relational logical bitwise assignment precedence"
+      ],
+      "responses": [
+        "Operators: Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. Read the C language reference: <a href='https://en.cppreference.com/w/c/language/operator_precedence'>this link</a>",
+        "Operators: Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/operators-in-c/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "operators kinesthetic",
+      "patterns": [
+        "What is operators kinesthetic?",
+        "operator arithmetic kinesthetic",
+        "operators explained kinesthetic",
+        "relational logical kinesthetic",
+        "bitwise assignment kinesthetic",
+        "Operators Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. kinesthetic operator arithmetic relational logical bitwise assignment precedence"
+      ],
+      "responses": [
+        "Operators: Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. Work through the C online compiler: <a href='https://www.programiz.com/c-programming/online-compiler/'>this link</a>",
+        "Operators: Arithmetic, relational, logical, bitwise and assignment operators, and the precedence rules that decide what binds first. Work through the W3Schools exercises: <a href='https://www.w3schools.com/c/c_exercises.php'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "linked lists visual",
+      "patterns": [
+        "What is linked lists visual?",
+        "linked list visual",
+        "linked lists explained visual",
+        "node pointer visual",
+        "head traversal visual",
+        "Linked Lists Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. visual linked list node pointer head traversal insert delete"
+      ],
+      "responses": [
+        "Linked Lists: Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. Watch an animated visualisation: <a href='https://visualgo.net/en/list'>this link</a>",
+        "Linked Lists: Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. Watch an algorithm animation: <a href='https://www.cs.usfca.edu/~galles/visualization/StackLL.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "linked lists auditory",
+      "patterns": [
+        "What is linked lists auditory?",
+        "linked list auditory",
+        "linked lists explained auditory",
+        "node pointer auditory",
+        "head traversal auditory",
+        "Linked Lists Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. auditory linked list node pointer head traversal insert delete"
+      ],
+      "responses": [
+        "Linked Lists: Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/'>this link</a>",
+        "Linked Lists: Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. Listen to the MIT lecture playlist: <a href='https://www.youtube.com/playlist?list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "linked lists read_write",
+      "patterns": [
+        "What is linked lists read_write?",
+        "linked list read_write",
+        "linked lists explained read_write",
+        "node pointer read_write",
+        "head traversal read_write",
+        "Linked Lists Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. read_write linked list node pointer head traversal insert delete"
+      ],
+      "responses": [
+        "Linked Lists: Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/data-structures/linked-list/'>this link</a>",
+        "Linked Lists: Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. Read the Programiz tutorial: <a href='https://www.programiz.com/dsa/linked-list'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "linked lists kinesthetic",
+      "patterns": [
+        "What is linked lists kinesthetic?",
+        "linked list kinesthetic",
+        "linked lists explained kinesthetic",
+        "node pointer kinesthetic",
+        "head traversal kinesthetic",
+        "Linked Lists Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. kinesthetic linked list node pointer head traversal insert delete"
+      ],
+      "responses": [
+        "Linked Lists: Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. Work through the practice problems: <a href='https://www.hackerrank.com/domains/data-structures'>this link</a>",
+        "Linked Lists: Nodes joined by pointers, traversing a list, and inserting or deleting without shifting everything along. Work through the Programiz tutorial: <a href='https://www.programiz.com/dsa/linked-list-operations'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "stacks visual",
+      "patterns": [
+        "What is stacks and queues visual?",
+        "stack queue visual",
+        "stacks and queues explained visual",
+        "push pop visual",
+        "enqueue dequeue visual",
+        "Stacks and Queues Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. visual stack queue push pop enqueue dequeue lifo fifo"
+      ],
+      "responses": [
+        "Stacks and Queues: Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. Watch an animated visualisation: <a href='https://visualgo.net/en/list'>this link</a>",
+        "Stacks and Queues: Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. Watch an algorithm animation: <a href='https://www.cs.usfca.edu/~galles/visualization/StackLL.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "stacks auditory",
+      "patterns": [
+        "What is stacks and queues auditory?",
+        "stack queue auditory",
+        "stacks and queues explained auditory",
+        "push pop auditory",
+        "enqueue dequeue auditory",
+        "Stacks and Queues Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. auditory stack queue push pop enqueue dequeue lifo fifo"
+      ],
+      "responses": [
+        "Stacks and Queues: Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/'>this link</a>",
+        "Stacks and Queues: Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/5/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "stacks read_write",
+      "patterns": [
+        "What is stacks and queues read_write?",
+        "stack queue read_write",
+        "stacks and queues explained read_write",
+        "push pop read_write",
+        "enqueue dequeue read_write",
+        "Stacks and Queues Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. read_write stack queue push pop enqueue dequeue lifo fifo"
+      ],
+      "responses": [
+        "Stacks and Queues: Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/stack-data-structure/'>this link</a>",
+        "Stacks and Queues: Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. Read the Programiz tutorial: <a href='https://www.programiz.com/dsa/stack'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "stacks kinesthetic",
+      "patterns": [
+        "What is stacks and queues kinesthetic?",
+        "stack queue kinesthetic",
+        "stacks and queues explained kinesthetic",
+        "push pop kinesthetic",
+        "enqueue dequeue kinesthetic",
+        "Stacks and Queues Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. kinesthetic stack queue push pop enqueue dequeue lifo fifo"
+      ],
+      "responses": [
+        "Stacks and Queues: Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. Work through the practice problems: <a href='https://www.hackerrank.com/domains/data-structures'>this link</a>",
+        "Stacks and Queues: Last-in-first-out and first-in-first-out collections, with push, pop, enqueue and dequeue. Work through the Programiz tutorial: <a href='https://www.programiz.com/dsa/queue'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "trees visual",
+      "patterns": [
+        "What is binary trees visual?",
+        "tree binary visual",
+        "binary trees explained visual",
+        "node root visual",
+        "leaf traversal visual",
+        "Binary Trees Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. visual tree binary node root leaf traversal inorder subtree"
+      ],
+      "responses": [
+        "Binary Trees: Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. Watch an animated visualisation: <a href='https://visualgo.net/en/bst'>this link</a>",
+        "Binary Trees: Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. Watch an algorithm animation: <a href='https://www.cs.usfca.edu/~galles/visualization/BST.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "trees auditory",
+      "patterns": [
+        "What is binary trees auditory?",
+        "tree binary auditory",
+        "binary trees explained auditory",
+        "node root auditory",
+        "leaf traversal auditory",
+        "Binary Trees Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. auditory tree binary node root leaf traversal inorder subtree"
+      ],
+      "responses": [
+        "Binary Trees: Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/'>this link</a>",
+        "Binary Trees: Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/5/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "trees read_write",
+      "patterns": [
+        "What is binary trees read_write?",
+        "tree binary read_write",
+        "binary trees explained read_write",
+        "node root read_write",
+        "leaf traversal read_write",
+        "Binary Trees Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. read_write tree binary node root leaf traversal inorder subtree"
+      ],
+      "responses": [
+        "Binary Trees: Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/binary-tree-data-structure/'>this link</a>",
+        "Binary Trees: Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. Read the Programiz tutorial: <a href='https://www.programiz.com/dsa/binary-tree'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "trees kinesthetic",
+      "patterns": [
+        "What is binary trees kinesthetic?",
+        "tree binary kinesthetic",
+        "binary trees explained kinesthetic",
+        "node root kinesthetic",
+        "leaf traversal kinesthetic",
+        "Binary Trees Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. kinesthetic tree binary node root leaf traversal inorder subtree"
+      ],
+      "responses": [
+        "Binary Trees: Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. Work through the Programiz tutorial: <a href='https://www.programiz.com/dsa/binary-search-tree'>this link</a>",
+        "Binary Trees: Root, leaves and subtrees, binary search trees, and the inorder, preorder and postorder traversals. Work through the practice problems: <a href='https://www.hackerrank.com/domains/data-structures'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "hash tables visual",
+      "patterns": [
+        "What is hash tables visual?",
+        "hash table visual",
+        "hash tables explained visual",
+        "bucket collision visual",
+        "chaining key visual",
+        "Hash Tables Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. visual hash table bucket collision chaining key lookup"
+      ],
+      "responses": [
+        "Hash Tables: Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. Watch an animated visualisation: <a href='https://visualgo.net/en/hashtable'>this link</a>",
+        "Hash Tables: Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. Watch an algorithm animation: <a href='https://www.cs.usfca.edu/~galles/visualization/OpenHash.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "hash tables auditory",
+      "patterns": [
+        "What is hash tables auditory?",
+        "hash table auditory",
+        "hash tables explained auditory",
+        "bucket collision auditory",
+        "chaining key auditory",
+        "Hash Tables Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. auditory hash table bucket collision chaining key lookup"
+      ],
+      "responses": [
+        "Hash Tables: Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/'>this link</a>",
+        "Hash Tables: Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/5/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "hash tables read_write",
+      "patterns": [
+        "What is hash tables read_write?",
+        "hash table read_write",
+        "hash tables explained read_write",
+        "bucket collision read_write",
+        "chaining key read_write",
+        "Hash Tables Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. read_write hash table bucket collision chaining key lookup"
+      ],
+      "responses": [
+        "Hash Tables: Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/hashing-data-structure/'>this link</a>",
+        "Hash Tables: Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. Read the Programiz tutorial: <a href='https://www.programiz.com/dsa/hash-table'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "hash tables kinesthetic",
+      "patterns": [
+        "What is hash tables kinesthetic?",
+        "hash table kinesthetic",
+        "hash tables explained kinesthetic",
+        "bucket collision kinesthetic",
+        "chaining key kinesthetic",
+        "Hash Tables Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. kinesthetic hash table bucket collision chaining key lookup"
+      ],
+      "responses": [
+        "Hash Tables: Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. Work through the practice problems: <a href='https://www.hackerrank.com/domains/data-structures'>this link</a>",
+        "Hash Tables: Turning a key into a bucket index, what happens when two keys collide, and why lookup is fast. Work through an algorithm animation: <a href='https://www.cs.usfca.edu/~galles/visualization/ClosedHash.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "sorting visual",
+      "patterns": [
+        "What is sorting algorithms visual?",
+        "sorting sort visual",
+        "sorting algorithms explained visual",
+        "bubble insertion visual",
+        "merge quicksort visual",
+        "Sorting Algorithms Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. visual sorting sort bubble insertion merge quicksort compare swap"
+      ],
+      "responses": [
+        "Sorting Algorithms: Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. Watch an animated visualisation: <a href='https://visualgo.net/en/sorting'>this link</a>",
+        "Sorting Algorithms: Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. Watch a sorting animation: <a href='https://www.toptal.com/developers/sorting-algorithms'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "sorting auditory",
+      "patterns": [
+        "What is sorting algorithms auditory?",
+        "sorting sort auditory",
+        "sorting algorithms explained auditory",
+        "bubble insertion auditory",
+        "merge quicksort auditory",
+        "Sorting Algorithms Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. auditory sorting sort bubble insertion merge quicksort compare swap"
+      ],
+      "responses": [
+        "Sorting Algorithms: Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/'>this link</a>",
+        "Sorting Algorithms: Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/3/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "sorting read_write",
+      "patterns": [
+        "What is sorting algorithms read_write?",
+        "sorting sort read_write",
+        "sorting algorithms explained read_write",
+        "bubble insertion read_write",
+        "merge quicksort read_write",
+        "Sorting Algorithms Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. read_write sorting sort bubble insertion merge quicksort compare swap"
+      ],
+      "responses": [
+        "Sorting Algorithms: Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/sorting-algorithms/'>this link</a>",
+        "Sorting Algorithms: Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. Read the Programiz tutorial: <a href='https://www.programiz.com/dsa/sorting-algorithm'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "sorting kinesthetic",
+      "patterns": [
+        "What is sorting algorithms kinesthetic?",
+        "sorting sort kinesthetic",
+        "sorting algorithms explained kinesthetic",
+        "bubble insertion kinesthetic",
+        "merge quicksort kinesthetic",
+        "Sorting Algorithms Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. kinesthetic sorting sort bubble insertion merge quicksort compare swap"
+      ],
+      "responses": [
+        "Sorting Algorithms: Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. Work through the practice problems: <a href='https://www.hackerrank.com/domains/algorithms'>this link</a>",
+        "Sorting Algorithms: Bubble, insertion, merge and quicksort: how each one orders a sequence, and what each one costs. Work through an algorithm animation: <a href='https://www.cs.usfca.edu/~galles/visualization/Algorithms.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "searching visual",
+      "patterns": [
+        "What is searching algorithms visual?",
+        "searching search visual",
+        "searching algorithms explained visual",
+        "linear binary visual",
+        "sorted midpoint visual",
+        "Searching Algorithms Linear search against binary search, and why binary search needs its input already in order. visual searching search linear binary sorted midpoint lookup"
+      ],
+      "responses": [
+        "Searching Algorithms: Linear search against binary search, and why binary search needs its input already in order. Watch an algorithm animation: <a href='https://www.cs.usfca.edu/~galles/visualization/Search.html'>this link</a>",
+        "Searching Algorithms: Linear search against binary search, and why binary search needs its input already in order. Watch the Khan Academy lesson: <a href='https://www.khanacademy.org/computing/computer-science/algorithms/binary-search/a/binary-search'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "searching auditory",
+      "patterns": [
+        "What is searching algorithms auditory?",
+        "searching search auditory",
+        "searching algorithms explained auditory",
+        "linear binary auditory",
+        "sorted midpoint auditory",
+        "Searching Algorithms Linear search against binary search, and why binary search needs its input already in order. auditory searching search linear binary sorted midpoint lookup"
+      ],
+      "responses": [
+        "Searching Algorithms: Linear search against binary search, and why binary search needs its input already in order. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/'>this link</a>",
+        "Searching Algorithms: Linear search against binary search, and why binary search needs its input already in order. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/3/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "searching read_write",
+      "patterns": [
+        "What is searching algorithms read_write?",
+        "searching search read_write",
+        "searching algorithms explained read_write",
+        "linear binary read_write",
+        "sorted midpoint read_write",
+        "Searching Algorithms Linear search against binary search, and why binary search needs its input already in order. read_write searching search linear binary sorted midpoint lookup"
+      ],
+      "responses": [
+        "Searching Algorithms: Linear search against binary search, and why binary search needs its input already in order. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/searching-algorithms/'>this link</a>",
+        "Searching Algorithms: Linear search against binary search, and why binary search needs its input already in order. Read the Programiz tutorial: <a href='https://www.programiz.com/dsa/binary-search'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "searching kinesthetic",
+      "patterns": [
+        "What is searching algorithms kinesthetic?",
+        "searching search kinesthetic",
+        "searching algorithms explained kinesthetic",
+        "linear binary kinesthetic",
+        "sorted midpoint kinesthetic",
+        "Searching Algorithms Linear search against binary search, and why binary search needs its input already in order. kinesthetic searching search linear binary sorted midpoint lookup"
+      ],
+      "responses": [
+        "Searching Algorithms: Linear search against binary search, and why binary search needs its input already in order. Work through the practice problems: <a href='https://www.hackerrank.com/domains/algorithms'>this link</a>",
+        "Searching Algorithms: Linear search against binary search, and why binary search needs its input already in order. Work through the practice exercises: <a href='https://codingbat.com/java'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "recursion visual",
+      "patterns": [
+        "What is recursion visual?",
+        "recursion base visual",
+        "recursion explained visual",
+        "case call visual",
+        "stack factorial visual",
+        "Recursion A function that calls itself, the base case that stops it, and how the call stack unwinds. visual recursion base case call stack factorial fibonacci recursive"
+      ],
+      "responses": [
+        "Recursion: A function that calls itself, the base case that stops it, and how the call stack unwinds. Watch an algorithm animation: <a href='https://www.cs.usfca.edu/~galles/visualization/RecFact.html'>this link</a>",
+        "Recursion: A function that calls itself, the base case that stops it, and how the call stack unwinds. Watch an animated visualisation: <a href='https://visualgo.net/en/recursion'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "recursion auditory",
+      "patterns": [
+        "What is recursion auditory?",
+        "recursion base auditory",
+        "recursion explained auditory",
+        "case call auditory",
+        "stack factorial auditory",
+        "Recursion A function that calls itself, the base case that stops it, and how the call stack unwinds. auditory recursion base case call stack factorial fibonacci recursive"
+      ],
+      "responses": [
+        "Recursion: A function that calls itself, the base case that stops it, and how the call stack unwinds. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/'>this link</a>",
+        "Recursion: A function that calls itself, the base case that stops it, and how the call stack unwinds. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/3/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "recursion read_write",
+      "patterns": [
+        "What is recursion read_write?",
+        "recursion base read_write",
+        "recursion explained read_write",
+        "case call read_write",
+        "stack factorial read_write",
+        "Recursion A function that calls itself, the base case that stops it, and how the call stack unwinds. read_write recursion base case call stack factorial fibonacci recursive"
+      ],
+      "responses": [
+        "Recursion: A function that calls itself, the base case that stops it, and how the call stack unwinds. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/recursion/'>this link</a>",
+        "Recursion: A function that calls itself, the base case that stops it, and how the call stack unwinds. Read the Programiz tutorial: <a href='https://www.programiz.com/c-programming/c-recursion'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "recursion kinesthetic",
+      "patterns": [
+        "What is recursion kinesthetic?",
+        "recursion base kinesthetic",
+        "recursion explained kinesthetic",
+        "case call kinesthetic",
+        "stack factorial kinesthetic",
+        "Recursion A function that calls itself, the base case that stops it, and how the call stack unwinds. kinesthetic recursion base case call stack factorial fibonacci recursive"
+      ],
+      "responses": [
+        "Recursion: A function that calls itself, the base case that stops it, and how the call stack unwinds. Work through the practice exercises: <a href='https://codingbat.com/python'>this link</a>",
+        "Recursion: A function that calls itself, the base case that stops it, and how the call stack unwinds. Work through the C online compiler: <a href='https://www.programiz.com/c-programming/online-compiler/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "complexity visual",
+      "patterns": [
+        "What is time complexity visual?",
+        "complexity big visual",
+        "time complexity explained visual",
+        "notation asymptotic visual",
+        "growth worst visual",
+        "Time Complexity Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. visual complexity big notation asymptotic growth worst case runtime"
+      ],
+      "responses": [
+        "Time Complexity: Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. Watch the Big-O cheat sheet: <a href='https://www.bigocheatsheet.com/'>this link</a>",
+        "Time Complexity: Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. Watch an animated visualisation: <a href='https://visualgo.net/en/sorting'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "complexity auditory",
+      "patterns": [
+        "What is time complexity auditory?",
+        "complexity big auditory",
+        "time complexity explained auditory",
+        "notation asymptotic auditory",
+        "growth worst auditory",
+        "Time Complexity Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. auditory complexity big notation asymptotic growth worst case runtime"
+      ],
+      "responses": [
+        "Time Complexity: Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/'>this link</a>",
+        "Time Complexity: Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/3/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "complexity read_write",
+      "patterns": [
+        "What is time complexity read_write?",
+        "complexity big read_write",
+        "time complexity explained read_write",
+        "notation asymptotic read_write",
+        "growth worst read_write",
+        "Time Complexity Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. read_write complexity big notation asymptotic growth worst case runtime"
+      ],
+      "responses": [
+        "Time Complexity: Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/analysis-algorithms-big-o-analysis/'>this link</a>",
+        "Time Complexity: Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. Read the Programiz tutorial: <a href='https://www.programiz.com/dsa/asymptotic-notations'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "complexity kinesthetic",
+      "patterns": [
+        "What is time complexity kinesthetic?",
+        "complexity big kinesthetic",
+        "time complexity explained kinesthetic",
+        "notation asymptotic kinesthetic",
+        "growth worst kinesthetic",
+        "Time Complexity Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. kinesthetic complexity big notation asymptotic growth worst case runtime"
+      ],
+      "responses": [
+        "Time Complexity: Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. Work through the practice problems: <a href='https://www.hackerrank.com/domains/algorithms'>this link</a>",
+        "Time Complexity: Big-O notation, worst and average case, and comparing algorithms by how they grow rather than by seconds. Work through the practice exercises: <a href='https://codingbat.com/java'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "classes visual",
+      "patterns": [
+        "What is classes and objects visual?",
+        "class object visual",
+        "classes and objects explained visual",
+        "instance attribute visual",
+        "method constructor visual",
+        "Classes and Objects A class as a template and an object as an instance of it, with attributes, methods and a constructor. visual class object instance attribute method constructor"
+      ],
+      "responses": [
+        "Classes and Objects: A class as a template and an object as an instance of it, with attributes, methods and a constructor. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/java/java_classes.asp'>this link</a>",
+        "Classes and Objects: A class as a template and an object as an instance of it, with attributes, methods and a constructor. Watch the official Java tutorial: <a href='https://docs.oracle.com/javase/tutorial/java/concepts/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "classes auditory",
+      "patterns": [
+        "What is classes and objects auditory?",
+        "class object auditory",
+        "classes and objects explained auditory",
+        "instance attribute auditory",
+        "method constructor auditory",
+        "Classes and Objects A class as a template and an object as an instance of it, with attributes, methods and a constructor. auditory class object instance attribute method constructor"
+      ],
+      "responses": [
+        "Classes and Objects: A class as a template and an object as an instance of it, with attributes, methods and a constructor. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/'>this link</a>",
+        "Classes and Objects: A class as a template and an object as an instance of it, with attributes, methods and a constructor. Listen to the MIT lecture playlist: <a href='https://www.youtube.com/playlist?list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "classes read_write",
+      "patterns": [
+        "What is classes and objects read_write?",
+        "class object read_write",
+        "classes and objects explained read_write",
+        "instance attribute read_write",
+        "method constructor read_write",
+        "Classes and Objects A class as a template and an object as an instance of it, with attributes, methods and a constructor. read_write class object instance attribute method constructor"
+      ],
+      "responses": [
+        "Classes and Objects: A class as a template and an object as an instance of it, with attributes, methods and a constructor. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/classes-objects-java/'>this link</a>",
+        "Classes and Objects: A class as a template and an object as an instance of it, with attributes, methods and a constructor. Read the Real Python guide: <a href='https://realpython.com/python3-object-oriented-programming/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "classes kinesthetic",
+      "patterns": [
+        "What is classes and objects kinesthetic?",
+        "class object kinesthetic",
+        "classes and objects explained kinesthetic",
+        "instance attribute kinesthetic",
+        "method constructor kinesthetic",
+        "Classes and Objects A class as a template and an object as an instance of it, with attributes, methods and a constructor. kinesthetic class object instance attribute method constructor"
+      ],
+      "responses": [
+        "Classes and Objects: A class as a template and an object as an instance of it, with attributes, methods and a constructor. Work through the W3Schools exercises: <a href='https://www.w3schools.com/java/exercise.asp'>this link</a>",
+        "Classes and Objects: A class as a template and an object as an instance of it, with attributes, methods and a constructor. Work through the Python online compiler: <a href='https://www.programiz.com/python-programming/online-compiler/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "inheritance visual",
+      "patterns": [
+        "What is inheritance visual?",
+        "inheritance subclass visual",
+        "inheritance explained visual",
+        "superclass extend visual",
+        "parent child visual",
+        "Inheritance Deriving one class from another, reusing what the parent defines, and overriding what differs. visual inheritance subclass superclass extend parent child override"
+      ],
+      "responses": [
+        "Inheritance: Deriving one class from another, reusing what the parent defines, and overriding what differs. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/java/java_inheritance.asp'>this link</a>",
+        "Inheritance: Deriving one class from another, reusing what the parent defines, and overriding what differs. Watch the official Java tutorial: <a href='https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "inheritance auditory",
+      "patterns": [
+        "What is inheritance auditory?",
+        "inheritance subclass auditory",
+        "inheritance explained auditory",
+        "superclass extend auditory",
+        "parent child auditory",
+        "Inheritance Deriving one class from another, reusing what the parent defines, and overriding what differs. auditory inheritance subclass superclass extend parent child override"
+      ],
+      "responses": [
+        "Inheritance: Deriving one class from another, reusing what the parent defines, and overriding what differs. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/'>this link</a>",
+        "Inheritance: Deriving one class from another, reusing what the parent defines, and overriding what differs. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-005-software-construction-spring-2016/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "inheritance read_write",
+      "patterns": [
+        "What is inheritance read_write?",
+        "inheritance subclass read_write",
+        "inheritance explained read_write",
+        "superclass extend read_write",
+        "parent child read_write",
+        "Inheritance Deriving one class from another, reusing what the parent defines, and overriding what differs. read_write inheritance subclass superclass extend parent child override"
+      ],
+      "responses": [
+        "Inheritance: Deriving one class from another, reusing what the parent defines, and overriding what differs. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/inheritance-in-java/'>this link</a>",
+        "Inheritance: Deriving one class from another, reusing what the parent defines, and overriding what differs. Read the Real Python guide: <a href='https://realpython.com/inheritance-composition-python/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "inheritance kinesthetic",
+      "patterns": [
+        "What is inheritance kinesthetic?",
+        "inheritance subclass kinesthetic",
+        "inheritance explained kinesthetic",
+        "superclass extend kinesthetic",
+        "parent child kinesthetic",
+        "Inheritance Deriving one class from another, reusing what the parent defines, and overriding what differs. kinesthetic inheritance subclass superclass extend parent child override"
+      ],
+      "responses": [
+        "Inheritance: Deriving one class from another, reusing what the parent defines, and overriding what differs. Work through the W3Schools exercises: <a href='https://www.w3schools.com/java/exercise.asp'>this link</a>",
+        "Inheritance: Deriving one class from another, reusing what the parent defines, and overriding what differs. Work through the Python online compiler: <a href='https://www.programiz.com/python-programming/online-compiler/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "polymorphism visual",
+      "patterns": [
+        "What is polymorphism visual?",
+        "polymorphism overriding visual",
+        "polymorphism explained visual",
+        "overloading dynamic visual",
+        "dispatch interface visual",
+        "Polymorphism One interface, several behaviours: overriding, overloading and choosing an implementation at run time. visual polymorphism overriding overloading dynamic dispatch interface"
+      ],
+      "responses": [
+        "Polymorphism: One interface, several behaviours: overriding, overloading and choosing an implementation at run time. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/java/java_polymorphism.asp'>this link</a>",
+        "Polymorphism: One interface, several behaviours: overriding, overloading and choosing an implementation at run time. Watch the official Java tutorial: <a href='https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "polymorphism auditory",
+      "patterns": [
+        "What is polymorphism auditory?",
+        "polymorphism overriding auditory",
+        "polymorphism explained auditory",
+        "overloading dynamic auditory",
+        "dispatch interface auditory",
+        "Polymorphism One interface, several behaviours: overriding, overloading and choosing an implementation at run time. auditory polymorphism overriding overloading dynamic dispatch interface"
+      ],
+      "responses": [
+        "Polymorphism: One interface, several behaviours: overriding, overloading and choosing an implementation at run time. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/'>this link</a>",
+        "Polymorphism: One interface, several behaviours: overriding, overloading and choosing an implementation at run time. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-005-software-construction-spring-2016/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "polymorphism read_write",
+      "patterns": [
+        "What is polymorphism read_write?",
+        "polymorphism overriding read_write",
+        "polymorphism explained read_write",
+        "overloading dynamic read_write",
+        "dispatch interface read_write",
+        "Polymorphism One interface, several behaviours: overriding, overloading and choosing an implementation at run time. read_write polymorphism overriding overloading dynamic dispatch interface"
+      ],
+      "responses": [
+        "Polymorphism: One interface, several behaviours: overriding, overloading and choosing an implementation at run time. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/polymorphism-in-java/'>this link</a>",
+        "Polymorphism: One interface, several behaviours: overriding, overloading and choosing an implementation at run time. Read the Real Python guide: <a href='https://realpython.com/python3-object-oriented-programming/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "polymorphism kinesthetic",
+      "patterns": [
+        "What is polymorphism kinesthetic?",
+        "polymorphism overriding kinesthetic",
+        "polymorphism explained kinesthetic",
+        "overloading dynamic kinesthetic",
+        "dispatch interface kinesthetic",
+        "Polymorphism One interface, several behaviours: overriding, overloading and choosing an implementation at run time. kinesthetic polymorphism overriding overloading dynamic dispatch interface"
+      ],
+      "responses": [
+        "Polymorphism: One interface, several behaviours: overriding, overloading and choosing an implementation at run time. Work through the W3Schools exercises: <a href='https://www.w3schools.com/java/exercise.asp'>this link</a>",
+        "Polymorphism: One interface, several behaviours: overriding, overloading and choosing an implementation at run time. Work through the Python online compiler: <a href='https://www.programiz.com/python-programming/online-compiler/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "encapsulation visual",
+      "patterns": [
+        "What is encapsulation visual?",
+        "encapsulation private visual",
+        "encapsulation explained visual",
+        "public getter visual",
+        "setter hiding visual",
+        "Encapsulation Keeping an object's data private and exposing it only through methods you control. visual encapsulation private public getter setter hiding access"
+      ],
+      "responses": [
+        "Encapsulation: Keeping an object's data private and exposing it only through methods you control. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/java/java_encapsulation.asp'>this link</a>",
+        "Encapsulation: Keeping an object's data private and exposing it only through methods you control. Watch the official Java tutorial: <a href='https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "encapsulation auditory",
+      "patterns": [
+        "What is encapsulation auditory?",
+        "encapsulation private auditory",
+        "encapsulation explained auditory",
+        "public getter auditory",
+        "setter hiding auditory",
+        "Encapsulation Keeping an object's data private and exposing it only through methods you control. auditory encapsulation private public getter setter hiding access"
+      ],
+      "responses": [
+        "Encapsulation: Keeping an object's data private and exposing it only through methods you control. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/'>this link</a>",
+        "Encapsulation: Keeping an object's data private and exposing it only through methods you control. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-005-software-construction-spring-2016/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "encapsulation read_write",
+      "patterns": [
+        "What is encapsulation read_write?",
+        "encapsulation private read_write",
+        "encapsulation explained read_write",
+        "public getter read_write",
+        "setter hiding read_write",
+        "Encapsulation Keeping an object's data private and exposing it only through methods you control. read_write encapsulation private public getter setter hiding access"
+      ],
+      "responses": [
+        "Encapsulation: Keeping an object's data private and exposing it only through methods you control. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/encapsulation-in-java/'>this link</a>",
+        "Encapsulation: Keeping an object's data private and exposing it only through methods you control. Read the Real Python guide: <a href='https://realpython.com/python-property/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "encapsulation kinesthetic",
+      "patterns": [
+        "What is encapsulation kinesthetic?",
+        "encapsulation private kinesthetic",
+        "encapsulation explained kinesthetic",
+        "public getter kinesthetic",
+        "setter hiding kinesthetic",
+        "Encapsulation Keeping an object's data private and exposing it only through methods you control. kinesthetic encapsulation private public getter setter hiding access"
+      ],
+      "responses": [
+        "Encapsulation: Keeping an object's data private and exposing it only through methods you control. Work through the W3Schools exercises: <a href='https://www.w3schools.com/java/exercise.asp'>this link</a>",
+        "Encapsulation: Keeping an object's data private and exposing it only through methods you control. Work through the Python online compiler: <a href='https://www.programiz.com/python-programming/online-compiler/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "relational model visual",
+      "patterns": [
+        "What is the relational model visual?",
+        "relational model visual",
+        "the relational model explained visual",
+        "relation row visual",
+        "column primary visual",
+        "The Relational Model Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. visual relational model relation row column primary key schema"
+      ],
+      "responses": [
+        "The Relational Model: Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. Watch the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/tutorial-concepts.html'>this link</a>",
+        "The Relational Model: Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/sql/sql_intro.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "relational model auditory",
+      "patterns": [
+        "What is the relational model auditory?",
+        "relational model auditory",
+        "the relational model explained auditory",
+        "relation row auditory",
+        "column primary auditory",
+        "The Relational Model Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. auditory relational model relation row column primary key schema"
+      ],
+      "responses": [
+        "The Relational Model: Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-830-database-systems-fall-2010/'>this link</a>",
+        "The Relational Model: Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. Listen to the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/tutorial.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "relational model read_write",
+      "patterns": [
+        "What is the relational model read_write?",
+        "relational model read_write",
+        "the relational model explained read_write",
+        "relation row read_write",
+        "column primary read_write",
+        "The Relational Model Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. read_write relational model relation row column primary key schema"
+      ],
+      "responses": [
+        "The Relational Model: Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/relational-model-in-dbms/'>this link</a>",
+        "The Relational Model: Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. Read the TutorialsPoint tutorial: <a href='https://www.tutorialspoint.com/dbms/relational_data_model.htm'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "relational model kinesthetic",
+      "patterns": [
+        "What is the relational model kinesthetic?",
+        "relational model kinesthetic",
+        "the relational model explained kinesthetic",
+        "relation row kinesthetic",
+        "column primary kinesthetic",
+        "The Relational Model Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. kinesthetic relational model relation row column primary key schema"
+      ],
+      "responses": [
+        "The Relational Model: Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. Work through the interactive SQL lesson: <a href='https://sqlbolt.com/'>this link</a>",
+        "The Relational Model: Relations, rows and columns, primary and foreign keys, and what a schema fixes in advance. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/sql/sql_exercises.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "sql queries visual",
+      "patterns": [
+        "What is sql queries visual?",
+        "sql query visual",
+        "sql queries explained visual",
+        "select from visual",
+        "where order visual",
+        "SQL Queries SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. visual sql query select from where order group filter statement"
+      ],
+      "responses": [
+        "SQL Queries: SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/sql/sql_select.asp'>this link</a>",
+        "SQL Queries: SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. Watch the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/tutorial-select.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "sql queries auditory",
+      "patterns": [
+        "What is sql queries auditory?",
+        "sql query auditory",
+        "sql queries explained auditory",
+        "select from auditory",
+        "where order auditory",
+        "SQL Queries SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. auditory sql query select from where order group filter statement"
+      ],
+      "responses": [
+        "SQL Queries: SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-830-database-systems-fall-2010/'>this link</a>",
+        "SQL Queries: SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. Listen to the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/tutorial.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "sql queries read_write",
+      "patterns": [
+        "What is sql queries read_write?",
+        "sql query read_write",
+        "sql queries explained read_write",
+        "select from read_write",
+        "where order read_write",
+        "SQL Queries SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. read_write sql query select from where order group filter statement"
+      ],
+      "responses": [
+        "SQL Queries: SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/sql-select-query/'>this link</a>",
+        "SQL Queries: SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. Read the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/sql-select.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "sql queries kinesthetic",
+      "patterns": [
+        "What is sql queries kinesthetic?",
+        "sql query kinesthetic",
+        "sql queries explained kinesthetic",
+        "select from kinesthetic",
+        "where order kinesthetic",
+        "SQL Queries SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. kinesthetic sql query select from where order group filter statement"
+      ],
+      "responses": [
+        "SQL Queries: SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. Work through the interactive SQL lesson: <a href='https://sqlbolt.com/lesson/select_queries_introduction'>this link</a>",
+        "SQL Queries: SELECT, FROM, WHERE, ORDER BY and GROUP BY: asking a relational database a question. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/sql/sql_exercises.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "joins visual",
+      "patterns": [
+        "What is joins visual?",
+        "join inner visual",
+        "joins explained visual",
+        "outer left visual",
+        "right combine visual",
+        "Joins Combining rows from two tables on a matching column, and how inner differs from outer. visual join inner outer left right combine matching foreign key"
+      ],
+      "responses": [
+        "Joins: Combining rows from two tables on a matching column, and how inner differs from outer. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/sql/sql_join.asp'>this link</a>",
+        "Joins: Combining rows from two tables on a matching column, and how inner differs from outer. Watch the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/tutorial-join.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "joins auditory",
+      "patterns": [
+        "What is joins auditory?",
+        "join inner auditory",
+        "joins explained auditory",
+        "outer left auditory",
+        "right combine auditory",
+        "Joins Combining rows from two tables on a matching column, and how inner differs from outer. auditory join inner outer left right combine matching foreign key"
+      ],
+      "responses": [
+        "Joins: Combining rows from two tables on a matching column, and how inner differs from outer. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-830-database-systems-fall-2010/'>this link</a>",
+        "Joins: Combining rows from two tables on a matching column, and how inner differs from outer. Listen to the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/tutorial.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "joins read_write",
+      "patterns": [
+        "What is joins read_write?",
+        "join inner read_write",
+        "joins explained read_write",
+        "outer left read_write",
+        "right combine read_write",
+        "Joins Combining rows from two tables on a matching column, and how inner differs from outer. read_write join inner outer left right combine matching foreign key"
+      ],
+      "responses": [
+        "Joins: Combining rows from two tables on a matching column, and how inner differs from outer. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joins/'>this link</a>",
+        "Joins: Combining rows from two tables on a matching column, and how inner differs from outer. Read the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/queries-table-expressions.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "joins kinesthetic",
+      "patterns": [
+        "What is joins kinesthetic?",
+        "join inner kinesthetic",
+        "joins explained kinesthetic",
+        "outer left kinesthetic",
+        "right combine kinesthetic",
+        "Joins Combining rows from two tables on a matching column, and how inner differs from outer. kinesthetic join inner outer left right combine matching foreign key"
+      ],
+      "responses": [
+        "Joins: Combining rows from two tables on a matching column, and how inner differs from outer. Work through the interactive SQL lesson: <a href='https://sqlbolt.com/lesson/select_queries_with_joins'>this link</a>",
+        "Joins: Combining rows from two tables on a matching column, and how inner differs from outer. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/sql/sql_exercises.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "normalisation visual",
+      "patterns": [
+        "What is normalisation visual?",
+        "normalisation normal visual",
+        "normalisation explained visual",
+        "form redundancy visual",
+        "dependency decompose visual",
+        "Normalisation First, second and third normal form, and the update anomalies that redundancy causes. visual normalisation normal form redundancy dependency decompose anomaly"
+      ],
+      "responses": [
+        "Normalisation: First, second and third normal form, and the update anomalies that redundancy causes. Watch the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/normal-forms-in-dbms/'>this link</a>",
+        "Normalisation: First, second and third normal form, and the update anomalies that redundancy causes. Watch the TutorialsPoint tutorial: <a href='https://www.tutorialspoint.com/dbms/database_normalization.htm'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "normalisation auditory",
+      "patterns": [
+        "What is normalisation auditory?",
+        "normalisation normal auditory",
+        "normalisation explained auditory",
+        "form redundancy auditory",
+        "dependency decompose auditory",
+        "Normalisation First, second and third normal form, and the update anomalies that redundancy causes. auditory normalisation normal form redundancy dependency decompose anomaly"
+      ],
+      "responses": [
+        "Normalisation: First, second and third normal form, and the update anomalies that redundancy causes. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-830-database-systems-fall-2010/'>this link</a>",
+        "Normalisation: First, second and third normal form, and the update anomalies that redundancy causes. Listen to the PostgreSQL manual: <a href='https://www.postgresql.org/docs/current/tutorial.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "normalisation read_write",
+      "patterns": [
+        "What is normalisation read_write?",
+        "normalisation normal read_write",
+        "normalisation explained read_write",
+        "form redundancy read_write",
+        "dependency decompose read_write",
+        "Normalisation First, second and third normal form, and the update anomalies that redundancy causes. read_write normalisation normal form redundancy dependency decompose anomaly"
+      ],
+      "responses": [
+        "Normalisation: First, second and third normal form, and the update anomalies that redundancy causes. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/introduction-of-database-normalization/'>this link</a>",
+        "Normalisation: First, second and third normal form, and the update anomalies that redundancy causes. Read the StudyTonight tutorial: <a href='https://www.studytonight.com/dbms/database-normalization.php'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "normalisation kinesthetic",
+      "patterns": [
+        "What is normalisation kinesthetic?",
+        "normalisation normal kinesthetic",
+        "normalisation explained kinesthetic",
+        "form redundancy kinesthetic",
+        "dependency decompose kinesthetic",
+        "Normalisation First, second and third normal form, and the update anomalies that redundancy causes. kinesthetic normalisation normal form redundancy dependency decompose anomaly"
+      ],
+      "responses": [
+        "Normalisation: First, second and third normal form, and the update anomalies that redundancy causes. Work through the interactive SQL lesson: <a href='https://sqlbolt.com/'>this link</a>",
+        "Normalisation: First, second and third normal form, and the update anomalies that redundancy causes. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/sql/sql_exercises.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "processes visual",
+      "patterns": [
+        "What is processes and scheduling visual?",
+        "process scheduling visual",
+        "processes and scheduling explained visual",
+        "context switch visual",
+        "state ready visual",
+        "Processes and Scheduling What a process is, the states it moves through, and how the scheduler decides who runs next. visual process scheduling context switch state ready running cpu"
+      ],
+      "responses": [
+        "Processes and Scheduling: What a process is, the states it moves through, and how the scheduler decides who runs next. Watch the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf'>this link</a>",
+        "Processes and Scheduling: What a process is, the states it moves through, and how the scheduler decides who runs next. Watch the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/process-schedulers-in-operating-system/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "processes auditory",
+      "patterns": [
+        "What is processes and scheduling auditory?",
+        "process scheduling auditory",
+        "processes and scheduling explained auditory",
+        "context switch auditory",
+        "state ready auditory",
+        "Processes and Scheduling What a process is, the states it moves through, and how the scheduler decides who runs next. auditory process scheduling context switch state ready running cpu"
+      ],
+      "responses": [
+        "Processes and Scheduling: What a process is, the states it moves through, and how the scheduler decides who runs next. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-828-operating-system-engineering-fall-2012/'>this link</a>",
+        "Processes and Scheduling: What a process is, the states it moves through, and how the scheduler decides who runs next. Listen to the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "processes read_write",
+      "patterns": [
+        "What is processes and scheduling read_write?",
+        "process scheduling read_write",
+        "processes and scheduling explained read_write",
+        "context switch read_write",
+        "state ready read_write",
+        "Processes and Scheduling What a process is, the states it moves through, and how the scheduler decides who runs next. read_write process scheduling context switch state ready running cpu"
+      ],
+      "responses": [
+        "Processes and Scheduling: What a process is, the states it moves through, and how the scheduler decides who runs next. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/introduction-of-process-management/'>this link</a>",
+        "Processes and Scheduling: What a process is, the states it moves through, and how the scheduler decides who runs next. Read the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "processes kinesthetic",
+      "patterns": [
+        "What is processes and scheduling kinesthetic?",
+        "process scheduling kinesthetic",
+        "processes and scheduling explained kinesthetic",
+        "context switch kinesthetic",
+        "state ready kinesthetic",
+        "Processes and Scheduling What a process is, the states it moves through, and how the scheduler decides who runs next. kinesthetic process scheduling context switch state ready running cpu"
+      ],
+      "responses": [
+        "Processes and Scheduling: What a process is, the states it moves through, and how the scheduler decides who runs next. Work through the TutorialsPoint tutorial: <a href='https://www.tutorialspoint.com/operating_system/os_processes.htm'>this link</a>",
+        "Processes and Scheduling: What a process is, the states it moves through, and how the scheduler decides who runs next. Work through the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "threads visual",
+      "patterns": [
+        "What is threads and concurrency visual?",
+        "thread concurrency visual",
+        "threads and concurrency explained visual",
+        "lock mutex visual",
+        "race condition visual",
+        "Threads and Concurrency Several threads inside one program, the race conditions that follow, and the locks that prevent them. visual thread concurrency lock mutex race condition parallel synchronisation"
+      ],
+      "responses": [
+        "Threads and Concurrency: Several threads inside one program, the race conditions that follow, and the locks that prevent them. Watch the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf'>this link</a>",
+        "Threads and Concurrency: Several threads inside one program, the race conditions that follow, and the locks that prevent them. Watch the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/thread-in-operating-system/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "threads auditory",
+      "patterns": [
+        "What is threads and concurrency auditory?",
+        "thread concurrency auditory",
+        "threads and concurrency explained auditory",
+        "lock mutex auditory",
+        "race condition auditory",
+        "Threads and Concurrency Several threads inside one program, the race conditions that follow, and the locks that prevent them. auditory thread concurrency lock mutex race condition parallel synchronisation"
+      ],
+      "responses": [
+        "Threads and Concurrency: Several threads inside one program, the race conditions that follow, and the locks that prevent them. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-828-operating-system-engineering-fall-2012/'>this link</a>",
+        "Threads and Concurrency: Several threads inside one program, the race conditions that follow, and the locks that prevent them. Listen to the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "threads read_write",
+      "patterns": [
+        "What is threads and concurrency read_write?",
+        "thread concurrency read_write",
+        "threads and concurrency explained read_write",
+        "lock mutex read_write",
+        "race condition read_write",
+        "Threads and Concurrency Several threads inside one program, the race conditions that follow, and the locks that prevent them. read_write thread concurrency lock mutex race condition parallel synchronisation"
+      ],
+      "responses": [
+        "Threads and Concurrency: Several threads inside one program, the race conditions that follow, and the locks that prevent them. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/difference-between-process-and-thread/'>this link</a>",
+        "Threads and Concurrency: Several threads inside one program, the race conditions that follow, and the locks that prevent them. Read the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "threads kinesthetic",
+      "patterns": [
+        "What is threads and concurrency kinesthetic?",
+        "thread concurrency kinesthetic",
+        "threads and concurrency explained kinesthetic",
+        "lock mutex kinesthetic",
+        "race condition kinesthetic",
+        "Threads and Concurrency Several threads inside one program, the race conditions that follow, and the locks that prevent them. kinesthetic thread concurrency lock mutex race condition parallel synchronisation"
+      ],
+      "responses": [
+        "Threads and Concurrency: Several threads inside one program, the race conditions that follow, and the locks that prevent them. Work through the TutorialsPoint tutorial: <a href='https://www.tutorialspoint.com/operating_system/os_multi_threading.htm'>this link</a>",
+        "Threads and Concurrency: Several threads inside one program, the race conditions that follow, and the locks that prevent them. Work through the Python threading documentation: <a href='https://docs.python.org/3/library/threading.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "memory visual",
+      "patterns": [
+        "What is memory management visual?",
+        "memory virtual visual",
+        "memory management explained visual",
+        "paging page visual",
+        "frame address visual",
+        "Memory Management Virtual addresses, paging, and how the operating system gives each program its own view of memory. visual memory virtual paging page frame address allocation segmentation"
+      ],
+      "responses": [
+        "Memory Management: Virtual addresses, paging, and how the operating system gives each program its own view of memory. Watch the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf'>this link</a>",
+        "Memory Management: Virtual addresses, paging, and how the operating system gives each program its own view of memory. Watch the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/memory-management-in-operating-system/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "memory auditory",
+      "patterns": [
+        "What is memory management auditory?",
+        "memory virtual auditory",
+        "memory management explained auditory",
+        "paging page auditory",
+        "frame address auditory",
+        "Memory Management Virtual addresses, paging, and how the operating system gives each program its own view of memory. auditory memory virtual paging page frame address allocation segmentation"
+      ],
+      "responses": [
+        "Memory Management: Virtual addresses, paging, and how the operating system gives each program its own view of memory. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-828-operating-system-engineering-fall-2012/'>this link</a>",
+        "Memory Management: Virtual addresses, paging, and how the operating system gives each program its own view of memory. Listen to the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "memory read_write",
+      "patterns": [
+        "What is memory management read_write?",
+        "memory virtual read_write",
+        "memory management explained read_write",
+        "paging page read_write",
+        "frame address read_write",
+        "Memory Management Virtual addresses, paging, and how the operating system gives each program its own view of memory. read_write memory virtual paging page frame address allocation segmentation"
+      ],
+      "responses": [
+        "Memory Management: Virtual addresses, paging, and how the operating system gives each program its own view of memory. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/paging-in-operating-system/'>this link</a>",
+        "Memory Management: Virtual addresses, paging, and how the operating system gives each program its own view of memory. Read the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "memory kinesthetic",
+      "patterns": [
+        "What is memory management kinesthetic?",
+        "memory virtual kinesthetic",
+        "memory management explained kinesthetic",
+        "paging page kinesthetic",
+        "frame address kinesthetic",
+        "Memory Management Virtual addresses, paging, and how the operating system gives each program its own view of memory. kinesthetic memory virtual paging page frame address allocation segmentation"
+      ],
+      "responses": [
+        "Memory Management: Virtual addresses, paging, and how the operating system gives each program its own view of memory. Work through the TutorialsPoint tutorial: <a href='https://www.tutorialspoint.com/operating_system/os_memory_management.htm'>this link</a>",
+        "Memory Management: Virtual addresses, paging, and how the operating system gives each program its own view of memory. Work through the OSTEP chapter: <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "osi model visual",
+      "patterns": [
+        "What is the osi model visual?",
+        "osi layer visual",
+        "the osi model explained visual",
+        "model physical visual",
+        "transport session visual",
+        "The OSI Model The seven layers, what each one is responsible for, and how data is wrapped on its way down. visual osi layer model physical transport session presentation encapsulation"
+      ],
+      "responses": [
+        "The OSI Model: The seven layers, what each one is responsible for, and how data is wrapped on its way down. Watch the Cloudflare explainer: <a href='https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/'>this link</a>",
+        "The OSI Model: The seven layers, what each one is responsible for, and how data is wrapped on its way down. Watch the Imperva explainer: <a href='https://www.imperva.com/learn/application-security/osi-model/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "osi model auditory",
+      "patterns": [
+        "What is the osi model auditory?",
+        "osi layer auditory",
+        "the osi model explained auditory",
+        "model physical auditory",
+        "transport session auditory",
+        "The OSI Model The seven layers, what each one is responsible for, and how data is wrapped on its way down. auditory osi layer model physical transport session presentation encapsulation"
+      ],
+      "responses": [
+        "The OSI Model: The seven layers, what each one is responsible for, and how data is wrapped on its way down. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-02-introduction-to-eecs-ii-digital-communication-systems-fall-2012/'>this link</a>",
+        "The OSI Model: The seven layers, what each one is responsible for, and how data is wrapped on its way down. Listen to the Cloudflare explainer: <a href='https://www.cloudflare.com/learning/network-layer/how-does-the-internet-work/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "osi model read_write",
+      "patterns": [
+        "What is the osi model read_write?",
+        "osi layer read_write",
+        "the osi model explained read_write",
+        "model physical read_write",
+        "transport session read_write",
+        "The OSI Model The seven layers, what each one is responsible for, and how data is wrapped on its way down. read_write osi layer model physical transport session presentation encapsulation"
+      ],
+      "responses": [
+        "The OSI Model: The seven layers, what each one is responsible for, and how data is wrapped on its way down. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/layers-of-osi-model/'>this link</a>",
+        "The OSI Model: The seven layers, what each one is responsible for, and how data is wrapped on its way down. Read the TutorialsPoint tutorial: <a href='https://www.tutorialspoint.com/data_communication_computer_network/osi_model.htm'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "osi model kinesthetic",
+      "patterns": [
+        "What is the osi model kinesthetic?",
+        "osi layer kinesthetic",
+        "the osi model explained kinesthetic",
+        "model physical kinesthetic",
+        "transport session kinesthetic",
+        "The OSI Model The seven layers, what each one is responsible for, and how data is wrapped on its way down. kinesthetic osi layer model physical transport session presentation encapsulation"
+      ],
+      "responses": [
+        "The OSI Model: The seven layers, what each one is responsible for, and how data is wrapped on its way down. Work through a live DNS lookup tool: <a href='https://www.nslookup.io/'>this link</a>",
+        "The OSI Model: The seven layers, what each one is responsible for, and how data is wrapped on its way down. Work through the Cloudflare explainer: <a href='https://www.cloudflare.com/learning/network-layer/internet-protocol/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "tcp ip visual",
+      "patterns": [
+        "What is tcp and ip visual?",
+        "tcp ip visual",
+        "tcp and ip explained visual",
+        "packet address visual",
+        "routing handshake visual",
+        "TCP and IP Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. visual tcp ip packet address routing handshake reliable datagram"
+      ],
+      "responses": [
+        "TCP and IP: Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. Watch the Cloudflare explainer: <a href='https://www.cloudflare.com/learning/ddos/glossary/tcp-ip/'>this link</a>",
+        "TCP and IP: Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. Watch the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/tcp-ip-model/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "tcp ip auditory",
+      "patterns": [
+        "What is tcp and ip auditory?",
+        "tcp ip auditory",
+        "tcp and ip explained auditory",
+        "packet address auditory",
+        "routing handshake auditory",
+        "TCP and IP Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. auditory tcp ip packet address routing handshake reliable datagram"
+      ],
+      "responses": [
+        "TCP and IP: Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-02-introduction-to-eecs-ii-digital-communication-systems-fall-2012/'>this link</a>",
+        "TCP and IP: Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. Listen to the Cloudflare explainer: <a href='https://www.cloudflare.com/learning/network-layer/how-does-the-internet-work/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "tcp ip read_write",
+      "patterns": [
+        "What is tcp and ip read_write?",
+        "tcp ip read_write",
+        "tcp and ip explained read_write",
+        "packet address read_write",
+        "routing handshake read_write",
+        "TCP and IP Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. read_write tcp ip packet address routing handshake reliable datagram"
+      ],
+      "responses": [
+        "TCP and IP: Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. Read the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Glossary/TCP'>this link</a>",
+        "TCP and IP: Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. Read the Cloudflare explainer: <a href='https://www.cloudflare.com/learning/network-layer/internet-protocol/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "tcp ip kinesthetic",
+      "patterns": [
+        "What is tcp and ip kinesthetic?",
+        "tcp ip kinesthetic",
+        "tcp and ip explained kinesthetic",
+        "packet address kinesthetic",
+        "routing handshake kinesthetic",
+        "TCP and IP Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. kinesthetic tcp ip packet address routing handshake reliable datagram"
+      ],
+      "responses": [
+        "TCP and IP: Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. Work through the TutorialsPoint tutorial: <a href='https://www.tutorialspoint.com/data_communication_computer_network/tcp_ip_model.htm'>this link</a>",
+        "TCP and IP: Addressing with IP, reliable delivery with TCP, and the handshake that opens a connection. Work through the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/tcp-3-way-handshake-process/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "http dns visual",
+      "patterns": [
+        "What is http and dns visual?",
+        "http dns visual",
+        "http and dns explained visual",
+        "request response visual",
+        "header method visual",
+        "HTTP and DNS Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. visual http dns request response header method status domain resolve"
+      ],
+      "responses": [
+        "HTTP and DNS: Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. Watch the Cloudflare explainer: <a href='https://www.cloudflare.com/learning/dns/what-is-dns/'>this link</a>",
+        "HTTP and DNS: Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. Watch the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "http dns auditory",
+      "patterns": [
+        "What is http and dns auditory?",
+        "http dns auditory",
+        "http and dns explained auditory",
+        "request response auditory",
+        "header method auditory",
+        "HTTP and DNS Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. auditory http dns request response header method status domain resolve"
+      ],
+      "responses": [
+        "HTTP and DNS: Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-02-introduction-to-eecs-ii-digital-communication-systems-fall-2012/'>this link</a>",
+        "HTTP and DNS: Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. Listen to the Cloudflare explainer: <a href='https://www.cloudflare.com/learning/dns/dns-server-types/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "http dns read_write",
+      "patterns": [
+        "What is http and dns read_write?",
+        "http dns read_write",
+        "http and dns explained read_write",
+        "request response read_write",
+        "header method read_write",
+        "HTTP and DNS Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. read_write http dns request response header method status domain resolve"
+      ],
+      "responses": [
+        "HTTP and DNS: Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. Read the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP'>this link</a>",
+        "HTTP and DNS: Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/http-full-form/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "http dns kinesthetic",
+      "patterns": [
+        "What is http and dns kinesthetic?",
+        "http dns kinesthetic",
+        "http and dns explained kinesthetic",
+        "request response kinesthetic",
+        "header method kinesthetic",
+        "HTTP and DNS Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. kinesthetic http dns request response header method status domain resolve"
+      ],
+      "responses": [
+        "HTTP and DNS: Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. Work through the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Status'>this link</a>",
+        "HTTP and DNS: Turning a name into an address, then asking for a page: DNS resolution and the HTTP request and response. Work through a live DNS lookup tool: <a href='https://www.nslookup.io/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "html visual",
+      "patterns": [
+        "What is html structure visual?",
+        "html element visual",
+        "html structure explained visual",
+        "tag attribute visual",
+        "document markup visual",
+        "HTML Structure Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. visual html element tag attribute document markup heading nesting"
+      ],
+      "responses": [
+        "HTML Structure: Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. Watch the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content'>this link</a>",
+        "HTML Structure: Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/html/html_intro.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "html auditory",
+      "patterns": [
+        "What is html structure auditory?",
+        "html element auditory",
+        "html structure explained auditory",
+        "tag attribute auditory",
+        "document markup auditory",
+        "HTML Structure Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. auditory html element tag attribute document markup heading nesting"
+      ],
+      "responses": [
+        "HTML Structure: Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/8/'>this link</a>",
+        "HTML Structure: Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. Listen to the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Learn_web_development'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "html read_write",
+      "patterns": [
+        "What is html structure read_write?",
+        "html element read_write",
+        "html structure explained read_write",
+        "tag attribute read_write",
+        "document markup read_write",
+        "HTML Structure Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. read_write html element tag attribute document markup heading nesting"
+      ],
+      "responses": [
+        "HTML Structure: Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. Read the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Web/HTML'>this link</a>",
+        "HTML Structure: Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/html-tutorial/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "html kinesthetic",
+      "patterns": [
+        "What is html structure kinesthetic?",
+        "html element kinesthetic",
+        "html structure explained kinesthetic",
+        "tag attribute kinesthetic",
+        "document markup kinesthetic",
+        "HTML Structure Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. kinesthetic html element tag attribute document markup heading nesting"
+      ],
+      "responses": [
+        "HTML Structure: Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/html/html_exercises.asp'>this link</a>",
+        "HTML Structure: Elements, tags and attributes, and how a document is nested into the hierarchy a browser renders. Work through the W3Schools live editor: <a href='https://www.w3schools.com/html/html_editor.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "css visual",
+      "patterns": [
+        "What is css styling visual?",
+        "css selector visual",
+        "css styling explained visual",
+        "property rule visual",
+        "cascade box visual",
+        "CSS Styling Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. visual css selector property rule cascade box model layout flexbox"
+      ],
+      "responses": [
+        "CSS Styling: Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. Watch the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics'>this link</a>",
+        "CSS Styling: Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/css/css_boxmodel.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "css auditory",
+      "patterns": [
+        "What is css styling auditory?",
+        "css selector auditory",
+        "css styling explained auditory",
+        "property rule auditory",
+        "cascade box auditory",
+        "CSS Styling Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. auditory css selector property rule cascade box model layout flexbox"
+      ],
+      "responses": [
+        "CSS Styling: Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/8/'>this link</a>",
+        "CSS Styling: Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. Listen to the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Learn_web_development'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "css read_write",
+      "patterns": [
+        "What is css styling read_write?",
+        "css selector read_write",
+        "css styling explained read_write",
+        "property rule read_write",
+        "cascade box read_write",
+        "CSS Styling Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. read_write css selector property rule cascade box model layout flexbox"
+      ],
+      "responses": [
+        "CSS Styling: Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. Read the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Web/CSS'>this link</a>",
+        "CSS Styling: Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. Read the CSS-Tricks guide: <a href='https://css-tricks.com/snippets/css/a-guide-to-flexbox/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "css kinesthetic",
+      "patterns": [
+        "What is css styling kinesthetic?",
+        "css selector kinesthetic",
+        "css styling explained kinesthetic",
+        "property rule kinesthetic",
+        "cascade box kinesthetic",
+        "CSS Styling Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. kinesthetic css selector property rule cascade box model layout flexbox"
+      ],
+      "responses": [
+        "CSS Styling: Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. Work through the Flexbox Froggy game: <a href='https://flexboxfroggy.com/'>this link</a>",
+        "CSS Styling: Selectors and declarations, the cascade, the box model, and laying a page out with flexbox. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/css/css_exercises.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "javascript visual",
+      "patterns": [
+        "What is javascript basics visual?",
+        "javascript variable visual",
+        "javascript basics explained visual",
+        "function event visual",
+        "dom script visual",
+        "JavaScript Basics Variables, functions and events, and changing the page from script through the DOM. visual javascript variable function event dom script browser interactive"
+      ],
+      "responses": [
+        "JavaScript Basics: Variables, functions and events, and changing the page from script through the DOM. Watch the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting'>this link</a>",
+        "JavaScript Basics: Variables, functions and events, and changing the page from script through the DOM. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/js/js_intro.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "javascript auditory",
+      "patterns": [
+        "What is javascript basics auditory?",
+        "javascript variable auditory",
+        "javascript basics explained auditory",
+        "function event auditory",
+        "dom script auditory",
+        "JavaScript Basics Variables, functions and events, and changing the page from script through the DOM. auditory javascript variable function event dom script browser interactive"
+      ],
+      "responses": [
+        "JavaScript Basics: Variables, functions and events, and changing the page from script through the DOM. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/8/'>this link</a>",
+        "JavaScript Basics: Variables, functions and events, and changing the page from script through the DOM. Listen to the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Learn_web_development'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "javascript read_write",
+      "patterns": [
+        "What is javascript basics read_write?",
+        "javascript variable read_write",
+        "javascript basics explained read_write",
+        "function event read_write",
+        "dom script read_write",
+        "JavaScript Basics Variables, functions and events, and changing the page from script through the DOM. read_write javascript variable function event dom script browser interactive"
+      ],
+      "responses": [
+        "JavaScript Basics: Variables, functions and events, and changing the page from script through the DOM. Read the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript'>this link</a>",
+        "JavaScript Basics: Variables, functions and events, and changing the page from script through the DOM. Read the JavaScript.info chapter: <a href='https://javascript.info/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "javascript kinesthetic",
+      "patterns": [
+        "What is javascript basics kinesthetic?",
+        "javascript variable kinesthetic",
+        "javascript basics explained kinesthetic",
+        "function event kinesthetic",
+        "dom script kinesthetic",
+        "JavaScript Basics Variables, functions and events, and changing the page from script through the DOM. kinesthetic javascript variable function event dom script browser interactive"
+      ],
+      "responses": [
+        "JavaScript Basics: Variables, functions and events, and changing the page from script through the DOM. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/js/js_exercises.asp'>this link</a>",
+        "JavaScript Basics: Variables, functions and events, and changing the page from script through the DOM. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/js/js_htmldom.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "rest apis visual",
+      "patterns": [
+        "What is rest apis visual?",
+        "rest api visual",
+        "rest apis explained visual",
+        "endpoint resource visual",
+        "json client visual",
+        "REST APIs Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. visual rest api endpoint resource json client server method payload"
+      ],
+      "responses": [
+        "REST APIs: Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. Watch the Red Hat explainer: <a href='https://www.redhat.com/en/topics/api/what-is-a-rest-api'>this link</a>",
+        "REST APIs: Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. Watch the REST API guide: <a href='https://restfulapi.net/http-methods/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "rest apis auditory",
+      "patterns": [
+        "What is rest apis auditory?",
+        "rest api auditory",
+        "rest apis explained auditory",
+        "endpoint resource auditory",
+        "json client auditory",
+        "REST APIs Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. auditory rest api endpoint resource json client server method payload"
+      ],
+      "responses": [
+        "REST APIs: Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/8/'>this link</a>",
+        "REST APIs: Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. Listen to the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Learn_web_development'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "rest apis read_write",
+      "patterns": [
+        "What is rest apis read_write?",
+        "rest api read_write",
+        "rest apis explained read_write",
+        "endpoint resource read_write",
+        "json client read_write",
+        "REST APIs Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. read_write rest api endpoint resource json client server method payload"
+      ],
+      "responses": [
+        "REST APIs: Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. Read the MDN reference: <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods'>this link</a>",
+        "REST APIs: Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. Read the REST API guide: <a href='https://restfulapi.net/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "rest apis kinesthetic",
+      "patterns": [
+        "What is rest apis kinesthetic?",
+        "rest api kinesthetic",
+        "rest apis explained kinesthetic",
+        "endpoint resource kinesthetic",
+        "json client kinesthetic",
+        "REST APIs Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. kinesthetic rest api endpoint resource json client server method payload"
+      ],
+      "responses": [
+        "REST APIs: Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. Work through a live API you can call: <a href='https://httpbin.org/'>this link</a>",
+        "REST APIs: Resources and endpoints, the HTTP methods that act on them, and JSON as the payload. Work through a live test API: <a href='https://jsonplaceholder.typicode.com/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "version control visual",
+      "patterns": [
+        "What is version control with git visual?",
+        "version control visual",
+        "version control with git explained visual",
+        "commit branch visual",
+        "merge repository visual",
+        "Version Control with Git Commits as a history you can move through, branching, merging, and working from a shared repository. visual version control commit branch merge repository history clone"
+      ],
+      "responses": [
+        "Version Control with Git: Commits as a history you can move through, branching, merging, and working from a shared repository. Watch the Atlassian tutorial: <a href='https://www.atlassian.com/git/tutorials/comparing-workflows'>this link</a>",
+        "Version Control with Git: Commits as a history you can move through, branching, merging, and working from a shared repository. Watch the Pro Git book: <a href='https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "version control auditory",
+      "patterns": [
+        "What is version control with git auditory?",
+        "version control auditory",
+        "version control with git explained auditory",
+        "commit branch auditory",
+        "merge repository auditory",
+        "Version Control with Git Commits as a history you can move through, branching, merging, and working from a shared repository. auditory version control commit branch merge repository history clone"
+      ],
+      "responses": [
+        "Version Control with Git: Commits as a history you can move through, branching, merging, and working from a shared repository. Listen to the CS50 lecture: <a href='https://cs50.harvard.edu/x/2024/weeks/0/'>this link</a>",
+        "Version Control with Git: Commits as a history you can move through, branching, merging, and working from a shared repository. Listen to the Pro Git book: <a href='https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "version control read_write",
+      "patterns": [
+        "What is version control with git read_write?",
+        "version control read_write",
+        "version control with git explained read_write",
+        "commit branch read_write",
+        "merge repository read_write",
+        "Version Control with Git Commits as a history you can move through, branching, merging, and working from a shared repository. read_write version control commit branch merge repository history clone"
+      ],
+      "responses": [
+        "Version Control with Git: Commits as a history you can move through, branching, merging, and working from a shared repository. Read the Pro Git book: <a href='https://git-scm.com/book/en/v2'>this link</a>",
+        "Version Control with Git: Commits as a history you can move through, branching, merging, and working from a shared repository. Read the Atlassian tutorial: <a href='https://www.atlassian.com/git/tutorials/what-is-version-control'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "version control kinesthetic",
+      "patterns": [
+        "What is version control with git kinesthetic?",
+        "version control kinesthetic",
+        "version control with git explained kinesthetic",
+        "commit branch kinesthetic",
+        "merge repository kinesthetic",
+        "Version Control with Git Commits as a history you can move through, branching, merging, and working from a shared repository. kinesthetic version control commit branch merge repository history clone"
+      ],
+      "responses": [
+        "Version Control with Git: Commits as a history you can move through, branching, merging, and working from a shared repository. Work through the interactive Git sandbox: <a href='https://learngitbranching.js.org/'>this link</a>",
+        "Version Control with Git: Commits as a history you can move through, branching, merging, and working from a shared repository. Work through the Atlassian tutorial: <a href='https://www.atlassian.com/git/tutorials/setting-up-a-repository'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "testing visual",
+      "patterns": [
+        "What is software testing visual?",
+        "testing test visual",
+        "software testing explained visual",
+        "unit assertion visual",
+        "coverage regression visual",
+        "Software Testing Unit tests and assertions, what coverage does and does not tell you, and catching regressions. visual testing test unit assertion coverage regression fixture suite"
+      ],
+      "responses": [
+        "Software Testing: Unit tests and assertions, what coverage does and does not tell you, and catching regressions. Watch Martin Fowler's article: <a href='https://martinfowler.com/articles/practical-test-pyramid.html'>this link</a>",
+        "Software Testing: Unit tests and assertions, what coverage does and does not tell you, and catching regressions. Watch the pytest documentation: <a href='https://docs.pytest.org/en/stable/getting-started.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "testing auditory",
+      "patterns": [
+        "What is software testing auditory?",
+        "testing test auditory",
+        "software testing explained auditory",
+        "unit assertion auditory",
+        "coverage regression auditory",
+        "Software Testing Unit tests and assertions, what coverage does and does not tell you, and catching regressions. auditory testing test unit assertion coverage regression fixture suite"
+      ],
+      "responses": [
+        "Software Testing: Unit tests and assertions, what coverage does and does not tell you, and catching regressions. Listen to Martin Fowler's article: <a href='https://martinfowler.com/bliki/UnitTest.html'>this link</a>",
+        "Software Testing: Unit tests and assertions, what coverage does and does not tell you, and catching regressions. Listen to the pytest documentation: <a href='https://docs.pytest.org/en/stable/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "testing read_write",
+      "patterns": [
+        "What is software testing read_write?",
+        "testing test read_write",
+        "software testing explained read_write",
+        "unit assertion read_write",
+        "coverage regression read_write",
+        "Software Testing Unit tests and assertions, what coverage does and does not tell you, and catching regressions. read_write testing test unit assertion coverage regression fixture suite"
+      ],
+      "responses": [
+        "Software Testing: Unit tests and assertions, what coverage does and does not tell you, and catching regressions. Read the Python documentation: <a href='https://docs.python.org/3/library/unittest.html'>this link</a>",
+        "Software Testing: Unit tests and assertions, what coverage does and does not tell you, and catching regressions. Read the pytest documentation: <a href='https://docs.pytest.org/en/stable/how-to/assert.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "testing kinesthetic",
+      "patterns": [
+        "What is software testing kinesthetic?",
+        "testing test kinesthetic",
+        "software testing explained kinesthetic",
+        "unit assertion kinesthetic",
+        "coverage regression kinesthetic",
+        "Software Testing Unit tests and assertions, what coverage does and does not tell you, and catching regressions. kinesthetic testing test unit assertion coverage regression fixture suite"
+      ],
+      "responses": [
+        "Software Testing: Unit tests and assertions, what coverage does and does not tell you, and catching regressions. Work through the Python online compiler: <a href='https://www.programiz.com/python-programming/online-compiler/'>this link</a>",
+        "Software Testing: Unit tests and assertions, what coverage does and does not tell you, and catching regressions. Work through the practice exercises: <a href='https://codingbat.com/python'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "design patterns visual",
+      "patterns": [
+        "What is design patterns visual?",
+        "design pattern visual",
+        "design patterns explained visual",
+        "singleton factory visual",
+        "observer strategy visual",
+        "Design Patterns Named solutions to problems that recur: singleton, factory, observer and strategy. visual design pattern singleton factory observer strategy reusable solution"
+      ],
+      "responses": [
+        "Design Patterns: Named solutions to problems that recur: singleton, factory, observer and strategy. Watch the Refactoring Guru catalogue: <a href='https://refactoring.guru/design-patterns/catalog'>this link</a>",
+        "Design Patterns: Named solutions to problems that recur: singleton, factory, observer and strategy. Watch the Refactoring Guru catalogue: <a href='https://refactoring.guru/design-patterns/observer'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "design patterns auditory",
+      "patterns": [
+        "What is design patterns auditory?",
+        "design pattern auditory",
+        "design patterns explained auditory",
+        "singleton factory auditory",
+        "observer strategy auditory",
+        "Design Patterns Named solutions to problems that recur: singleton, factory, observer and strategy. auditory design pattern singleton factory observer strategy reusable solution"
+      ],
+      "responses": [
+        "Design Patterns: Named solutions to problems that recur: singleton, factory, observer and strategy. Listen to Martin Fowler's article: <a href='https://martinfowler.com/articles/writingPatterns.html'>this link</a>",
+        "Design Patterns: Named solutions to problems that recur: singleton, factory, observer and strategy. Listen to the SourceMaking catalogue: <a href='https://sourcemaking.com/design_patterns'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "design patterns read_write",
+      "patterns": [
+        "What is design patterns read_write?",
+        "design pattern read_write",
+        "design patterns explained read_write",
+        "singleton factory read_write",
+        "observer strategy read_write",
+        "Design Patterns Named solutions to problems that recur: singleton, factory, observer and strategy. read_write design pattern singleton factory observer strategy reusable solution"
+      ],
+      "responses": [
+        "Design Patterns: Named solutions to problems that recur: singleton, factory, observer and strategy. Read the Refactoring Guru catalogue: <a href='https://refactoring.guru/design-patterns'>this link</a>",
+        "Design Patterns: Named solutions to problems that recur: singleton, factory, observer and strategy. Read the GeeksforGeeks article: <a href='https://www.geeksforgeeks.org/software-design-patterns/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "design patterns kinesthetic",
+      "patterns": [
+        "What is design patterns kinesthetic?",
+        "design pattern kinesthetic",
+        "design patterns explained kinesthetic",
+        "singleton factory kinesthetic",
+        "observer strategy kinesthetic",
+        "Design Patterns Named solutions to problems that recur: singleton, factory, observer and strategy. kinesthetic design pattern singleton factory observer strategy reusable solution"
+      ],
+      "responses": [
+        "Design Patterns: Named solutions to problems that recur: singleton, factory, observer and strategy. Work through the Refactoring Guru catalogue: <a href='https://refactoring.guru/design-patterns/factory-method'>this link</a>",
+        "Design Patterns: Named solutions to problems that recur: singleton, factory, observer and strategy. Work through the Refactoring Guru catalogue: <a href='https://refactoring.guru/design-patterns/strategy'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "python basics visual",
+      "patterns": [
+        "What is python basics visual?",
+        "python basic visual",
+        "python basics explained visual",
+        "variable indentation visual",
+        "print interpreter visual",
+        "Python Basics Variables, indentation as syntax, printing, and running a script through the interpreter. visual python basic variable indentation print interpreter script type"
+      ],
+      "responses": [
+        "Python Basics: Variables, indentation as syntax, printing, and running a script through the interpreter. Watch the Python documentation: <a href='https://docs.python.org/3/tutorial/introduction.html'>this link</a>",
+        "Python Basics: Variables, indentation as syntax, printing, and running a script through the interpreter. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/python/python_intro.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "python basics auditory",
+      "patterns": [
+        "What is python basics auditory?",
+        "python basic auditory",
+        "python basics explained auditory",
+        "variable indentation auditory",
+        "print interpreter auditory",
+        "Python Basics Variables, indentation as syntax, printing, and running a script through the interpreter. auditory python basic variable indentation print interpreter script type"
+      ],
+      "responses": [
+        "Python Basics: Variables, indentation as syntax, printing, and running a script through the interpreter. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/'>this link</a>",
+        "Python Basics: Variables, indentation as syntax, printing, and running a script through the interpreter. Listen to the Python documentation: <a href='https://docs.python.org/3/tutorial/appetite.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "python basics read_write",
+      "patterns": [
+        "What is python basics read_write?",
+        "python basic read_write",
+        "python basics explained read_write",
+        "variable indentation read_write",
+        "print interpreter read_write",
+        "Python Basics Variables, indentation as syntax, printing, and running a script through the interpreter. read_write python basic variable indentation print interpreter script type"
+      ],
+      "responses": [
+        "Python Basics: Variables, indentation as syntax, printing, and running a script through the interpreter. Read the Python documentation: <a href='https://docs.python.org/3/tutorial/'>this link</a>",
+        "Python Basics: Variables, indentation as syntax, printing, and running a script through the interpreter. Read the Real Python guide: <a href='https://realpython.com/python-first-steps/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "python basics kinesthetic",
+      "patterns": [
+        "What is python basics kinesthetic?",
+        "python basic kinesthetic",
+        "python basics explained kinesthetic",
+        "variable indentation kinesthetic",
+        "print interpreter kinesthetic",
+        "Python Basics Variables, indentation as syntax, printing, and running a script through the interpreter. kinesthetic python basic variable indentation print interpreter script type"
+      ],
+      "responses": [
+        "Python Basics: Variables, indentation as syntax, printing, and running a script through the interpreter. Work through the Python online compiler: <a href='https://www.programiz.com/python-programming/online-compiler/'>this link</a>",
+        "Python Basics: Variables, indentation as syntax, printing, and running a script through the interpreter. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/python/python_exercises.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "dictionaries visual",
+      "patterns": [
+        "What is lists and dictionaries visual?",
+        "dictionary list visual",
+        "lists and dictionaries explained visual",
+        "key value visual",
+        "append index visual",
+        "Lists and Dictionaries Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. visual dictionary list key value append index mapping collection mutable"
+      ],
+      "responses": [
+        "Lists and Dictionaries: Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/python/python_dictionaries.asp'>this link</a>",
+        "Lists and Dictionaries: Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/python/python_lists.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "dictionaries auditory",
+      "patterns": [
+        "What is lists and dictionaries auditory?",
+        "dictionary list auditory",
+        "lists and dictionaries explained auditory",
+        "key value auditory",
+        "append index auditory",
+        "Lists and Dictionaries Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. auditory dictionary list key value append index mapping collection mutable"
+      ],
+      "responses": [
+        "Lists and Dictionaries: Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/'>this link</a>",
+        "Lists and Dictionaries: Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. Listen to the Python documentation: <a href='https://docs.python.org/3/tutorial/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "dictionaries read_write",
+      "patterns": [
+        "What is lists and dictionaries read_write?",
+        "dictionary list read_write",
+        "lists and dictionaries explained read_write",
+        "key value read_write",
+        "append index read_write",
+        "Lists and Dictionaries Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. read_write dictionary list key value append index mapping collection mutable"
+      ],
+      "responses": [
+        "Lists and Dictionaries: Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. Read the Real Python guide: <a href='https://realpython.com/python-dicts/'>this link</a>",
+        "Lists and Dictionaries: Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. Read the Python documentation: <a href='https://docs.python.org/3/tutorial/datastructures.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "dictionaries kinesthetic",
+      "patterns": [
+        "What is lists and dictionaries kinesthetic?",
+        "dictionary list kinesthetic",
+        "lists and dictionaries explained kinesthetic",
+        "key value kinesthetic",
+        "append index kinesthetic",
+        "Lists and Dictionaries Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. kinesthetic dictionary list key value append index mapping collection mutable"
+      ],
+      "responses": [
+        "Lists and Dictionaries: Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. Work through the Python online compiler: <a href='https://www.programiz.com/python-programming/online-compiler/'>this link</a>",
+        "Lists and Dictionaries: Ordered lists and key-value dictionaries, indexing, appending and looking a value up by key. Work through the W3Schools tutorial: <a href='https://www.w3schools.com/python/python_exercises.asp'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "python functions visual",
+      "patterns": [
+        "What is python functions visual?",
+        "python function visual",
+        "python functions explained visual",
+        "def parameter visual",
+        "return argument visual",
+        "Python Functions Defining a function with def, parameters and return values, and default and keyword arguments. visual python function def parameter return argument default keyword scope"
+      ],
+      "responses": [
+        "Python Functions: Defining a function with def, parameters and return values, and default and keyword arguments. Watch the W3Schools tutorial: <a href='https://www.w3schools.com/python/python_functions.asp'>this link</a>",
+        "Python Functions: Defining a function with def, parameters and return values, and default and keyword arguments. Watch the Programiz tutorial: <a href='https://www.programiz.com/python-programming/function'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "python functions auditory",
+      "patterns": [
+        "What is python functions auditory?",
+        "python function auditory",
+        "python functions explained auditory",
+        "def parameter auditory",
+        "return argument auditory",
+        "Python Functions Defining a function with def, parameters and return values, and default and keyword arguments. auditory python function def parameter return argument default keyword scope"
+      ],
+      "responses": [
+        "Python Functions: Defining a function with def, parameters and return values, and default and keyword arguments. Listen to the MIT OpenCourseWare lectures: <a href='https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/'>this link</a>",
+        "Python Functions: Defining a function with def, parameters and return values, and default and keyword arguments. Listen to the Python documentation: <a href='https://docs.python.org/3/tutorial/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "python functions read_write",
+      "patterns": [
+        "What is python functions read_write?",
+        "python function read_write",
+        "python functions explained read_write",
+        "def parameter read_write",
+        "return argument read_write",
+        "Python Functions Defining a function with def, parameters and return values, and default and keyword arguments. read_write python function def parameter return argument default keyword scope"
+      ],
+      "responses": [
+        "Python Functions: Defining a function with def, parameters and return values, and default and keyword arguments. Read the Real Python guide: <a href='https://realpython.com/defining-your-own-python-function/'>this link</a>",
+        "Python Functions: Defining a function with def, parameters and return values, and default and keyword arguments. Read the Python documentation: <a href='https://docs.python.org/3/tutorial/controlflow.html'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
+    },
+    {
+      "tag": "python functions kinesthetic",
+      "patterns": [
+        "What is python functions kinesthetic?",
+        "python function kinesthetic",
+        "python functions explained kinesthetic",
+        "def parameter kinesthetic",
+        "return argument kinesthetic",
+        "Python Functions Defining a function with def, parameters and return values, and default and keyword arguments. kinesthetic python function def parameter return argument default keyword scope"
+      ],
+      "responses": [
+        "Python Functions: Defining a function with def, parameters and return values, and default and keyword arguments. Work through the Python online compiler: <a href='https://www.programiz.com/python-programming/online-compiler/'>this link</a>",
+        "Python Functions: Defining a function with def, parameters and return values, and default and keyword arguments. Work through the Real Python guide: <a href='https://realpython.com/python-return-statement/'>this link</a>"
+      ],
+      "context_set": "",
+      "source": "demo"
     }
   ]
 }
