@@ -148,6 +148,17 @@ The installer writes them once and the entrypoint restores config.php from the
 data volume on every recreate, so without that rewrite an edited
 `MOODLE_WWWROOT` would silently do nothing.
 
+**The database settings are not rewritten, only those two.** `POSTGRES_HOST`,
+`POSTGRES_DB`, `POSTGRES_USER` and `POSTGRES_PASSWORD` are read once, by the
+installer, and after that config.php carries whatever it was installed with.
+Change one on a running deployment and the container keeps using the old value,
+then fails with "Error: Database connection failed" and a 500 on every page -
+the environment says one thing and config.php says another. Moving the database
+means editing config.php on the `moodledata` volume, or reinstalling against
+the new one. The same trap catches a `moodledata` volume left over from a
+different compose file: the restored config.php points at that stack's
+database, not this one's.
+
 Since the plugin now ships in the image, deploying a plugin change means
 pulling a new image - and the entrypoint deliberately does not touch the
 database beyond the first install, so a bumped `version.php` needs the upgrade

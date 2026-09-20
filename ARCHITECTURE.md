@@ -353,6 +353,7 @@ file.** Observers and strings are cached, and a version bump plus
 | Questionnaire renders unstyled | an asset path is missing from the gate's allow-list |
 | Everyone including admins is redirected | the gate's admin exemption broke. `admin/cli/cfg.php --name=forceredirect --set=0` |
 | "Coding error: unexpected output" | something in the observer wrote to the output buffer. Nothing there may |
+| 500 on every page, "Database connection failed" in the log | config.php was restored from the `moodledata` volume and points at a different database than the environment does. Only `wwwroot` and `sslproxy` are rewritten on start; `POSTGRES_*` is read once, by the installer |
 
 ---
 
