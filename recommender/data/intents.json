@@ -99,7 +99,7 @@
       ],
       "responses": [
         "Array elements are accessed using an index value: see the following video <a href = 'https://www.youtube.com/watch?v=GhNtdjdSJVQ'> in this link</a>",
-        "An array is a data structure that consists elements. listen the following video <a href = 'https://www.youtube.com/watch?v=6tjYC86iV5E'> in this link</a>",
+        "An array is a data structure that consists elements. Watch the following video <a href = 'https://www.youtube.com/watch?v=6tjYC86iV5E'> in this link</a>",
         "Declaring arrays  check the following video for more understanding <a href = 'https://www.youtube.com/watch?v=i6m_NqnbN50'> in this link</a>",
         "Assigning and storing arrays. Watch the illustrated walkthrough of multi-dimensional arrays in C: <a href='https://www.programiz.com/c-programming/c-multi-dimensional-arrays'>this link</a>",
         "To refer to a particular location or element in the array, we specify the name of the array and the position number  of the element to which we refer.See the following video <a href = 'https://www.youtube.com/watch?v=HyDE7T6YPsU'> in this link</a>",
@@ -162,10 +162,10 @@
         "The void type visual"
       ],
       "responses": [
-        "Data types are declarations for variables. listen the following video  <a href = 'https://www.youtube.com/watch?v=j1u3V6pzwEI'>in this link</a>",
+        "Data types are declarations for variables. Watch the following video  <a href = 'https://www.youtube.com/watch?v=j1u3V6pzwEI'>in this link</a>",
         "Basic types in C .Watch the following video <a href= 'https://www.youtube.com/watch?v=_g4AYZQY7sU'>in this link</a>",
         "Data types in C,enumerated datatype. Watch  <a href = 'https://www.youtube.com/watch?v=YfbcJz4TfjQ'>this link</a>",
-        "Void Data Types .Listen the following video <a href= 'https://www.youtube.com/watch?v=1nAJiybMZNw'>in this link</a>",
+        "Void Data Types. Watch the following video <a href= 'https://www.youtube.com/watch?v=1nAJiybMZNw'>in this link</a>",
         "Derived data types in C. Watch the following video <a href = 'https://www.youtube.com/watch?v=JSdFDlURNoQ'>in this link</a>",
         "Data types: The basic, derived, enumerated and void types, the range each holds, and how a value is stored. Visualise the code running step by step: <a href='https://pythontutor.com/c.html'>this link</a>",
         "Data types: The basic, derived, enumerated and void types, the range each holds, and how a value is stored. Watch the W3Schools data types tutorial: <a href='https://www.w3schools.com/c/c_data_types.php'>this link</a>",
