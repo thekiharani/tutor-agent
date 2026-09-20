@@ -143,7 +143,7 @@ to `Demo@2026!`.
 |---|---|
 | `admin` | site administrator, created by the installer |
 | `demo.admin` | Lydia Muthoni, site administrator, created by the seed |
-| `demo.teacher` | Miriam Wafula, editing teacher on all ten courses |
+| `demo.teacher` | Miriam Wafula, editing teacher on the course |
 | `student.visual` | Amara Otieno, pre-set style: visual |
 | `student.aural` | Brian Kamau, pre-set style: auditory |
 | `student.rw` | Chloe Wanjiru, pre-set style: read/write |
@@ -221,28 +221,22 @@ first things anyone notices on a seeded site.
 | Category | Code | Course | Activities |
 |---|---|---|---|
 | Programming Fundamentals | `CS 101` | Introduction to Programming in C | 6 |
-| | `CS 102` | Python Programming | 3 |
-| Core Computer Science | `CS 201` | Data Structures | 4 |
-| | `CS 202` | Algorithms and Complexity | 4 |
-| | `CS 203` | Object-Oriented Programming | 4 |
-| Data and Web Systems | `CS 204` | Databases and SQL | 4 |
-| | `CS 303` | Web Development | 4 |
-| Systems and Networks | `CS 301` | Operating Systems | 3 |
-| | `CS 302` | Computer Networks | 3 |
-| Software Engineering | `CS 304` | Software Engineering Practice | 3 |
 
-All five sit under one top-level category, **School of Computing and
-Informatics**, which is the installer's placeholder category renamed rather than
-a seventh category created beside it.
+One course, because the content library holds one course's worth of material.
+The six activities are the six topics in `intents.json` - Introduction to C,
+Data Types, Operators, Control Structures, Arrays and Functions - and the
+seeder is a projection of that file rather than a list maintained beside it.
+Seeding an activity the library cannot answer would only produce a 204.
 
-All 38 activities are covered by the recommender: every one of them returns a
-resource for every one of the four styles, 152 combinations in total, and each
-activity's four links are four different links. That was checked by logging into
-the running site as each of the four pre-set students and loading all 38 activity
-pages, 152 page loads, rather than only by calling the service. `CS 101`
-is the deepest because it is the course the supplied content library was written
-for; its Data Types, Control Structures, Arrays and Functions activities are the
-only four that run on the original author's material.
+It sits under **Programming Fundamentals**, inside one top-level category,
+**School of Computing and Informatics**, which is the installer's placeholder
+category renamed rather than a second category created beside it.
+
+All 6 activities are covered by the recommender: every one returns a resource
+for every one of the four styles, 24 combinations in total, and each activity's
+four links are four different links in four different media. `make test` asserts
+all of that on every build, and it was also checked by hand, by logging into the
+running site as each of the four pre-set students.
 
 Seeded addresses are all `@example.com`, which is reserved by RFC 2606 for
 exactly this purpose. It is deliberate: a plausible-looking real domain would
@@ -258,7 +252,7 @@ the landing page, so there is not even a catalogue to browse.
 
 Seeding fixes both, on every run:
 
-- **Self enrolment is enabled on all ten courses**, with no enrolment key, the
+- **Self enrolment is enabled on the course**, with no enrolment key, the
   student role, no capacity limit and the welcome email off (there is no mail
   server in the container). A signed-in student opens a course and gets "Enrol
   me"; the questionnaire gate and the recommendations then work exactly as they
@@ -352,19 +346,19 @@ that mount and runs what the image carries.
 
 ## How a recommendation is chosen
 
-The content library is `recommender/data/intents.json`: 152 tags (38 topics x 4
-modalities), 900 example phrasings, 372 responses. At image build time `train.py`
-stems every phrasing with the Lancaster stemmer, builds a 363-word vocabulary,
-and trains the feed-forward network the project report describes - two hidden
-layers of 8 units, 363 -> 8 -> 8 -> 152 with a softmax output, `batch_size=8` and
-up to 1000 iterations, matching the report's appendix. The architecture is the
-report's unchanged; only `random_state` moved, from 42 to 0, because at 152
-classes seed 42 leaves one pattern of 900 misfitted and the build asserts a
-perfect fit. Eight of the first ten seeds reach it.
+The content library is `recommender/data/intents.json`: 24 tags (the 6 topics of
+the C language x 4 modalities), 132 example phrasings, 151 responses over 96
+distinct URLs. At image build time `train.py` stems every phrasing with the
+Lancaster stemmer, builds a 68-word vocabulary, and trains the feed-forward
+network the project report describes - two hidden layers of 8 units,
+68 -> 8 -> 8 -> 24 with a softmax output, `batch_size=8` and up to 1000
+iterations, matching the report's appendix. The architecture is the report's
+unchanged; only `random_state` moved, from 42 to 0, kept from when the library
+was larger and a worse seed left a pattern misfitted.
 
 Training needs scikit-learn; serving does not. `train.py` saves the fitted
 weights to `model.npz` and then asserts that the numpy forward pass in the same
-file reproduces scikit-learn's `predict_proba` exactly - on all 900 training
+file reproduces scikit-learn's `predict_proba` exactly - on all 132 training
 vectors and on the demo's own inputs - before the build is allowed to succeed.
 The runtime image therefore carries numpy and nltk but neither scikit-learn nor
 scipy, which is 211MB it would otherwise never use. Measured over 20,002
@@ -375,12 +369,13 @@ request.
 At request time the service receives the activity's name, its intro text and the
 student's stored style, and:
 
-1. **Looks the activity up in the topic table.** `TOPICS` in `app.py` maps 38
+1. **Looks the activity up in the topic table.** `TOPICS` in `app.py` maps 6
    keywords to topics. The keys are matched as substrings of the activity's name
-   and intro, **longest first**, so `python function` beats `function` and
-   `hash table` beats `array`. If nothing matches, the service returns
-   `204 No Content` and Moodle shows nothing: the library covers 38 topics and an
-   activity about pointers gets silence, not the nearest of 152 tags.
+   and intro, **longest first**, so a more specific topic beats a more general one
+   that is a substring of the same text. If nothing matches, the service returns
+   `204 No Content` and Moodle shows nothing: the library covers the 6 topics of
+   the C language and an activity about pointers gets silence, not the nearest of
+   24 tags.
 2. **Expands topic synonyms.** The vocabulary contains `if/else`, `loop`, `swic`
    and `whil` but no stem for "control", so an activity called "Control
    Structures" would match nothing on its own. Every topic carries an alias entry.
@@ -419,10 +414,12 @@ on screen:
 - **Six of sixteen tags** carried stray leading or trailing spaces
   (`'functions visual '`, `' arrays auditory'`, and four more), which made the
   tag lookup miss.
-- **Seven anchors were malformed** and rendered as plain text rather than links:
-  three written `<a href>https://...'>` with the `='` missing, one with the
-  opening `<` typed as a comma, one written `< a href=` with a space, and two
-  closing tags written `>/a>` and `,/a>`.
+- **All nine malformed anchors were repaired.** They rendered as plain text
+  rather than links: three written `<a href>https://...'>` with the `='`
+  missing, two closing tags written `>/a>` and `,/a>`, one `<a ahref = '...'>`,
+  one closing its opening tag with `'<this link` instead of `'>`, and two written
+  `<a href = https://...'>` with the opening quote missing. Only the markup
+  changed; no URL was touched by the repair.
 - **Twelve responses ran text straight into the link**, rendering as
   "see the following practical**in this link**". A space was added before the
   anchor.
@@ -430,68 +427,167 @@ on screen:
   "progarm", "poinetrs", "pactical", "Declaringand" and others. Only spelling
   changed; no sentence was reworded.
 
-## Content added for the ten-course demo
+## The thirty-eight-topic detour, and why it was undone
 
-The client asked for courses students could enrol in, around C and the wider CS
-and software-engineering syllabus. That meant 34 new topics on top of the
-supplied four, and 136 new tags.
+An earlier revision of this project answered a request for a catalogue students
+could enrol in by adding 34 topics beyond the supplied four - data structures,
+algorithms, OOP, SQL, operating systems, networking, web, software engineering,
+Python - reaching 38 topics, 152 tags and ten courses. That content was real and
+checked: 272 links, every URL requested, none invented.
 
-- **272 new links, every one checked.** Each new topic carries two resources per
-  modality. All 198 distinct URLs were requested and returned HTTP 200 at the
-  time of writing. Anything that 404'd was replaced, and anything that could only
-  be reached by a browser and not by a script was replaced too, so that nothing
-  in the library is a link nobody has opened.
-- **The eight URLs under a topic are all different.** This matters more than it
-  sounds: `pick_response` shows one link per activity and style, so a URL sitting
-  under two modalities of the same topic can put the *same* link in front of a
-  visual learner and a read/write learner, which is precisely the comparison the
-  demo is built on. The first draft did that on 8 topics of 34 and reused a URL
-  across modalities on 27. Both are now zero, checked over all 38 topics.
-- **No YouTube video IDs were invented.** The supplied content uses YouTube for
-  three of its four modalities. An invented 11-character video ID still returns
-  HTTP 200 on the watch page, so a wrong one cannot be caught by checking it, and
-  it would fail in front of the person being shown the demo. The new content uses
-  sources whose URLs are structural - documentation, university course pages,
-  visualisations, interactive exercises - which can be verified.
-- **The four modalities are now genuinely different kinds of resource.** In the
-  supplied content, visual, auditory and kinesthetic are all YouTube and only the
-  framing sentence differs. The new content gives visual an animation or diagram,
-  auditory a recorded lecture, read/write documentation or an article, and
-  kinesthetic something to run or solve.
-- **The response sentences are templated**, per topic and modality, rather than
-  written one at a time as the supplied ones were. Only one response is ever
-  shown for a given activity and style - `pick_response` is deterministic - so
-  the repetition is not visible in the product, and consistency was worth more
-  than variety at this volume.
+It was the wrong shape for the brief. The client's requirement is that a student
+picks a topic **in C** and is recommended content for their learning style, and
+thirty-two of those thirty-eight topics were not C at all. A student signing in
+found a Python course and an SQL course sitting beside the one the project is
+about.
+
+All of it has been removed: 128 tags from `intents.json`, 32 keys from `TOPICS`
+in `app.py`, and nine courses from `seed_demo.php`. What survives is the six
+topics of the C language, which is what the content library was always for. The
+useful residue of the detour is the method it forced - templated responses per
+topic and modality, one medium per modality, verified structural URLs - which is
+the method the six C topics are now held to, by tests rather than by care.
+
+## The C content, and one medium per modality
+
+The six C-language topics - introduction to C, data types, operators, control
+structures, arrays and functions - are the ones the project is actually about,
+and they are the only topics whose materials were ever C: the data-structures
+and algorithms topics that used to sit beside them carried no C-specific link
+between them. 84 resources were added across their 24 tags.
+
+**Each modality now serves exactly one kind of resource**, which is the claim
+the whole project rests on and the one it previously could not make:
+
+| Modality | What it serves |
+|---|---|
+| visual | videos, animations, a step-through visualiser, illustrated walkthroughs |
+| auditory | lecture courses: MIT 6.087 and 6.S096, CS50, Stanford CS107 |
+| read/write | the C language reference, Beej's Guide, the C wikibook, articles |
+| kinesthetic | interactive lessons, online compilers, exercise sets, practice tracks |
+
+Getting there meant removing, not only adding. In the supplied content visual,
+auditory and kinesthetic were all YouTube and only the framing sentence differed
+- a kinesthetic student was handed a video to watch, which is the one thing
+kinesthetic is not. **47 responses were removed**: 16 videos from kinesthetic
+tags, 31 non-lecture videos from auditory tags. The videos that remain are all
+under visual, where a video belongs. `test_recommender.py` asserts this per tag,
+so it cannot drift back.
+
+Two further rules the file holds, both tested:
+
+- **No URL sits under two modalities of the same topic.** `pick_response` shows
+  one link per activity and style, so a shared URL can put the *same* link in
+  front of a visual learner and a kinesthetic one, which is precisely the
+  comparison the demo exists to show.
+- **No tag repeats a link.** `pick_response` is a modulo over the list, so a
+  duplicate silently doubles that link's odds. Two were found in
+  `functions visual` and removed.
+
+**No YouTube video IDs were invented.** An invented 11-character ID still returns
+HTTP 200 on the watch page, so a wrong one cannot be caught by requesting it;
+every video in the file is verified through YouTube's oEmbed endpoint, which
+returns the real title for a live video and 404 for a dead one.
+
+## Every link is checked
+
+A student clicks these links to learn from them, so a dead one is a dead lesson,
+and a link to the wrong language is worse than a dead one because it fails
+silently. Every URL in `intents.json` is opened by `make test-links`.
+
+**What that found in the supplied content.** Thirteen problems, every one of
+them present in the 2022 file as imported - traceable in git, none introduced by
+this project:
+
+- **Three URLs were dead.** `ee.hawaii.edu/~tep/EE160/Book/PDF/Chapter7.pdf`
+  returns a hard 403 (*"Server unable to read htaccess file, denying access to
+  be safe"*), and `trytoprogram.com` and `fresh2refresh.com` both 404.
+- **Three YouTube videos no longer exist.** An HTTP check cannot find these: a
+  deleted video's watch page still returns 200. They were caught through oEmbed.
+  Two were deleted; one is private.
+- **Seven links taught the wrong language.** Six resolved perfectly and their
+  video titles gave them away: a *Processing* tutorial and a *MATLAB*
+  audio-programming video under `arrays`, a *Java* exercise and a *VBA* lesson
+  under `arrays kinesthetic`, an *Excel* IF-statement video under
+  `controls kinesthetic`, a *C#* enumeration example under
+  `data types kinesthetic`. The seventh, `cs.fsu.edu/~myers/c++/`, is a C++
+  course page - *"In C++, these are the types of selection statements"*, 16 uses
+  of `cout`.
+
+All thirteen were replaced with C material of the same modality.
+
+**Judge the page, not the navigation.** A first pass that scanned page bodies
+for other language names flagged 50 links of 137. Nearly all were false
+positives from site chrome: W3Schools lists Excel and Python in its sidebar,
+learn-c.org links sibling learn-python and learn-java sites, Programiz's nav
+names Rust and Kotlin. Two were real, both GeeksforGeeks pages titled *"in C"*
+that serve C++ in their multi-language tabs. `test_recommender.py` therefore
+tests the link text rather than the destination's chrome, and the destination is
+checked by hand when it is added.
+
+**Where it stands.** 96 distinct URLs, all resolving: every video live through
+oEmbed, every page 200, nothing in another language. One URL,
+`exercism.org/tracks/c`, answers 403 to a script because of Cloudflare's
+challenge and was confirmed by hand in a browser, where it renders as "C on
+Exercism"; the test allows 403 for that reason.
+
+Link rot is not a one-time fix. `make test-links` is the thing to run before a
+demo.
+
+## Tests
+
+```sh
+make test         # 147 checks, no network, no running stack
+make test-links   # 96 more: opens every URL in the library
+```
+
+`make test` builds the `tests` stage of the recommender image, which runs pytest
+during the build. A failing test fails the build, in the same way the trainer
+stage fails it on a model that does not reproduce - so a broken library cannot
+be built into a runnable image. The runtime image is unaffected and still ships
+neither pytest nor scikit-learn.
+
+What it holds the project to:
+
+- the library holds exactly the 24 C tags, every one able to answer
+- every response is exactly one well-formed anchor
+- no response names another language
+- auditory serves only lectures, kinesthetic only hands-on material
+- no URL under two modalities of one topic, no URL twice in one tag
+- the model's classes match the library, and every training pattern still fits
+- each of the 24 topic-and-style combinations returns its own tag and medium
+- four styles on one activity get four different links
+- an uncovered activity gets 204, an unknown style gets 422
+- the same request always returns the same link
+- `TOPICS` in `app.py` and the library agree
 
 ## Known limitations
 
 State these before a panel member finds them.
 
-- The network has **2,984 parameters and 900 training examples**: 3.3 parameters
+- The network has **840 parameters and 132 training examples**: 6.4 parameters
   per example. Perfect training accuracy is arithmetic, not evidence. The report
   calls this a deep neural network, using the established sense of more than one
   hidden layer; it is two hidden layers of 8 units, and it would not be called
   deep learning today. The architecture is reproduced exactly as the report
   specifies rather than improved, because the system demonstrated has to be the
   system described.
-- The model is trained on 900 patterns across 152 classes and fits them at 100%.
-  In the source thesis the training data was also the test data. All 900 input
+- The model is trained on 132 patterns across 24 classes and fits them at 100%.
+  In the source thesis the training data was also the test data. All 132 input
   vectors are unique and no two classes collide, so the network memorises the
   table exactly. The honest description is "a classifier over a curated intent
   table", not "a model that generalises". Quoting 100% accuracy as a result
   without that context invites a hard question.
-- **Going from 4 topics to 38 is what the classifier could not absorb, and this
-  is the most important thing to be able to say out loud.** The style mask leaves
-  4 candidates when there are 4 topics and 38 when there are 38, and a network
-  that memorises its table does not generalise to the denser vector the server
-  builds at request time. Measured over the 152 seeded combinations, the
-  classifier on its own was right 82 times. Adding one training pattern per new
-  tag in the exact shape the server sends took that to 145; the 7 it still gets
-  wrong are all on the four supplied topics, whose patterns are frozen. The
-  keyword table is right 152 times out of 152 on its own, so it is what decides
-  when the two disagree. On the shipped system the classifier and the keyword
-  agree 142 times and the keyword corrects the other 10.
+- **The classifier is right 24 times out of 24, and that is a smaller claim than
+  it sounds.** At six topics the style mask leaves six candidates, and a network
+  that memorises its table handles that comfortably: classifier alone 24/24,
+  keyword table alone 24/24, shipped system 24/24. It was not always so. An
+  earlier revision carried thirty-eight topics, and there the classifier alone
+  managed 82 of 152 before per-tag training patterns lifted it to 145, with the
+  keyword table right 152 of 152 and deciding every disagreement. The keyword
+  table is kept for two reasons: it is what makes "24/24" checkable rather than
+  self-reported, and the failure it was written for returns the moment the
+  library grows again.
 - Two further layers sit around the classifier and both are deliberate, not
   hidden. The alias expansion adds topic synonyms because the vocabulary has no
   stem for "control". The style mask restricts the output to the student's stored
@@ -499,18 +595,16 @@ State these before a panel member finds them.
   topics: expansion alone gets the modality wrong 5 times in 48, the mask alone
   gets the topic wrong 10 times in 48, and together they are correct 48 times
   in 48.
-- Topic lookup is substring matching, not understanding. It is correct for all 38
-  seeded activities, and a test of that is the reason three activity intros are
-  worded as they are: "Functions" says "return values" rather than "recursion",
-  because `recursion` is a topic of its own and the longer match. But an activity
-  called "Wave functions and the Schrodinger equation" contains the whole word
-  "functions" and will be offered C material. A teacher writing their own
-  activity gets a recommendation only if its name or intro happens to contain one
-  of the 38 keys; otherwise they get silence, which is the safe failure but not
-  an intelligent one.
-- Recommendations are limited to the 38 topics in `intents.json`. Ten courses
-  is a demonstration catalogue, not a syllabus: each course has 3 to 6
-  activities, where a real one would have dozens.
+- Topic lookup is substring matching, not understanding. It is correct for all 24
+  seeded combinations. But an activity called "Wave functions and the Schrodinger
+  equation" contains the whole word "functions" and will be offered C material. A
+  teacher writing their own activity gets a recommendation only if its name or
+  intro happens to contain one of the 6 keys; otherwise they get silence, which is
+  the safe failure but not an intelligent one.
+- Recommendations are limited to the 6 topics in `intents.json`, and the seeded
+  course is a projection of exactly those. One course with six activities is a
+  demonstration, not a syllabus: a real C course would have dozens of activities
+  and would need the library extended before any of them recommended anything.
 - The VARK learning-styles matching hypothesis is contested in the education
   literature. The defensible claim is that this implements VARK as specified by
   the source thesis, not that style matching has been shown to improve outcomes.

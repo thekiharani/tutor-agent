@@ -34,8 +34,12 @@ resource links. This document is the complete specification. Follow it in order.
 
 Both files are already in the repository root and committed:
 
-- `intents.json` - the content repository. 16 tags, 84 patterns, **100 responses**,
-  4 topics x 4 modalities. Move to `recommender/data/intents.json` in WP1.
+- `intents.json` - the content repository **as supplied**: 16 tags, 84 patterns,
+  **100 responses**, 4 topics x 4 modalities. Move to
+  `recommender/data/intents.json` in WP1. It now holds 24 tags, 132 patterns and
+  151 responses across the six topics of the C language; the README is
+  authoritative on what it holds now, and this section describes only the
+  starting point.
 - `tutoragent.zip` - the original code from a 2022 thesis: `main.py`,
   `observer.php`, `recommend.php`. Unpack to `reference/` for reading only.
 
@@ -974,8 +978,8 @@ Confirmed by reading the code in the zip. Do not reintroduce any of these.
 | 11 | `main.py` | Vocabulary built with `sorted(list(words))`, no dedupe: 328 slots for 41 distinct stems. |
 | 12 | `main.py` | `nltk.word_tokenize` used with no data download. |
 | 13 | `main.py` | `random.choice(responses)` - a different link on every identical request. |
-| 14 | `intents.json` | 6 of 16 tags carry stray leading or trailing whitespace. |
-| 15 | `intents.json` | 7 of 100 responses have broken anchor markup, rendering as plain text. Enumerated in WP1. |
+| 14 | `intents.json` | 6 of 16 tags carry stray leading or trailing whitespace. **Fixed in WP1**; 0 remain. |
+| 15 | `intents.json` | 9 of 100 responses have broken anchor markup, rendering as plain text. **5 fixed in WP1; 4 remain**, all under `functions` - see the README's disclosure. The count of 7 given earlier in this document was mine and was low. |
 
 ## Appendix B: starting-point `db/install.xml`
 

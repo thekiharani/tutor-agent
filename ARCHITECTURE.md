@@ -39,7 +39,7 @@ POST http://recommender:8000/recommend                      private network
         ▼
 recommend()                                                 app.py
         │
-        │  1. find_topic()  longest of the 38 keys found in the text wins,
+        │  1. find_topic()  longest of the 6 keys found in the text wins,
         │                    appends its expansion
         │       none ──► 204 No Content
         │  2. forward()     numpy pass over the trained weights
@@ -109,16 +109,16 @@ is actually asked is *which topic is this activity about*.
 `recommender/train.py` runs once, at image build time, in a stage that has
 scikit-learn. It:
 
-1. reads `data/intents.json` — 152 tags (38 topics x 4 modalities), 900
-   patterns, 372 responses
+1. reads `data/intents.json` — 24 tags (6 topics x 4 modalities), 132
+   patterns, 151 responses
 2. tokenises with `tokenize()`: lowercase, `re.findall(r"[a-z_/]+")`, Lancaster
    stem. The regex keeps `if/else` and `read_write` whole; both are real
    vocabulary entries
-3. builds the vocabulary with `sorted(set(...))` — **363 stems**
+3. builds the vocabulary with `sorted(set(...))` — **68 stems**
 4. trains `MLPClassifier(hidden_layer_sizes=(8, 8), activation="relu",
    solver="adam", max_iter=1000, batch_size=8, random_state=0)`, matching the
-   project report. Only the seed is not the report's: at 152 classes seed 42
-   leaves one pattern of 900 misfitted and step 6 fails the build
+   project report. Only the seed is not the report's, kept at 0 from when the
+   library was larger and a worse seed left a pattern misfitted
 5. saves the weights to `data/model.npz`
 6. **asserts `forward()` reproduces `predict_proba`** on every training vector
    and on the demo's own inputs, and fails the build on any disagreement
@@ -141,13 +141,16 @@ restart. The demo shows the same link on every rehearsal.
 
 ### Honest framing
 
-2,984 parameters, 900 training examples — 3.3 per example. All 900 input vectors
+840 parameters, 132 training examples — 6.4 per example. All 132 input vectors
 are unique with no class collisions, so 100% training accuracy is arithmetic, not
-achievement. On the 152 seeded activity-and-style combinations the classifier
-alone is right 145 times and the keyword table 152; the keyword table decides
-where they differ. The defensible description is "a classifier over a curated intent
-table", not "a model that generalises". See *Known limitations* in the README;
-that section is the one to read before a viva.
+achievement. On the 24 seeded activity-and-style combinations the classifier
+alone is right 24 times, the keyword table 24, and the shipped system 24. At six
+topics the classifier no longer needs correcting; the keyword table is kept
+because it is what makes that claim checkable, and because the failure it was
+added for returns the moment the library grows. The defensible description is
+"a classifier over a curated intent table", not "a model that generalises". See
+*Known limitations* in the README; that section is the one to read before a
+viva.
 
 ---
 
@@ -168,7 +171,7 @@ plugin/local/tutoragent/
 │   ├── hook_callbacks.php navigation link + the gate
 │   ├── form/vark_form.php the 16 questions and the form
 │   └── privacy/provider.php
-├── cli/seed_demo.php      the ten demo courses, admin and students;
+├── cli/seed_demo.php      the C course, admin and students;
 │                          idempotent, run on every container start, and
 │                          SEED_USERS=0 in production seeds no students,
 │                          but MOODLE_TEACHER_* still seeds a teacher;
@@ -281,7 +284,21 @@ settings is a nuisance; a site that will not start is a lost demo.
 
 ---
 
-## 6. Changing things
+## 6. Where the courses come from
+
+`seed_demo.php` is a projection of `intents.json`, not a list someone wrote
+alongside it. The single course carries one activity per topic the content
+library holds, and nothing else is seeded, because anything else would be an
+activity the recommender answers with a 204.
+
+That direction matters and it used to run the other way. The seeder once
+described ten courses across thirty-eight topics — data structures, SQL,
+networking, Python — and only six of those topics were C, which is what the
+client asked for. Everything outside C is gone: from the library, from the
+keyword table, and from the seeder. `test_recommender.py` now holds all three to
+the same six.
+
+## 7. Changing things
 
 **Add a topic.** Add its four tags to `intents.json`, add an entry to `TOPICS` in
 `app.py` mapping a keyword to `(tag topic, expansion)`, and add the activity to
@@ -291,11 +308,22 @@ things have to hold, and all three have bitten:
 - Keep the tag naming consistent, because the keyword path builds tags as
   `f"{topic} {style}"`.
 - The new key must not be a longer substring of another topic's activity text,
-  and no other key may be longer inside its own. `recursion` inside the Functions
-  intro and `process` inside the Threads intro both had to be worded away.
+  and no other key may be longer inside its own. When the library was larger,
+  `recursion` inside the Functions intro had to be worded away for exactly this.
 - Give each tag one pattern in the exact shape the server sends
-  (`name intro style alias`). Without it the classifier routes 82 of 152
-  activities correctly instead of 145.
+  (`name intro style alias`). The classifier is trained on phrasings; without one
+  in the shape it is actually asked, accuracy falls away as the library grows.
+- Add the topic to `test_recommender.py`'s `TOPICS`, and `make test` will hold
+  the rest of the file to it.
+
+**Add a resource to an existing topic.** Append to that tag's `responses` in
+`intents.json` and nothing else. `train.py` builds its training set from
+`patterns` and `tag` only, so responses never reach the model: the vocabulary,
+the 24 classes and `model.npz` are unaffected and the image does not need
+retraining. Two invariants the file holds and a new link must not break — the
+anchor is well formed, and no URL appears under two modalities of the same
+topic, because `pick_response()` would then hand the same link to two students
+who answered the questionnaire differently.
 
 **Change the questions.** One array: `vark_form::QUESTIONS`. Keep `dim` as one of
 V, A, R, K, and do not sort the options — the order varies per question by
@@ -315,7 +343,7 @@ file.** Observers and strings are cached, and a version bump plus
 
 ---
 
-## 7. Failure modes
+## 8. Failure modes
 
 | Symptom | Cause |
 |---|---|
@@ -328,7 +356,7 @@ file.** Observers and strings are cached, and a version bump plus
 
 ---
 
-## 8. Moodle 5.2 specifics worth knowing
+## 9. Moodle 5.2 specifics worth knowing
 
 - `local_*_extend_navigation()` in `lib.php` still runs but nothing it adds
   reaches the rendered navigation. Use the `\core\hook\navigation\primary_extend`
@@ -347,7 +375,7 @@ file.** Observers and strings are cached, and a version bump plus
 
 ---
 
-## 9. Where to look next
+## 10. Where to look next
 
 - `README.md` — running it, the demo script, credentials, known limitations
 - `specs.md` — the build brief, every acceptance gate, and Appendix C's list of
