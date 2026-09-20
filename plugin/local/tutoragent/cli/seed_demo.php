@@ -96,6 +96,21 @@ const SEED_CATEGORIES = [
     ],
 ];
 
+// Courses and categories this seeder created before the library was narrowed to
+// the six topics of C, and no longer defines. A site seeded by an earlier
+// revision still has them, and every activity in them now answers 204: a
+// student opening "Databases and SQL" gets no notification at all, which reads
+// as a fault rather than as a boundary.
+//
+// Listed explicitly rather than inferred as "any course not in SEED_COURSES",
+// so a course someone else made can never be caught by this. Removed only when
+// asked for with --prune-retired, because deleting a course deletes whatever
+// anyone has since put in it.
+const RETIRED_COURSES = ['CS102', 'CS201', 'CS202', 'CS203', 'CS204', 'CS301',
+    'CS302', 'CS303', 'CS304'];
+const RETIRED_CATEGORIES = ['Core Computer Science', 'Data and Web Systems',
+    'Systems and Networks', 'Software Engineering'];
+
 const SEED_ADMIN = ['username' => 'demo.admin', 'firstname' => 'Lydia', 'lastname' => 'Muthoni'];
 
 const SEED_USERS = [
@@ -209,7 +224,8 @@ function seed_term(): array {
 }
 
 list($options) = cli_get_params(
-    ['reset-blank' => false, 'no-users' => false, 'no-self-enrol' => false, 'help' => false],
+    ['reset-blank' => false, 'no-users' => false, 'no-self-enrol' => false,
+        'prune-retired' => false, 'help' => false],
     ['h' => 'help']);
 
 if ($options['help']) {
@@ -220,7 +236,11 @@ if ($options['help']) {
         . "  --no-users      Seed categories, courses and activities only. Same as\n"
         . "                  SEED_USERS=0, which is how production is configured.\n"
         . "  --no-self-enrol Leave every course's enrolment methods as they are. Same\n"
-        . "                  as SEED_SELF_ENROL=0.\n");
+        . "                  as SEED_SELF_ENROL=0.\n"
+        . "  --prune-retired Delete the nine courses this seeder made before the\n"
+        . "                  library was narrowed to C, and the categories they left\n"
+        . "                  empty. Destructive, and off by default: it deletes the\n"
+        . "                  courses and everything anyone has since put in them.\n");
     exit(0);
 }
 
@@ -720,6 +740,35 @@ if (!$seedusers) {
                 'seeded' => true,
             ]);
             $tally['styles set']++;
+        }
+    }
+}
+
+if ($options['prune-retired']) {
+    require_once($CFG->dirroot . '/course/lib.php');
+
+    foreach (RETIRED_COURSES as $idnumber) {
+        $course = $DB->get_record('course', ['idnumber' => $idnumber], '*', IGNORE_MULTIPLE);
+        if (!$course) {
+            $course = $DB->get_record('course', ['shortname' => trim(preg_replace('/(\d)/', ' $1', $idnumber, 1))], '*', IGNORE_MULTIPLE);
+        }
+        if ($course && $course->id != SITEID) {
+            delete_course($course, false);
+            cli_writeln('  deleted retired course     ' . $course->shortname);
+            $tally['retired courses deleted'] = ($tally['retired courses deleted'] ?? 0) + 1;
+        }
+    }
+
+    foreach (RETIRED_CATEGORIES as $name) {
+        $category = $DB->get_record('course_categories', ['name' => $name], '*', IGNORE_MULTIPLE);
+        if (!$category) {
+            continue;
+        }
+        $instance = core_course_category::get($category->id, IGNORE_MISSING, true);
+        if ($instance && !$instance->has_courses() && !$instance->has_children()) {
+            $instance->delete_full(false);
+            cli_writeln('  deleted empty category     ' . $name);
+            $tally['retired categories deleted'] = ($tally['retired categories deleted'] ?? 0) + 1;
         }
     }
 }

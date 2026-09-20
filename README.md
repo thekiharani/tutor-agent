@@ -106,6 +106,32 @@ docker compose -f compose.prod.yml exec -u www-data moodle \
     php /var/www/moodle/public/local/tutoragent/cli/seed_demo.php
 ```
 
+### Upgrading a site seeded before the library was narrowed to C
+
+**Read this before showing an existing deployment to anyone.** The seeder
+creates and updates; it has never deleted. A site seeded by an earlier revision
+still carries the nine courses this project no longer defines - Python
+Programming, Data Structures, Databases and SQL and the rest - and every
+activity in them now answers `204`, so a student opening one gets no
+notification at all. That reads as a fault, not as a boundary, and it is the
+first thing anyone clicking around will find.
+
+Clear them once, after deploying the new image:
+
+```sh
+docker compose -f compose.prod.yml exec -u www-data moodle \
+    php /var/www/moodle/public/local/tutoragent/cli/seed_demo.php --prune-retired
+```
+
+It deletes the nine retired courses and the four categories they leave empty,
+and it is idempotent. **It deletes the courses and everything in them**, which
+is why it is a flag rather than something every start does. The retired courses
+are listed by code in `RETIRED_COURSES`, so a course anyone else made is never
+matched. Without the flag the seeder deletes nothing, as before.
+
+Verified by seeding the ten-course state from the previous revision and running
+it: ten courses to one, six categories to two, and a second run a no-op.
+
 Point your TLS proxy at `${MOODLE_PORT}` and make `MOODLE_WWWROOT` match the
 public origin exactly. The container speaks plain HTTP on that port and it is
 open to the network, so the host firewall has to be what keeps it off the
