@@ -13,7 +13,7 @@ cat <<TEXT
 
     admin             site administrator (created by the installer)
     demo.admin        Lydia Muthoni   - site administrator
-    demo.teacher      Miriam Wafula   - teacher on all ten courses
+    demo.teacher      Miriam Wafula   - teacher on the course
 
     student.visual    Amara Otieno    - pre-set style: visual
     student.aural     Brian Kamau     - pre-set style: auditory
@@ -26,27 +26,21 @@ cat <<TEXT
     student.blank5    no style yet  )
     student.blank6    no style yet  )
 
-  THE COURSES
-  -----------
-  Ten, and every student is enrolled in all of them, so you can open anything
-  as anyone. 38 activities between them, each one covered by the recommender.
+  THE COURSE
+  ----------
+  One, and every student is enrolled in it. Six activities, which are the six
+  topics of C the content library holds - the course is a projection of
+  intents.json, so there is nothing to open that the recommender cannot answer.
 
   School of Computing and Informatics
     Programming Fundamentals
       CS 101  Introduction to Programming in C   (6 activities)
-      CS 102  Python Programming                 (3)
-    Core Computer Science
-      CS 201  Data Structures                    (4)
-      CS 202  Algorithms and Complexity          (4)
-      CS 203  Object-Oriented Programming        (4)
-    Data and Web Systems
-      CS 204  Databases and SQL                  (4)
-      CS 303  Web Development                    (4)
-    Systems and Networks
-      CS 301  Operating Systems                  (3)
-      CS 302  Computer Networks                  (3)
-    Software Engineering
-      CS 304  Software Engineering Practice      (3)
+                Introduction to C
+                Data Types
+                Operators
+                Control Structures
+                Arrays
+                Functions
 
   RUN THE DEMO
   ------------
@@ -65,11 +59,17 @@ cat <<TEXT
    5. Open the SAME "Arrays" activity.
       -> a DIFFERENT link appears, an article instead of a video.
 
-  That contrast in steps 3 and 5 is the point of the project. Any of the 38
+  That contrast in steps 3 and 5 is the point of the project. Any of the six
   activities shows it; Arrays is just the one with the most material behind it.
 
-   6. If asked whether it only knows C: open "Joins" in CS 204, or "Sorting
-      Algorithms" in CS 202, as two different students.
+   6. If asked how the four styles differ, open Arrays as all four students in
+      turn. Visual gets a video, auditory a university lecture, read/write an
+      article or the language reference, kinesthetic something to run. One
+      medium per style is the whole claim, and `make test` enforces it.
+
+   7. If asked what happens outside C: the library covers six topics and
+      nothing else. An activity it does not cover gets a 204 and Moodle shows
+      no notification - silence rather than a guess.
 
   Run it again:   make rehearse
   Nothing shows:  make purge
