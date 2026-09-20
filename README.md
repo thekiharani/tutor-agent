@@ -257,7 +257,12 @@ first things anyone notices on a seeded site.
 
 | Category | Code | Course | Activities |
 |---|---|---|---|
-| Programming Fundamentals | `CS 101` | Introduction to Programming in C | 6 |
+| Courses | `CS 101` | Introduction to Programming in C | 6 |
+
+The front page is set to `FRONTPAGEALLCOURSELIST`, so it shows the course
+itself rather than a category tree, and there is one flat category behind it.
+One course does not need a school and a department above it; the nesting was
+the first thing anyone asked about on seeing the site.
 
 One course, because the content library holds one course's worth of material.
 The six activities are the six topics in `intents.json` - Introduction to C,

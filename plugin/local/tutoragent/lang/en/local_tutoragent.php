@@ -21,6 +21,8 @@ $string['varkcontinue'] = 'Continue';
 
 $string['mylearningstyle'] = 'My learning style';
 $string['takequestionnaire'] = 'Find out your learning style: <a href="{$a}">take the short VARK questionnaire</a>.';
+$string['recommendedfor'] =
+    'Your learning style is <strong>{$a->style}</strong>, so here is a resource for this topic picked to suit it. {$a->html}';
 
 $string['style_visual'] = 'Visual';
 $string['style_auditory'] = 'Aural';

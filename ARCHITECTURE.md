@@ -56,7 +56,9 @@ recommend()                                                 app.py
 \core\notification::add($html, NOTIFY_INFO)                 observer
         │
         ▼
-the notification renders at the top of the activity page
+the notification renders at the top of the activity page, naming the
+        student's style before the resource: "Your learning style is Visual, so
+        here is a resource for this topic picked to suit it. …"
 ```
 
 Two students with different styles hit the same activity and get different

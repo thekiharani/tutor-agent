@@ -64,7 +64,17 @@ class observer {
             return;
         }
 
-        \core\notification::add($html, notification::NOTIFY_INFO);
+        // The style is named in the notification, not just used to pick the
+        // link. A student who has answered sixteen questions should be told
+        // what the answer was and see it being applied, or the recommendation
+        // looks like it arrived from nowhere.
+        \core\notification::add(
+            get_string('recommendedfor', 'local_tutoragent', (object) [
+                'style' => get_string('style_' . $style->style, 'local_tutoragent'),
+                'html' => $html,
+            ]),
+            notification::NOTIFY_INFO
+        );
     }
 
     /** Only when there is a page to write to and it is the viewer's own event. */

@@ -27,7 +27,7 @@ const SEED_COURSES = [
         'key' => 'prog-c',
         'shortname' => 'CS 101',
         'idnumber' => 'CS101',
-        'category' => 'fundamentals',
+        'category' => 'computing',
         'fullname' => 'Introduction to Programming in C',
         'summary' => 'A first course in C: the language core, from a first program through '
             . 'operators, control flow, arrays and functions.',
@@ -86,13 +86,8 @@ const SEED_COURSES = [
 const SEED_CATEGORIES = [
     [
         'key' => 'computing', 'parent' => null,
-        'name' => 'School of Computing and Informatics',
-        'description' => 'Undergraduate computing courses.',
-    ],
-    [
-        'key' => 'fundamentals', 'parent' => 'computing',
-        'name' => 'Programming Fundamentals',
-        'description' => 'First courses in a programming language.',
+        'name' => 'Courses',
+        'description' => 'Courses on this site.',
     ],
 ];
 
@@ -109,7 +104,7 @@ const SEED_CATEGORIES = [
 const RETIRED_COURSES = ['CS102', 'CS201', 'CS202', 'CS203', 'CS204', 'CS301',
     'CS302', 'CS303', 'CS304'];
 const RETIRED_CATEGORIES = ['Core Computer Science', 'Data and Web Systems',
-    'Systems and Networks', 'Software Engineering'];
+    'Systems and Networks', 'Software Engineering', 'Programming Fundamentals'];
 
 const SEED_ADMIN = ['username' => 'demo.admin', 'firstname' => 'Lydia', 'lastname' => 'Muthoni'];
 
@@ -541,8 +536,11 @@ if (get_config('enrol_manual', 'sendcoursewelcomemessage') != ENROL_DO_NOT_SEND_
 
 foreach ([
     'enablemyhome' => 1,
-    'frontpage' => FRONTPAGECATEGORYCOMBO . ',' . FRONTPAGECOURSESEARCH,
-    'frontpageloggedin' => FRONTPAGECATEGORYCOMBO . ',' . FRONTPAGECOURSESEARCH,
+    // The course list, not the category tree. One course does not need a school
+    // and a department above it, and the tree was the first thing anyone asked
+    // about.
+    'frontpage' => (string) FRONTPAGEALLCOURSELIST,
+    'frontpageloggedin' => (string) FRONTPAGEALLCOURSELIST,
     'defaulthomepage' => HOMEPAGE_SITE,
 ] as $setting => $value) {
     if ((string) get_config('core', $setting) !== (string) $value) {
