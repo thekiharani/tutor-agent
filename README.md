@@ -88,7 +88,7 @@ still builds natively on Apple Silicon.
 
 ## Production
 
-`compose.prod.yml` is the deploy file. It differs from `compose.yml` in
+`compose.prod.yaml` is the deploy file. It differs from `compose.yaml` in
 three ways: it pulls the published images instead of building, it runs no `db`
 service, and it joins the external `norialabs` network. Moodle publishes
 `${MOODLE_PORT}` on every interface, so whatever fronts it does not have to
@@ -101,8 +101,8 @@ at all; Moodle reaches it at `http://recommender:8000` across the network.
 
 ```sh
 cp .env.prod.example .env      # then fill in every CHANGE_ME
-docker compose -f compose.prod.yml up -d
-docker compose -f compose.prod.yml exec -u www-data moodle \
+docker compose -f compose.prod.yaml up -d
+docker compose -f compose.prod.yaml exec -u www-data moodle \
     php /var/www/moodle/public/local/tutoragent/cli/seed_demo.php
 ```
 
@@ -119,7 +119,7 @@ first thing anyone clicking around will find.
 Clear them once, after deploying the new image:
 
 ```sh
-docker compose -f compose.prod.yml exec -u www-data moodle \
+docker compose -f compose.prod.yaml exec -u www-data moodle \
     php /var/www/moodle/public/local/tutoragent/cli/seed_demo.php --prune-retired
 ```
 
@@ -165,9 +165,9 @@ database beyond the first install, so a bumped `version.php` needs the upgrade
 run by hand:
 
 ```sh
-docker compose -f compose.prod.yml pull
-docker compose -f compose.prod.yml up -d
-docker compose -f compose.prod.yml exec -u www-data moodle \
+docker compose -f compose.prod.yaml pull
+docker compose -f compose.prod.yaml up -d
+docker compose -f compose.prod.yaml exec -u www-data moodle \
     php /var/www/moodle/admin/cli/upgrade.php --non-interactive
 ```
 
@@ -219,7 +219,7 @@ still runs it by hand at any time.
 ### Production seeds the catalogue but none of the people
 
 `SEED_USERS` controls whether the demo teacher and the ten students are created.
-`compose.yml` defaults it to `1` and `compose.prod.yml` to `0`, so a deployment
+`compose.yaml` defaults it to `1` and `compose.prod.yaml` to `0`, so a deployment
 that never sets the variable still cannot put demo accounts on a real site.
 
 With `SEED_USERS=0` the categories, courses and activities are seeded exactly as
@@ -382,8 +382,8 @@ appear in the browser. PHP 8.4 produces none.
 Moodle 5.2 serves from a `public/` subdirectory: the code root holds `config.php`
 and the CLI scripts, and Apache's document root is `<root>/public`. The plugin
 therefore lives at `/var/www/moodle/public/local/tutoragent`. The image copies
-it in at build time; `compose.yml` also bind-mounts `plugin/local/tutoragent`
-over the top so you can edit it without rebuilding. `compose.prod.yml` drops
+it in at build time; `compose.yaml` also bind-mounts `plugin/local/tutoragent`
+over the top so you can edit it without rebuilding. `compose.prod.yaml` drops
 that mount and runs what the image carries.
 
 ## How a recommendation is chosen
@@ -665,7 +665,7 @@ register. On a site already running an older image, one command does the same
 thing without redeploying:
 
 ```sh
-docker compose -f compose.prod.yml exec -u www-data moodle \
+docker compose -f compose.prod.yaml exec -u www-data moodle \
     php /var/www/moodle/admin/cli/cfg.php --name=site_is_public --set=0
 ```
 

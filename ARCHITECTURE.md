@@ -238,9 +238,9 @@ recommender  python:3.14-slim + FastAPI                 264MB
 ```
 
 The Moodle image copies `plugin/local/tutoragent` in at build time, so a pulled
-image serves the plugin unaided; `compose.yml` bind-mounts the same
+image serves the plugin unaided; `compose.yaml` bind-mounts the same
 directory over the top so local edits apply without rebuilding.
-`compose.prod.yml` omits the mount.
+`compose.prod.yaml` omits the mount.
 
 ### Moodle 5.2 serves from `public/`
 
@@ -337,7 +337,7 @@ design, and sorting would put every correct answer in the same checkbox position
 Local plugins → Tutor agent*, or `admin/cli/cfg.php --component=local_tutoragent
 --name=recommenderurl`.
 
-**Edit the plugin.** `compose.yml` bind-mounts the directory, so just
+**Edit the plugin.** `compose.yaml` bind-mounts the directory, so just
 edit and reload —
 but **`make purge` after touching `db/events.php`, `db/hooks.php` or any lang
 file.** Observers and strings are cached, and a version bump plus

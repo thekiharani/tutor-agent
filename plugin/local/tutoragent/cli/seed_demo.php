@@ -290,7 +290,7 @@ if ($options['reset-blank']) {
 // password was set at install time.
 $password = (string) getenv('DEMO_PASSWORD');
 if ($seedusers && $password === '') {
-    cli_error('DEMO_PASSWORD is not set. It comes from .env via compose.yml.');
+    cli_error('DEMO_PASSWORD is not set. It comes from .env via compose.yaml.');
 }
 if ($teacher !== null && $teacher['password'] === '') {
     cli_error('MOODLE_TEACHER_USER is set but there is no password for it. Set '
